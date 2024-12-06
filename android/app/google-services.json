@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "870098037601",
+    "project_id": "heaven-living",
+    "storage_bucket": "heaven-living.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870098037601:android:ac8733bc9c223ec1ecf320",
+        "android_client_info": {
+          "package_name": "com.weronz.heavensliving"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgXXOCGpT0eobsysEiawMTny0QOI4Gcr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870098037601:android:cdeb73d403d9131decf320",
+        "android_client_info": {
+          "package_name": "com.weronz.heav"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgXXOCGpT0eobsysEiawMTny0QOI4Gcr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

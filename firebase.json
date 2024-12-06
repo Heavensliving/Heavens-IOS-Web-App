@@ -1,0 +1,37 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "heaven-living",
+                    "appId": "1:870098037601:android:cdeb73d403d9131decf320",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "heaven-living",
+                    "configurations": {
+                        "android": "1:870098037601:android:cdeb73d403d9131decf320",
+                        "ios": "1:870098037601:ios:a683df1bf26ad032ecf320",
+                        "web": "1:870098037601:web:cab49a951f7afb97ecf320"
+                    }
+                }
+            }
+        }
+    },
+    "hosting": {
+        "public": "build/web",
+        "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ],
+        "rewrites": [
+            {
+                "source": "**",
+                "destination": "/index.html"
+            }
+        ]
+    }
+}
