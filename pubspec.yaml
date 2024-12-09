@@ -54,6 +54,10 @@ dependencies:
   pdf: ^3.11.1
   printing: ^5.13.4
   url_launcher: ^6.3.1
+  cached_network_image: ^3.4.1
+  path_provider: ^2.1.5
+  firebase_messaging: ^15.1.6
+  flutter_local_notifications: ^18.0.1
   
   
   
@@ -71,7 +75,7 @@ flutter_icons:
   ios: true
   image_path: "assets/images/app_icon.png"
   adaptive_icon_foreground: "assets/images/app_icon.png"
-  adaptive_icon_background: "#631930"
+  adaptive_icon_background: "#000000"
   min_sdk_android: 21
   remove_alpha_ios: true
 

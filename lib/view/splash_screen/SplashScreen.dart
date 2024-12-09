@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/cafe_controller/CafeController.dart';
+import 'package:heavens_students/controller/homepage_controller/HomepageController.dart';
 import 'package:heavens_students/controller/homepage_controller/carousal_controller.dart';
 import 'package:heavens_students/controller/login_controller/LoginController.dart';
 import 'package:heavens_students/core/constants/constants.dart';
@@ -35,6 +36,8 @@ class _SplashScreenState extends State<SplashScreen> {
       await context.read<LoginController>().getStudentDetail(context);
       await context.read<CarousalImageController>().getCarousalImages();
       await context.read<CafeController>().getCafeItems();
+      await context.read<CarousalImageController>().getCarousalImages();
+      await context.read<HomepageController>().checkPaymentStatus(context);
 
       Navigator.pushReplacement(
         context,

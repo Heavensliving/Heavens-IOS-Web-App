@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:heavens_students/controller/login_controller/LoginController.dart';
 import 'package:heavens_students/core/widgets/customSnackbar.dart';
 import 'package:heavens_students/model/fees_model.dart';
 import 'package:heavens_students/model/raised_ticket_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:heavens_students/core/constants/base_url.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomepageController with ChangeNotifier {
@@ -118,4 +120,103 @@ class HomepageController with ChangeNotifier {
     }
     isLoading = false;
   }
+
+  // notification
+
+  final List<NotificationItem> notifications = [];
+  DateTime? paymentPendingDate;
+
+  checkPaymentStatus(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedDate = prefs.getString('paymentPendingDate');
+    log("payment pending date ---$savedDate");
+    var loginController = context.read<LoginController>();
+    var paymentStatus =
+        loginController.studentDetailModel?.student?.paymentStatus;
+    log("Payment status: $paymentStatus");
+
+    if (paymentStatus == "Pending") {
+      if (savedDate == null) {
+        await _savePaymentPendingDate();
+      }
+
+      await _loadPaymentPendingDate();
+      generateNotifications();
+    } else {
+      await _clearPaymentPendingDate();
+    }
+    notifyListeners();
+  }
+
+  Future<void> _savePaymentPendingDate() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (paymentPendingDate == null) {
+      paymentPendingDate = DateTime.now();
+      await prefs.setString(
+          'paymentPendingDate', paymentPendingDate!.toIso8601String());
+      log("Payment pending date saved: $paymentPendingDate");
+    }
+  }
+
+  Future<void> _loadPaymentPendingDate() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedDate = prefs.getString('paymentPendingDate');
+    if (savedDate != null) {
+      log("Saved date---$savedDate");
+      paymentPendingDate = DateTime.parse(savedDate);
+      log("Payment pending date loaded: $paymentPendingDate");
+    } else {
+      log("No payment pending date found in local storage.");
+    }
+  }
+
+  Future<void> _clearPaymentPendingDate() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('paymentPendingDate');
+    paymentPendingDate = null;
+    notifications
+        .clear(); // Clear notifications if payment is no longer pending
+    log("Payment pending date cleared from local storage.");
+  }
+
+  generateNotifications() {
+    if (paymentPendingDate != null) {
+      DateTime now = DateTime.now();
+      Duration difference = now.difference(paymentPendingDate!);
+      log("Difference in days: ${difference.inDays}");
+      log("Payment pending date: $paymentPendingDate");
+
+      notifications.clear();
+
+      notifications.add(NotificationItem(
+        title: "Payment Pending",
+        description: "Your payment is pending. Please complete it soon.",
+      ));
+
+      if (difference.inDays > 3) {
+        notifications.add(NotificationItem(
+          title: "Reminder",
+          description: "Complete your payment soon.",
+        ));
+      }
+
+      if (difference.inDays >= 6) {
+        notifications.add(NotificationItem(
+          title: "Urgent Reminder",
+          description:
+              "Tomorrow your account access will be blocked. Make the payment as soon as possible.",
+        ));
+      }
+
+      log("Notifications generated: ${notifications.length}");
+    }
+  }
+}
+
+class NotificationItem {
+  final String title;
+  final String description;
+
+  NotificationItem({required this.title, required this.description});
 }

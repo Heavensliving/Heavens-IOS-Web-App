@@ -70,7 +70,10 @@ class _MealSelectionPageState extends State<MealSelectionPage> {
                 child: Text(
                   textAlign: TextAlign.center,
                   "Add-ons are currently unavailable. Please check back later.",
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17,
+                      color: ColorConstants.primary_black.withOpacity(.5)),
                 ),
               ),
             )

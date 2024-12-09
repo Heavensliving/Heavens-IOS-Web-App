@@ -10,6 +10,7 @@ import 'package:heavens_students/core/constants/constants.dart';
 import 'package:heavens_students/core/constants/image_constants.dart';
 import 'package:heavens_students/core/widgets/CustomTextformField.dart';
 import 'package:heavens_students/core/widgets/customSnackbar.dart';
+import 'package:heavens_students/view/homepage/notification_page/notification.dart';
 import 'package:heavens_students/view/homepage/widgets/FinishSetupCard.dart';
 import 'package:heavens_students/view/homepage/widgets/custom_card.dart';
 import 'package:heavens_students/view/homepage/widgets/imageslider.dart';
@@ -36,6 +37,7 @@ class _HomepageState extends State<Homepage> {
     final loginController = context.read<LoginController>();
     await loginController.getStudentDetail(context);
     await context.read<CarousalImageController>().getCarousalImages();
+
     context.read<HomepageController>().getRaisedTickets();
     context.read<CafeController>().getCafeItems();
     context.read<CafeController>().getCategoryName();
@@ -68,193 +70,219 @@ class _HomepageState extends State<Homepage> {
       warningMessage = "Blacklisted";
       containerColor = Colors.red;
     }
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.grey.withOpacity(.1),
-        // appBar: AppBar(
-        //   toolbarHeight: 80,
-        //   backgroundColor: Colors.grey.withOpacity(.1),
-        //   elevation: 0,
-        //   leadingWidth: screenWidth * 0.6,
-        //   leading: Padding(
-        //     padding: const EdgeInsets.only(left: 15),
-        //     child: Consumer<LoginController>(
-        //       builder: (context, value, child) => Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         mainAxisAlignment: MainAxisAlignment.center,
-        //         children: [
-        //           Text(
-        //             value.studentDetailModel?.student?.name ?? "Student Name",
-        //             style: TextStyle(
-        //               fontWeight: FontWeight.bold,
-        //               fontSize: screenWidth * 0.045,
-        //             ),
-        //             maxLines: 1,
-        //             overflow: TextOverflow.ellipsis,
-        //           ),
-        //           Text(
-        //             value.studentDetailModel?.student?.studentId ?? "ID",
-        //             style: TextStyle(
-        //               fontWeight: FontWeight.normal,
-        //               fontSize: screenWidth * 0.035,
-        //             ),
-        //             maxLines: 1,
-        //             overflow: TextOverflow.ellipsis,
-        //           ),
-        //           value.studentDetailModel?.student?.warningStatus != 0
-        //               ? Container(
-        //                   child: Text(
-        //                     warningMessage,
-        //                     style: TextStyle(
-        //                         fontWeight: FontWeight.bold,
-        //                         fontSize: 10,
-        //                         color: ColorConstants.primary_white),
-        //                   ),
-        //                   padding:
-        //                       EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-        //                   decoration: BoxDecoration(
-        //                       color: containerColor,
-        //                       borderRadius: BorderRadius.circular(5)),
-        //                 )
-        //               : SizedBox()
-        //         ],
-        //       ),
-        //     ),
-        //   ),
-        // ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Consumer<LoginController>(
-                      builder: (context, value, child) => Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 10,
+    return Scaffold(
+      backgroundColor: Colors.grey.withOpacity(.1),
+      // appBar: AppBar(
+      //   toolbarHeight: 80,
+      //   backgroundColor: Colors.grey.withOpacity(.1),
+      //   elevation: 0,
+      //   leadingWidth: screenWidth * 0.6,
+      //   leading: Padding(
+      //     padding: const EdgeInsets.only(left: 15),
+      //     child: Consumer<LoginController>(
+      //       builder: (context, value, child) => Column(
+      //         crossAxisAlignment: CrossAxisAlignment.start,
+      //         mainAxisAlignment: MainAxisAlignment.center,
+      //         children: [
+      //           Text(
+      //             value.studentDetailModel?.student?.name ?? "Student Name",
+      //             style: TextStyle(
+      //               fontWeight: FontWeight.bold,
+      //               fontSize: screenWidth * 0.045,
+      //             ),
+      //             maxLines: 1,
+      //             overflow: TextOverflow.ellipsis,
+      //           ),
+      //           Text(
+      //             value.studentDetailModel?.student?.studentId ?? "ID",
+      //             style: TextStyle(
+      //               fontWeight: FontWeight.normal,
+      //               fontSize: screenWidth * 0.035,
+      //             ),
+      //             maxLines: 1,
+      //             overflow: TextOverflow.ellipsis,
+      //           ),
+      //           value.studentDetailModel?.student?.warningStatus != 0
+      //               ? Container(
+      //                   child: Text(
+      //                     warningMessage,
+      //                     style: TextStyle(
+      //                         fontWeight: FontWeight.bold,
+      //                         fontSize: 10,
+      //                         color: ColorConstants.primary_white),
+      //                   ),
+      //                   padding:
+      //                       EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      //                   decoration: BoxDecoration(
+      //                       color: containerColor,
+      //                       borderRadius: BorderRadius.circular(5)),
+      //                 )
+      //               : SizedBox()
+      //         ],
+      //       ),
+      //     ),
+      //   ),
+      // ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .05,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Consumer<LoginController>(
+                    builder: (context, value, child) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          value.studentDetailModel?.student?.name ??
+                              "Student Name",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: screenWidth * 0.045,
                           ),
-                          Text(
-                            value.studentDetailModel?.student?.name ??
-                                "Student Name",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: screenWidth * 0.045,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          value.studentDetailModel?.student?.studentId ?? "ID",
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: screenWidth * 0.035,
                           ),
-                          Text(
-                            value.studentDetailModel?.student?.studentId ??
-                                "ID",
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: screenWidth * 0.035,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          value.studentDetailModel?.student?.warningStatus != 0
-                              ? Container(
-                                  child: Text(
-                                    warningMessage,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10,
-                                        color: ColorConstants.primary_white),
-                                  ),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 3),
-                                  decoration: BoxDecoration(
-                                      color: containerColor,
-                                      borderRadius: BorderRadius.circular(5)),
-                                )
-                              : SizedBox()
-                        ],
-                      ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        value.studentDetailModel?.student?.warningStatus != 0
+                            ? Container(
+                                child: Text(
+                                  warningMessage,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10,
+                                      color: ColorConstants.primary_white),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 3),
+                                decoration: BoxDecoration(
+                                    color: containerColor,
+                                    borderRadius: BorderRadius.circular(5)),
+                              )
+                            : SizedBox()
+                      ],
                     ),
-                    InkWell(
-                      splashColor: Colors.transparent,
+                  ),
+                  InkWell(
+                    splashColor: Colors.transparent,
+                    onTap: () {
+                      // showCustomSnackbar(context,
+                      //     "You don't have any notifications at the moment.");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NotificationPage(),
+                          ));
+                    },
+                    child: Stack(
+                      children: [
+                        Icon(
+                          Icons.notifications,
+                          size: 30,
+                          // color: ColorConstants.dark_red,
+                        ),
+                        Positioned(
+                            top: MediaQuery.of(context).size.height * .001,
+                            right: MediaQuery.of(context).size.height * .005,
+                            child: CircleAvatar(
+                              radius: 5,
+                              backgroundColor: ColorConstants.dark_red,
+                              child: Center(
+                                child: Text(
+                                    style: TextStyle(
+                                        fontSize:
+                                            MediaQuery.of(context).size.height *
+                                                .008,
+                                        color: ColorConstants.primary_white),
+                                    "${context.watch<HomepageController>().notifications.length}"),
+                              ),
+                            ))
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              if (prov?.profileCompletionPercentage != "100")
+                FinishSetupCard(
+                  percent: prov?.profileCompletionPercentage ?? "0",
+                ),
+              SizedBox(height: 20),
+              if (imageController?[0].homeScreenImages.isNotEmpty == true)
+                Consumer<CarousalImageController>(
+                  builder: (context, value, child) => ImageSlider(
+                    imageList: value.carousalModels![0].homeScreenImages,
+                  ),
+                ),
+              SizedBox(height: 30),
+              buildRowCards(
+                context,
+                [
+                  CustomCard(
                       onTap: () {
                         showCustomSnackbar(context,
-                            "You don't have any notifications at the moment.");
+                            "At this time, we are unable to accept online payments.");
                       },
-                      child: Icon(
-                        Icons.notification_important,
-                        color: ColorConstants.dark_red,
-                      ),
-                    )
-                  ],
-                ),
-                if (prov?.profileCompletionPercentage != "100")
-                  FinishSetupCard(
-                    percent: prov?.profileCompletionPercentage ?? "0",
-                  ),
-                SizedBox(height: 20),
-                if (imageController?[0].homeScreenImages.isNotEmpty == true)
-                  ImageSlider(
-                    imageList: imageController![0].homeScreenImages,
+                      image: ImageConstants.fee_payments,
+                      heading: "Fee Payments",
+                      subtitle: "Pay your fees easily."),
+                  CustomCard(
+                    onTap: () =>
+                        Navigator.pushNamed(context, "/payment_history"),
+                    image: ImageConstants.payment_history,
+                    heading: "Payment History",
+                    subtitle: "View Transactions.",
                   )
-                else
-                  Center(child: CircularProgressIndicator()),
-                SizedBox(height: 30),
-                buildRowCards(
-                  context,
-                  [
-                    CustomCard(
-                        onTap: () {
+                ],
+              ),
+              const SizedBox(height: 15),
+              buildRowCards(
+                context,
+                [
+                  CustomCard(
+                      onTap: () {
+                        if (prov?.profileCompletionPercentage != "100") {
                           showCustomSnackbar(context,
-                              "At this time, we are unable to accept online payments.");
-                        },
-                        image: ImageConstants.fee_payments,
-                        heading: "Fee Payments",
-                        subtitle: "Pay your fees easily."),
-                    CustomCard(
-                      onTap: () =>
-                          Navigator.pushNamed(context, "/payment_history"),
-                      image: ImageConstants.payment_history,
-                      heading: "Payment History",
-                      subtitle: "View Transactions.",
-                    )
-                  ],
-                ),
-                const SizedBox(height: 15),
-                buildRowCards(
-                  context,
-                  [
-                    CustomCard(
-                        onTap: () {
-                          if (prov?.profileCompletionPercentage != "100") {
-                            showCustomSnackbar(context,
-                                "Complete your profile for full access.");
-                          } else if (prov!.isBlocked == true) {
-                            showCustomSnackbar(
-                                context, "Complete your payment to gain entry");
-                          } else {
-                            showBottomSheet(context);
-                          }
-                        },
-                        image: ImageConstants.maintenance,
-                        heading: "Maintenance",
-                        subtitle: "Report issue easily."),
-                    CustomCard(
-                      onTap: () => Navigator.pushNamed(context, "/raised"),
-                      image: ImageConstants.raisedtickets,
-                      heading: "Raised Tickets",
-                      subtitle: "Track your requests.",
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                )
-              ],
-            ),
+                              "Complete your profile for full access.");
+                        } else if (prov!.isBlocked == true) {
+                          showCustomSnackbar(
+                              context, "Complete your payment to gain entry");
+                        } else {
+                          showBottomSheet(context);
+                        }
+                      },
+                      image: ImageConstants.maintenance,
+                      heading: "Maintenance",
+                      subtitle: "Report issue easily."),
+                  CustomCard(
+                    onTap: () => Navigator.pushNamed(context, "/raised"),
+                    image: ImageConstants.raisedtickets,
+                    heading: "Raised Tickets",
+                    subtitle: "Track your requests.",
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              )
+            ],
           ),
         ),
       ),

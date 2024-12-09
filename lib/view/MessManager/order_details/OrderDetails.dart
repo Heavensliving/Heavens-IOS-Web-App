@@ -76,10 +76,17 @@ class _OrderDetailsState extends State<OrderDetails> {
             child: Icon(Icons.arrow_back)),
       ),
       body: groupedList.isEmpty
-          ? Center(
-              child: Text(
-                "At this moment, no orders have been placed.",
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
+          ? Padding(
+              padding: const EdgeInsets.all(15),
+              child: Center(
+                child: Text(
+                  textAlign: TextAlign.center,
+                  "At this moment, no orders have been placed.",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17,
+                      color: ColorConstants.primary_black.withOpacity(.5)),
+                ),
               ),
             )
           : Consumer<MessController>(

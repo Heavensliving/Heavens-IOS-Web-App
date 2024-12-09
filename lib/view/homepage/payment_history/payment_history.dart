@@ -40,7 +40,10 @@ class _PaymentHistoryState extends State<PaymentHistory> {
             ? Center(
                 child: Text(
                 "No payment has been made.",
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 18,
+                    color: ColorConstants.primary_black.withOpacity(.5)),
               ))
             : ListView.separated(
                 itemBuilder: (context, index) {

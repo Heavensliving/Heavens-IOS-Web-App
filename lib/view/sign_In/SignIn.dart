@@ -79,13 +79,15 @@ class _SigninState extends State<Signin> {
                         controller: EmailController,
                         hintText: "Enter Email",
                         validator: (String? value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'Please enter the email address';
                           }
-                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                              .hasMatch(value.trim())) {
                             return "Enter a valid email address";
                           }
-                          String trimmedValue = value.replaceAll(' ', '');
+
+                          String trimmedValue = value.trim();
                           if (trimmedValue.isEmpty) {
                             return 'Text cannot be just spaces';
                           }

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/homepage_controller/HomepageController.dart';
+import 'package:heavens_students/core/constants/constants.dart';
 import 'package:heavens_students/view/homepage/raised_tickets/RaisedTicketCards.dart';
 import 'package:provider/provider.dart';
 
@@ -35,8 +36,11 @@ class _RaisedTicketsState extends State<RaisedTickets> {
       body: provider.nothing == true
           ? Center(
               child: Text(
-                "No tickets are raised!",
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
+                "No tickets are raised !",
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 18,
+                    color: ColorConstants.primary_black.withOpacity(.5)),
               ),
             )
           : SingleChildScrollView(

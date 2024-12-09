@@ -171,134 +171,10 @@ class _CustomMessMangerCardState extends State<CustomMessMangerCard> {
   }
 
   Widget buildFutureStatus(BuildContext context, MessController provider) {
-    if (widget.status == null) {
-      return Row(
-        children: [
-          InkWell(
-            onTap: () {
-              provider.postAddOns(
-                context,
-                widget.meals,
-                [],
-                "false",
-                widget.date,
-              );
-              provider.getMealAvailability(widget.date, widget.meals);
-            },
-            child: const CircleAvatar(
-              radius: 21,
-              backgroundColor: Colors.red,
-              child: CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.close,
-                  color: Colors.red,
-                  size: 20,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 20),
-          InkWell(
-            onTap: () {
-              // showDialog(
-              //   context: context,
-              //   builder: (context) => AlertDialog(
-              //     title: Text("Confrim"),
-              //     content: Text("Are you sure you want to delete this order?"),
-              //     actions: [
-              //       TextButton(
-              //         onPressed: () {
-              //           // Navigator.of(context).pop();
-              //         },
-              //         child: Text("Cancel"),
-              //       ),
-              //       TextButton(
-              //         onPressed: () {
-              //           // Navigator.of(context).pop();
-              //           // ScaffoldMessenger.of(context)
-              //           //     .showSnackBar(
-              //           //   SnackBar(
-              //           //       content: Text(
-              //           //           "deleted")),
-              //           // );
-              //         },
-              //         child: Text("Delete"),
-              //       ),
-              //     ],
-              //   ),
-              // );
-              provider.postAddOns(
-                context,
-                widget.meals,
-                [],
-                "true",
-                widget.date,
-              );
-              provider.getMealAvailability(widget.date, widget.meals);
-              provider.total.clear();
-              provider.cumulativeTotal = 0;
-            },
-            child: const CircleAvatar(
-              radius: 21,
-              backgroundColor: Colors.green,
-              child: CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.check,
-                  color: Colors.green,
-                  size: 20,
-                ),
-              ),
-            ),
-          ),
-        ],
-      );
-    } else if (widget.status == "Booked" && widget.addOns == "true") {
-      return InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                final selectedDate =
-                    DateFormat('MMM d, yyyy').parse(widget.date);
-                final selectedDayOfWeek =
-                    DateFormat('EEEE').format(selectedDate);
+    final now = DateTime.now();
+    final currentHour = now.hour;
 
-                final dayMenu = provider.menuItemsModel?.firstWhere(
-                  (menu) => menu.dayOfWeek == selectedDayOfWeek,
-                  orElse: () => MenuItemModel(
-                      dayOfWeek: selectedDayOfWeek,
-                      breakfast: [],
-                      lunch: [],
-                      dinner: []),
-                );
-
-                final menuItems = widget.meals == "Breakfast"
-                    ? dayMenu?.breakfast ?? []
-                    : widget.meals == "Lunch"
-                        ? dayMenu?.lunch ?? []
-                        : dayMenu?.dinner ?? [];
-                return QrcodePage(
-                  bookingStatus: widget.bookingStatus ?? "",
-                  isAddons: false,
-                  bookingId: widget.orderId ?? "",
-                  foodItems: menuItems,
-                  mealType: widget.meals,
-                );
-              },
-            ),
-          );
-        },
-        child: QrImageView(
-          data: widget.orderId ?? "",
-          size: 50,
-        ),
-      );
-    } else {
+    if (currentHour == 23) {
       return const Text(
         "Cancelled",
         style: TextStyle(
@@ -309,6 +185,119 @@ class _CustomMessMangerCardState extends State<CustomMessMangerCard> {
           fontWeight: FontWeight.w500,
         ),
       );
+    } else {
+      if (widget.status == null) {
+        return Row(
+          children: [
+            InkWell(
+              onTap: () {
+                provider.postAddOns(
+                  context,
+                  widget.meals,
+                  [],
+                  "false",
+                  widget.date,
+                );
+                provider.getMealAvailability(widget.date, widget.meals);
+              },
+              child: const CircleAvatar(
+                radius: 21,
+                backgroundColor: Colors.red,
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Colors.white,
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.red,
+                    size: 20,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 20),
+            InkWell(
+              onTap: () {
+                provider.postAddOns(
+                  context,
+                  widget.meals,
+                  [],
+                  "true",
+                  widget.date,
+                );
+                provider.getMealAvailability(widget.date, widget.meals);
+                provider.total.clear();
+                provider.cumulativeTotal = 0;
+              },
+              child: const CircleAvatar(
+                radius: 21,
+                backgroundColor: Colors.green,
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Colors.white,
+                  child: Icon(
+                    Icons.check,
+                    color: Colors.green,
+                    size: 20,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      } else if (widget.status == "Booked" && widget.addOns == "true") {
+        return InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  final selectedDate =
+                      DateFormat('MMM d, yyyy').parse(widget.date);
+                  final selectedDayOfWeek =
+                      DateFormat('EEEE').format(selectedDate);
+
+                  final dayMenu = provider.menuItemsModel?.firstWhere(
+                    (menu) => menu.dayOfWeek == selectedDayOfWeek,
+                    orElse: () => MenuItemModel(
+                        dayOfWeek: selectedDayOfWeek,
+                        breakfast: [],
+                        lunch: [],
+                        dinner: []),
+                  );
+
+                  final menuItems = widget.meals == "Breakfast"
+                      ? dayMenu?.breakfast ?? []
+                      : widget.meals == "Lunch"
+                          ? dayMenu?.lunch ?? []
+                          : dayMenu?.dinner ?? [];
+                  return QrcodePage(
+                    bookingStatus: widget.bookingStatus ?? "",
+                    isAddons: false,
+                    bookingId: widget.orderId ?? "",
+                    foodItems: menuItems,
+                    mealType: widget.meals,
+                  );
+                },
+              ),
+            );
+          },
+          child: QrImageView(
+            data: widget.orderId ?? "",
+            size: 50,
+          ),
+        );
+      } else {
+        return const Text(
+          "Cancelled",
+          style: TextStyle(
+            decoration: TextDecoration.lineThrough,
+            decorationColor: Colors.red,
+            color: Colors.red,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        );
+      }
     }
   }
 

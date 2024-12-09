@@ -20,9 +20,9 @@ class _ImageSliderState extends State<ImageSlider> {
 
   @override
   void initState() {
-    log("image list--${widget.imageList}");
+    log("image list--${widget.imageList.length}");
     super.initState();
-    discountOffers = widget.imageList; // Initialize here
+    discountOffers = widget.imageList;
     timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
       if (selectedPage < discountOffers.length - 1) {
         selectedPage++;
@@ -64,7 +64,7 @@ class _ImageSliderState extends State<ImageSlider> {
           ),
         ),
         SizedBox(height: 10),
-        widget.isCafe == true
+        widget.isCafe == true || widget.imageList.length == 1
             ? SizedBox()
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
