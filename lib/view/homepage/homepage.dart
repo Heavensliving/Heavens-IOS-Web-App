@@ -34,13 +34,37 @@ class _HomepageState extends State<Homepage> {
 
   Future<void> loadStudentData() async {
     _networkController = NetworkController();
+
     final loginController = context.read<LoginController>();
+
+    // Check if the widget is still mounted before proceeding
+    if (!mounted) return;
+
     await loginController.getStudentDetail(context);
+
+    // Check for mounted again after each await
+    if (!mounted) return;
+
     await context.read<CarousalImageController>().getCarousalImages();
 
+   
+    if (!mounted) return;
+
     context.read<HomepageController>().getRaisedTickets();
+
+   
+    if (!mounted) return;
+
     context.read<CafeController>().getCafeItems();
+
+    // Check for mounted again
+    if (!mounted) return;
+
     context.read<CafeController>().getCategoryName();
+
+    // Check for mounted again
+    if (!mounted) return;
+
     context.read<HomepageController>().getFeesDetails();
   }
 
@@ -199,22 +223,31 @@ class _HomepageState extends State<Homepage> {
                           size: 30,
                           // color: ColorConstants.dark_red,
                         ),
-                        Positioned(
-                            top: MediaQuery.of(context).size.height * .001,
-                            right: MediaQuery.of(context).size.height * .005,
-                            child: CircleAvatar(
-                              radius: 5,
-                              backgroundColor: ColorConstants.dark_red,
-                              child: Center(
-                                child: Text(
-                                    style: TextStyle(
-                                        fontSize:
-                                            MediaQuery.of(context).size.height *
+                        context
+                                    .watch<HomepageController>()
+                                    .notifications
+                                    .length ==
+                                0
+                            ? SizedBox()
+                            : Positioned(
+                                top: MediaQuery.of(context).size.height * .001,
+                                right:
+                                    MediaQuery.of(context).size.height * .005,
+                                child: CircleAvatar(
+                                  radius: 5,
+                                  backgroundColor: ColorConstants.dark_red,
+                                  child: Center(
+                                    child: Text(
+                                        style: TextStyle(
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
                                                 .008,
-                                        color: ColorConstants.primary_white),
-                                    "${context.watch<HomepageController>().notifications.length}"),
-                              ),
-                            ))
+                                            color:
+                                                ColorConstants.primary_white),
+                                        "${context.watch<HomepageController>().notifications.length}"),
+                                  ),
+                                ))
                       ],
                     ),
                   )

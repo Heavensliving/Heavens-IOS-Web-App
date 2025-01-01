@@ -72,7 +72,9 @@ class _ProfilescreenState extends State<Profilescreen> {
   }
 
   Widget buildProfileHeader(PicController picController, dynamic student) {
+    log(" name -----${student?.name ?? name ?? ""}");
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Stack(
           children: [
@@ -114,17 +116,23 @@ class _ProfilescreenState extends State<Profilescreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              student?.name ?? name ?? "",
+              overflow: TextOverflow.ellipsis, maxLines: 1,
+              "${student.name ?? name ?? ""}",
+              // "sxnjs",
               style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 18,
               ),
             ),
+            // SizedBox(
+            //   height: 100,
+            // ),
             Text(
               student?.email ?? email ?? "",
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 14,
+                overflow: TextOverflow.ellipsis,
                 color: ColorConstants.primary_black.withOpacity(.5),
               ),
             ),
