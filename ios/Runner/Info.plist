@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>This app requires access to your photo library to add and update your profile picture and verifying your address.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires access to your camera for uploading profile picture and address proof.</string>
 </dict>
 </plist>
