@@ -363,8 +363,6 @@ class _GeneralInformationState extends State<GeneralInformation> {
                           context
                               .read<LoginController>()
                               .getStudentDetail(context);
-
-                         
                         }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
