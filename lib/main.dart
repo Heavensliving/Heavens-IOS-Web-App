@@ -42,9 +42,9 @@ class _HeavensStudentState extends State<HeavensStudent> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => LoginController()),
+        ChangeNotifierProvider(create: (_) => LoginController()),
+        ChangeNotifierProvider(create: (_) => ProfileController()),
         ChangeNotifierProvider(create: (context) => Otherfunctions()),
-        ChangeNotifierProvider(create: (context) => ProfileController()),
         ChangeNotifierProvider(create: (context) => MessController()),
         ChangeNotifierProvider(create: (context) => HomepageController()),
         ChangeNotifierProvider(create: (context) => PicController()),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+// import 'dart:html' as html;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heavens_students/controller/login_controller/LoginController.dart';
@@ -333,6 +334,11 @@ class ProfileController with ChangeNotifier {
     final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       if (isFrontImage) {
+        // if (kIsWeb) {
+        //   frontImage = Image.network(pickedFile.path);
+        // } else {
+        //   frontImage = Image.file(File(pickedFile.path));
+        // }
         frontImage = File(pickedFile.path);
       } else {
         backImage = File(pickedFile.path);
@@ -340,6 +346,40 @@ class ProfileController with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // Future<void> pickImage(
+  //   ImageSource source,
+  //   bool isFrontImage,
+  // ) async {
+  //   final pickedFile = await _picker.pickImage(source: source);
+
+  //   if (pickedFile != null) {
+  //     if (kIsWeb) {
+
+  //       final reader = html.FileReader();
+  //       reader.readAsDataUrl(pickedFile);
+
+  //       reader.onLoadEnd.listen((e) {
+  //         final imageUrl = reader.result as String;
+
+  //         if (isFrontImage) {
+  //           frontImage = Image.network(imageUrl);
+  //         } else {
+  //           backImage = Image.network(imageUrl);
+  //         }
+
+  //         notifyListeners();
+  //       });
+  //     } else {
+  //       if (isFrontImage) {
+  //         frontImage = File(pickedFile.path);
+  //       } else {
+  //         backImage = File(pickedFile.path);
+  //       }
+  //       notifyListeners();
+  //     }
+  //   }
+  // }
 
   logout() {
     frontImage = null;

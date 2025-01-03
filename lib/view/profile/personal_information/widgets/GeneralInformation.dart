@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/login_controller/LoginController.dart';
 import 'package:heavens_students/controller/profile_controller/ProfileController.dart';
 import 'package:heavens_students/core/constants/constants.dart';
+import 'package:heavens_students/core/constants/custom_scafold.dart';
 import 'package:heavens_students/core/widgets/CustomButton.dart';
 import 'package:heavens_students/core/widgets/CustomTextformField.dart';
 import 'package:heavens_students/view/bottomnavigation/bottomnavigation.dart';
@@ -49,13 +50,11 @@ class _GeneralInformationState extends State<GeneralInformation> {
   Widget build(BuildContext context) {
     // var prov = context.read<LoginController>().studentDetailModel?.student;
     var provider = context.watch<ProfileController>();
-    final frontImageSize =
-        provider.frontImage?.lengthSync() ?? 0; // Size in bytes
-    final backImageSize =
-        provider.backImage?.lengthSync() ?? 0; // Size in bytes
+    final frontImageSize = provider.frontImage?.lengthSync() ?? 0;
+    final backImageSize = provider.backImage?.lengthSync() ?? 0;
     log("back image sized---$backImageSize");
     log("front image sized---$frontImageSize");
-    // Check if images are less than or equal to 400 KB
+
     const maxSizeInBytes = 400 * 1024;
     var login_controller =
         context.watch<LoginController>().studentDetailModel?.student;
@@ -141,120 +140,163 @@ class _GeneralInformationState extends State<GeneralInformation> {
                   ),
                   Text(
                     "Maximum File Size:400 KB",
-                    style: TextStyle(color: Colors.red, fontSize: 10),
+                    style: TextStyle(
+                        color: Colors.red.withOpacity(.8), fontSize: 10),
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   Consumer<ProfileController>(
-                    builder: (context, provider, child) => Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                if (login_controller.adharFrontImage == "") {
-                                  provider.showOptions(context, true);
-                                }
-                                return;
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                height:
-                                    MediaQuery.of(context).size.height * .14,
-                                width: MediaQuery.of(context).size.width * .4,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: ColorConstants.primary_black
-                                        .withOpacity(.3),
+                    builder: (context, provider, child) {
+                      log("null check---${login_controller.adharBackImage}");
+                      log("null check2---${provider.frontImage}");
+                      log("profile pic---${login_controller.photo}");
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  if (login_controller.adharFrontImage == "" ||
+                                      login_controller.adharFrontImage ==
+                                          null) {
+                                    provider.showOptions(context, true);
+                                  }
+                                  return;
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  height:
+                                      MediaQuery.of(context).size.height * .14,
+                                  width: MediaQuery.of(context).size.width * .4,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: ColorConstants.primary_black
+                                          .withOpacity(.3),
+                                    ),
                                   ),
+                                  child: login_controller.adharFrontImage ==
+                                          null
+                                      ? Container(
+                                          child: Center(
+                                              child: Text(
+                                            "No image added",
+                                            style: TextStyle(
+                                                color: ColorConstants
+                                                    .primary_black
+                                                    .withOpacity(.5),
+                                                fontSize: 15),
+                                          )),
+                                        )
+                                      : provider.frontImage == null &&
+                                              login_controller
+                                                      .adharFrontImage ==
+                                                  ""
+                                          ? Icon(
+                                              Icons.add_a_photo_outlined,
+                                              size: 30,
+                                              color: ColorConstants
+                                                  .primary_black
+                                                  .withOpacity(.5),
+                                            )
+                                          : login_controller.adharFrontImage !=
+                                                  ""
+                                              ? Image.network(
+                                                  login_controller
+                                                      .adharFrontImage!,
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : Image.file(
+                                                  provider.frontImage!,
+                                                  fit: BoxFit.cover,
+                                                ),
                                 ),
-                                child: provider.frontImage == null &&
-                                        login_controller.adharFrontImage == ""
-                                    ? Icon(
-                                        Icons.add_a_photo_outlined,
-                                        size: 30,
-                                        color: ColorConstants.primary_black
-                                            .withOpacity(.5),
-                                      )
-                                    : login_controller.adharFrontImage != ""
-                                        ? Image.network(
-                                            login_controller.adharFrontImage!,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : Image.file(
-                                            provider.frontImage!,
-                                            fit: BoxFit.cover,
-                                          ),
                               ),
-                            ),
-                            Text(
-                              "Front page",
-                              style: TextStyle(
-                                  color: ColorConstants.primary_black
-                                      .withOpacity(.5),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15),
-                            ),
-                          ],
-                        ),
-                        SizedBox(width: 10),
-                        Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                if (login_controller.adharBackImage == "") {
-                                  provider.showOptions(context, false);
-                                }
+                              Text(
+                                "Front page",
+                                style: TextStyle(
+                                    color: ColorConstants.primary_black
+                                        .withOpacity(.5),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 15),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 10),
+                          Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  if (login_controller.adharBackImage == "" ||
+                                      login_controller.adharBackImage == null) {
+                                    provider.showOptions(context, false);
+                                  }
 
-                                return;
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 5),
-                                height:
-                                    MediaQuery.of(context).size.height * .14,
-                                width: MediaQuery.of(context).size.width * .4,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: ColorConstants.primary_black
-                                        .withOpacity(.3),
+                                  return;
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 5),
+                                  height:
+                                      MediaQuery.of(context).size.height * .14,
+                                  width: MediaQuery.of(context).size.width * .4,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: ColorConstants.primary_black
+                                          .withOpacity(.3),
+                                    ),
                                   ),
+                                  child: login_controller.adharBackImage == null
+                                      ? Container(
+                                          child: Center(
+                                              child: Text(
+                                            "No image added",
+                                            style: TextStyle(
+                                                color: ColorConstants
+                                                    .primary_black
+                                                    .withOpacity(.5),
+                                                fontSize: 15),
+                                          )),
+                                        )
+                                      : provider.backImage == null &&
+                                              login_controller.adharBackImage ==
+                                                  ""
+                                          ? Icon(
+                                              Icons.add_a_photo_outlined,
+                                              size: 30,
+                                              color: ColorConstants
+                                                  .primary_black
+                                                  .withOpacity(.5),
+                                            )
+                                          : login_controller.adharBackImage !=
+                                                  ""
+                                              ? Image.network(
+                                                  login_controller
+                                                      .adharBackImage!,
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : Image.file(
+                                                  provider.backImage!,
+                                                  fit: BoxFit.cover,
+                                                ),
                                 ),
-                                child: provider.backImage == null &&
-                                        login_controller.adharBackImage == ""
-                                    ? Icon(
-                                        Icons.add_a_photo_outlined,
-                                        size: 30,
-                                        color: ColorConstants.primary_black
-                                            .withOpacity(.5),
-                                      )
-                                    : login_controller.adharBackImage != ""
-                                        ? Image.network(
-                                            login_controller.adharBackImage!,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : Image.file(
-                                            provider.backImage!,
-                                            fit: BoxFit.cover,
-                                          ),
                               ),
-                            ),
-                            Text(
-                              "Back page",
-                              style: TextStyle(
-                                  color: ColorConstants.primary_black
-                                      .withOpacity(.5),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                              Text(
+                                "Back page",
+                                style: TextStyle(
+                                    color: ColorConstants.primary_black
+                                        .withOpacity(.5),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 15),
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),
@@ -277,14 +319,32 @@ class _GeneralInformationState extends State<GeneralInformation> {
                           ),
                         ),
                   onTap: () async {
-                    if (login_controller.profileCompletionPercentage == "100") {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              BottomNavigation(initialIndex: 4),
-                        ),
-                      );
+                    if (login_controller.profileCompletionPercentage == "90" ||
+                        login_controller.profileCompletionPercentage == "100") {
+                      if (login_controller.photo == "" &&
+                          login_controller.profileCompletionPercentage ==
+                              "90") {
+                        customSnackBar(
+                            message: "Add profile picture",
+                            context: context,
+                            backgroundColor:
+                                ColorConstants.primary_black.withOpacity(.5));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                BottomNavigation(initialIndex: 4),
+                          ),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                BottomNavigation(initialIndex: 4),
+                          ),
+                        );
+                      }
                     } else {
                       if (formkey.currentState!.validate()) {
                         log("back image sized---$backImageSize");
@@ -351,18 +411,34 @@ class _GeneralInformationState extends State<GeneralInformation> {
                         } else {
                           var phone = year_controller.text;
                           int year = int.parse(phone);
-                          await provider.addGeneralDetails(
-                            clgName_controller.text,
-                            course_controller.text,
-                            year,
-                            "100",
-                            context,
-                            provider.frontImage,
-                            provider.backImage,
-                          );
-                          context
-                              .read<LoginController>()
-                              .getStudentDetail(context);
+                          if (login_controller.profileCompletionPercentage ==
+                              "20") {
+                            await provider.addGeneralDetails(
+                              clgName_controller.text,
+                              course_controller.text,
+                              year,
+                              "100",
+                              context,
+                              provider.frontImage,
+                              provider.backImage,
+                            );
+                            context
+                                .read<LoginController>()
+                                .getStudentDetail(context);
+                          } else {
+                            await provider.addGeneralDetails(
+                              clgName_controller.text,
+                              course_controller.text,
+                              year,
+                              "90",
+                              context,
+                              provider.frontImage,
+                              provider.backImage,
+                            );
+                            context
+                                .read<LoginController>()
+                                .getStudentDetail(context);
+                          }
                         }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
