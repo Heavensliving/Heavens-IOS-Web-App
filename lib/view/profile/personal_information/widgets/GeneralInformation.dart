@@ -159,8 +159,9 @@ class _GeneralInformationState extends State<GeneralInformation> {
                               InkWell(
                                 onTap: () {
                                   if (login_controller.adharFrontImage == "" ||
-                                      login_controller.adharFrontImage ==
-                                          null) {
+                                      login_controller
+                                              .profileCompletionPercentage !=
+                                          "100") {
                                     provider.showOptions(context, true);
                                   }
                                   return;
@@ -177,41 +178,27 @@ class _GeneralInformationState extends State<GeneralInformation> {
                                           .withOpacity(.3),
                                     ),
                                   ),
-                                  child: login_controller.adharFrontImage ==
-                                          null
-                                      ? Container(
-                                          child: Center(
-                                              child: Text(
-                                            "No image added",
-                                            style: TextStyle(
-                                                color: ColorConstants
-                                                    .primary_black
-                                                    .withOpacity(.5),
-                                                fontSize: 15),
-                                          )),
-                                        )
-                                      : provider.frontImage == null &&
+                                  child: (provider.frontImage == null &&
                                               login_controller
                                                       .adharFrontImage ==
-                                                  ""
-                                          ? Icon(
-                                              Icons.add_a_photo_outlined,
-                                              size: 30,
-                                              color: ColorConstants
-                                                  .primary_black
-                                                  .withOpacity(.5),
+                                                  "") ||
+                                          login_controller.adharBackImage ==
+                                              null
+                                      ? Icon(
+                                          Icons.add_a_photo_outlined,
+                                          size: 30,
+                                          color: ColorConstants.primary_black
+                                              .withOpacity(.5),
+                                        )
+                                      : login_controller.adharFrontImage != ""
+                                          ? Image.network(
+                                              login_controller.adharFrontImage!,
+                                              fit: BoxFit.cover,
                                             )
-                                          : login_controller.adharFrontImage !=
-                                                  ""
-                                              ? Image.network(
-                                                  login_controller
-                                                      .adharFrontImage!,
-                                                  fit: BoxFit.cover,
-                                                )
-                                              : Image.file(
-                                                  provider.frontImage!,
-                                                  fit: BoxFit.cover,
-                                                ),
+                                          : Image.file(
+                                              provider.frontImage!,
+                                              fit: BoxFit.cover,
+                                            ),
                                 ),
                               ),
                               Text(
@@ -230,7 +217,9 @@ class _GeneralInformationState extends State<GeneralInformation> {
                               InkWell(
                                 onTap: () {
                                   if (login_controller.adharBackImage == "" ||
-                                      login_controller.adharBackImage == null) {
+                                      login_controller
+                                              .profileCompletionPercentage !=
+                                          "100") {
                                     provider.showOptions(context, false);
                                   }
 
@@ -249,39 +238,27 @@ class _GeneralInformationState extends State<GeneralInformation> {
                                           .withOpacity(.3),
                                     ),
                                   ),
-                                  child: login_controller.adharBackImage == null
-                                      ? Container(
-                                          child: Center(
-                                              child: Text(
-                                            "No image added",
-                                            style: TextStyle(
-                                                color: ColorConstants
-                                                    .primary_black
-                                                    .withOpacity(.5),
-                                                fontSize: 15),
-                                          )),
-                                        )
-                                      : provider.backImage == null &&
+                                  child: (provider.backImage == null &&
                                               login_controller.adharBackImage ==
-                                                  ""
-                                          ? Icon(
-                                              Icons.add_a_photo_outlined,
-                                              size: 30,
-                                              color: ColorConstants
-                                                  .primary_black
-                                                  .withOpacity(.5),
+                                                  "") ||
+                                          (login_controller.adharBackImage ==
+                                                  null &&
+                                              provider.backImage == null)
+                                      ? Icon(
+                                          Icons.add_a_photo_outlined,
+                                          size: 30,
+                                          color: ColorConstants.primary_black
+                                              .withOpacity(.5),
+                                        )
+                                      : login_controller.adharBackImage != ""
+                                          ? Image.network(
+                                              login_controller.adharBackImage!,
+                                              fit: BoxFit.cover,
                                             )
-                                          : login_controller.adharBackImage !=
-                                                  ""
-                                              ? Image.network(
-                                                  login_controller
-                                                      .adharBackImage!,
-                                                  fit: BoxFit.cover,
-                                                )
-                                              : Image.file(
-                                                  provider.backImage!,
-                                                  fit: BoxFit.cover,
-                                                ),
+                                          : Image.file(
+                                              provider.backImage!,
+                                              fit: BoxFit.cover,
+                                            ),
                                 ),
                               ),
                               Text(

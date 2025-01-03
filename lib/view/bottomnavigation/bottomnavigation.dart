@@ -112,7 +112,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
             ] else if (!isProfileComplete) ...[
               BottomNavigationBarItem(
                 activeIcon: Icon(Icons.person_off),
-                icon: Icon(Icons.person_outline),
+                icon: Icon(Icons.person_rounded),
                 label: "Complete Profile",
               ),
             ] else ...[

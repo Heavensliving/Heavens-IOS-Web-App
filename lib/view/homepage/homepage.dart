@@ -47,12 +47,10 @@ class _HomepageState extends State<Homepage> {
 
     await context.read<CarousalImageController>().getCarousalImages();
 
-   
     if (!mounted) return;
 
     context.read<HomepageController>().getRaisedTickets();
 
-   
     if (!mounted) return;
 
     context.read<CafeController>().getCafeItems();
@@ -377,44 +375,46 @@ class _HomepageState extends State<Homepage> {
                     width: screenWidth * 0.9,
                     child: StatefulBuilder(
                       builder: (context, setState) {
-                        return DropdownButtonFormField<String>(
-                          isExpanded: true,
-                          alignment: AlignmentDirectional
-                              .topEnd, // Align dropdown to the right
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: Colors.grey.shade400,
+                        return Align(
+                          alignment: Alignment
+                              .centerRight, // Aligns the dropdown to the right
+                          child: DropdownButtonFormField<String>(
+                            isExpanded: true,
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Colors.grey.shade400,
+                                ),
                               ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: Colors.black.withOpacity(0.5),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Colors.black.withOpacity(0.5),
+                                ),
                               ),
+                              hintText: "Select the reason",
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 16),
                             ),
-                            hintText: "Select the reason",
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 16),
+                            value: selectedReason,
+                            onTap: () {
+                              FocusScope.of(context).unfocus();
+                            },
+                            onChanged: (String? value) {
+                              setState(() {
+                                selectedReason = value;
+                              });
+                            },
+                            items: reasons.map((reason) {
+                              return DropdownMenuItem<String>(
+                                value: reason,
+                                child: Text(reason),
+                              );
+                            }).toList(),
+                            validator: (value) =>
+                                value == null ? 'Please select a reason' : null,
                           ),
-                          value: selectedReason,
-                          onTap: () {
-                            FocusScope.of(context).unfocus();
-                          },
-                          onChanged: (String? value) {
-                            setState(() {
-                              selectedReason = value;
-                            });
-                          },
-                          items: reasons.map((reason) {
-                            return DropdownMenuItem<String>(
-                              value: reason,
-                              child: Text(reason),
-                            );
-                          }).toList(),
-                          validator: (value) =>
-                              value == null ? 'Please select a reason' : null,
                         );
                       },
                     ),
