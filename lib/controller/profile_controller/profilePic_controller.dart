@@ -99,15 +99,12 @@ class PicController extends ChangeNotifier {
   }
 
   Future<void> pickImage2(ImageSource source, BuildContext context) async {
+    var login_controller =
+        context.read<LoginController>().studentDetailModel?.student;
     final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       profilePic = File(pickedFile.path);
-      if (context
-              .watch<LoginController>()
-              .studentDetailModel
-              ?.student
-              ?.profileCompletionPercentage ==
-          "90") {
+      if (login_controller?.profileCompletionPercentage == "90") {
         await updateProfilePic(profilePic!, context, "100");
       } else {
         await updateProfilePic(profilePic!, context, "20");

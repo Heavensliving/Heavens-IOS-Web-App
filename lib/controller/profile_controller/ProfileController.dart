@@ -4,6 +4,7 @@ import 'dart:io';
 // import 'dart:html' as html;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:heavens_students/controller/login_controller/LoginController.dart';
 import 'package:heavens_students/view/bottomnavigation/bottomnavigation.dart';
 import 'package:http/http.dart' as http;
@@ -215,6 +216,7 @@ class ProfileController with ChangeNotifier {
             builder: (context) => BottomNavigation(initialIndex: 4),
           ),
         );
+        // Navigator.pop(context);
       } else {
         log('Failed to update profile: ${response.statusCode}');
       }

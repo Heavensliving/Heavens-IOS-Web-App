@@ -182,15 +182,20 @@ class _GeneralInformationState extends State<GeneralInformation> {
                                               login_controller
                                                       .adharFrontImage ==
                                                   "") ||
-                                          login_controller.adharBackImage ==
-                                              null
+                                          (login_controller.adharFrontImage ==
+                                                  null &&
+                                              provider.frontImage == null)
                                       ? Icon(
                                           Icons.add_a_photo_outlined,
                                           size: 30,
                                           color: ColorConstants.primary_black
                                               .withOpacity(.5),
                                         )
-                                      : login_controller.adharFrontImage != ""
+                                      : login_controller.adharFrontImage !=
+                                                  "" &&
+                                              login_controller
+                                                      .adharFrontImage !=
+                                                  null
                                           ? Image.network(
                                               login_controller.adharFrontImage!,
                                               fit: BoxFit.cover,
@@ -250,7 +255,9 @@ class _GeneralInformationState extends State<GeneralInformation> {
                                           color: ColorConstants.primary_black
                                               .withOpacity(.5),
                                         )
-                                      : login_controller.adharBackImage != ""
+                                      : login_controller.adharBackImage != "" &&
+                                              login_controller.adharBackImage !=
+                                                  null
                                           ? Image.network(
                                               login_controller.adharBackImage!,
                                               fit: BoxFit.cover,
@@ -296,16 +303,21 @@ class _GeneralInformationState extends State<GeneralInformation> {
                           ),
                         ),
                   onTap: () async {
-                    if (login_controller.profileCompletionPercentage == "90" ||
-                        login_controller.profileCompletionPercentage == "100") {
-                      if (login_controller.photo == "" &&
-                          login_controller.profileCompletionPercentage ==
-                              "90") {
+                    // Ensure profileCompletionPercentage is not null before parsing
+                    if (login_controller.profileCompletionPercentage != null &&
+                        int.parse(login_controller
+                                .profileCompletionPercentage!) >=
+                            90) {
+                      log("pro pic---${login_controller.photo}");
+                      if (login_controller.photo == null ||
+                          login_controller.photo == "") {
+                        log("first check");
                         customSnackBar(
-                            message: "Add profile picture",
-                            context: context,
-                            backgroundColor:
-                                ColorConstants.primary_black.withOpacity(.5));
+                          message: "Add profile picture",
+                          context: context,
+                          backgroundColor:
+                              ColorConstants.primary_black.withOpacity(.5),
+                        );
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -314,6 +326,7 @@ class _GeneralInformationState extends State<GeneralInformation> {
                           ),
                         );
                       } else {
+                        log("second check");
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -323,12 +336,15 @@ class _GeneralInformationState extends State<GeneralInformation> {
                         );
                       }
                     } else {
+                      // Validate the form before proceeding
                       if (formkey.currentState!.validate()) {
-                        log("back image sized---$backImageSize");
-                        log("front image sized---$frontImageSize");
+                        log("back image size---$backImageSize");
+                        log("front image size---$frontImageSize");
 
+                        // Check for front image upload
                         if (provider.frontImage == null &&
-                            login_controller.adharFrontImage == "") {
+                            (login_controller.adharFrontImage == null ||
+                                login_controller.adharFrontImage!.isEmpty)) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor:
@@ -342,8 +358,11 @@ class _GeneralInformationState extends State<GeneralInformation> {
                               ),
                             ),
                           );
-                        } else if (provider.backImage == null &&
-                            login_controller.adharBackImage == "") {
+                        }
+                        // Check for back image upload
+                        else if (provider.backImage == null &&
+                            (login_controller.adharBackImage == null ||
+                                login_controller.adharBackImage!.isEmpty)) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor:
@@ -357,7 +376,9 @@ class _GeneralInformationState extends State<GeneralInformation> {
                               ),
                             ),
                           );
-                        } else if (frontImageSize > maxSizeInBytes) {
+                        }
+                        // Check front image size
+                        else if (frontImageSize > maxSizeInBytes) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor:
@@ -371,7 +392,9 @@ class _GeneralInformationState extends State<GeneralInformation> {
                               ),
                             ),
                           );
-                        } else if (backImageSize > maxSizeInBytes) {
+                        }
+                        // Check back image size
+                        else if (backImageSize > maxSizeInBytes) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor:
@@ -387,35 +410,30 @@ class _GeneralInformationState extends State<GeneralInformation> {
                           );
                         } else {
                           var phone = year_controller.text;
+
+                          // Ensure phone contains a valid integer string
                           int year = int.parse(phone);
-                          if (login_controller.profileCompletionPercentage ==
-                              "20") {
-                            await provider.addGeneralDetails(
-                              clgName_controller.text,
-                              course_controller.text,
-                              year,
-                              "100",
-                              context,
-                              provider.frontImage,
-                              provider.backImage,
-                            );
-                            context
-                                .read<LoginController>()
-                                .getStudentDetail(context);
-                          } else {
-                            await provider.addGeneralDetails(
-                              clgName_controller.text,
-                              course_controller.text,
-                              year,
-                              "90",
-                              context,
-                              provider.frontImage,
-                              provider.backImage,
-                            );
-                            context
-                                .read<LoginController>()
-                                .getStudentDetail(context);
-                          }
+
+                          // Proceed based on whether the photo is uploaded
+                          String completionStatus =
+                              (login_controller.photo != null &&
+                                      login_controller.photo!.isNotEmpty)
+                                  ? "100"
+                                  : "90";
+
+                          await provider.addGeneralDetails(
+                            clgName_controller.text,
+                            course_controller.text,
+                            year,
+                            completionStatus,
+                            context,
+                            provider.frontImage,
+                            provider.backImage,
+                          );
+
+                          context
+                              .read<LoginController>()
+                              .getStudentDetail(context);
                         }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(

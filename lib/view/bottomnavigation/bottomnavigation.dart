@@ -35,7 +35,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
     Profilescreen(),
   ];
 
-  // Restricted screens based on user profile completion and block status
   final List<Widget> restrictedScreens = [
     Homepage(),
     Profilescreen(),
@@ -48,18 +47,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
     bool isProfileComplete = student?.profileCompletionPercentage == "100";
     bool isBlocked = student?.isBlocked == true;
 
-    // Determine which screens to show based on profile completion and block status
-    List<Widget> screenlist;
+    List<Widget> screenlist =
+        isBlocked || !isProfileComplete ? restrictedScreens : allScreens;
 
-    if (isBlocked) {
-      // If blocked, only allow access to Homepage and Profile
-      screenlist = restrictedScreens;
-    } else if (!isProfileComplete) {
-      // If profile is incomplete, show Homepage and Profile
-      screenlist = restrictedScreens;
-    } else {
-      // If both conditions are satisfied, show all screens
-      screenlist = allScreens;
+    if (selectedIndex >= screenlist.length) {
+      selectedIndex = 0;
     }
 
     return WillPopScope(
@@ -102,26 +94,24 @@ class _BottomNavigationState extends State<BottomNavigation> {
               icon: Icon(Icons.home_work_outlined),
               label: "PG",
             ),
-            // Conditional rendering based on user status
-            if (isBlocked) ...[
+            if (isBlocked)
               BottomNavigationBarItem(
                 activeIcon: Icon(Icons.lock),
                 icon: Icon(Icons.lock_outline),
                 label: "Access Blocked",
-              ),
-            ] else if (!isProfileComplete) ...[
+              )
+            else if (!isProfileComplete)
               BottomNavigationBarItem(
                 activeIcon: Icon(Icons.person_off),
                 icon: Icon(Icons.person_rounded),
                 label: "Complete Profile",
-              ),
-            ] else ...[
+              )
+            else
               BottomNavigationBarItem(
                 label: "Mess",
                 activeIcon: Icon(Icons.fastfood),
                 icon: Icon(Icons.fastfood_outlined),
               ),
-            ],
             BottomNavigationBarItem(
               activeIcon: Icon(Icons.local_cafe),
               icon: Icon(Icons.local_cafe_outlined),
