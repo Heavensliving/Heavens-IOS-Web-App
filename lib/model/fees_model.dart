@@ -9,7 +9,7 @@ class FeesModel {
   double advanceBalance;
   String paymentClearedMonthYear;
   DateTime paymentDate;
-  String? waveOff;
+  int? waveOff;
   String? paymentMode;
   String waveOffReason;
   String transactionId;

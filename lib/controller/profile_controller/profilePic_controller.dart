@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:heavens_students/controller/login_controller/LoginController.dart';
 import 'package:http/http.dart' as http;
 import 'package:heavens_students/core/constants/base_url.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PicController extends ChangeNotifier {
@@ -13,7 +15,8 @@ class PicController extends ChangeNotifier {
   bool isLoading = false;
   final ImagePicker _picker = ImagePicker();
 
-  updateProfilePic(File profilePic, BuildContext context) async {
+  updateProfilePic(File profilePic, BuildContext context,
+      String profileCompletionPercentage) async {
     isLoading = true;
     notifyListeners();
 
@@ -37,6 +40,7 @@ class PicController extends ChangeNotifier {
 
       Map<String, dynamic> data = {
         "photo": frontImageUrl,
+        "profileCompletionPercentage": profileCompletionPercentage
       };
 
       log("data---$data");
@@ -98,7 +102,16 @@ class PicController extends ChangeNotifier {
     final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       profilePic = File(pickedFile.path);
-      await updateProfilePic(profilePic!, context);
+      if (context
+              .watch<LoginController>()
+              .studentDetailModel
+              ?.student
+              ?.profileCompletionPercentage ==
+          "90") {
+        await updateProfilePic(profilePic!, context, "100");
+      } else {
+        await updateProfilePic(profilePic!, context, "20");
+      }
     }
   }
 
