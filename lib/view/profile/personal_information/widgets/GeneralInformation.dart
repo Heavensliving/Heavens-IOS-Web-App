@@ -368,6 +368,7 @@ class _GeneralInformationState extends State<GeneralInformation> {
                         }
                         // Check for back image upload
                         else if (provider.backImage == null &&
+                        
                             (login_controller.adharBackImage == null ||
                                 login_controller.adharBackImage!.isEmpty)) {
                           ScaffoldMessenger.of(context).showSnackBar(

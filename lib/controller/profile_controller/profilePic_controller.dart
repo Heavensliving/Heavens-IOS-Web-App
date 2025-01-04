@@ -104,10 +104,21 @@ class PicController extends ChangeNotifier {
     final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       profilePic = File(pickedFile.path);
-      if (login_controller?.profileCompletionPercentage == "90") {
-        await updateProfilePic(profilePic!, context, "100");
-      } else {
-        await updateProfilePic(profilePic!, context, "20");
+      if (login_controller?.profileCompletionPercentage != null) {
+        int profileCompletion =
+            int.parse(login_controller!.profileCompletionPercentage!);
+
+        if (profileCompletion == 90) {
+          await updateProfilePic(profilePic!, context, "100");
+        } else if (profileCompletion == 10 || profileCompletion == 20) {
+          await updateProfilePic(profilePic!, context, "20");
+        } else if (profileCompletion == 100) {
+          await updateProfilePic(profilePic!, context, "100");
+        } else if (profileCompletion > 10 && profileCompletion < 90) {
+          int newProfileCompletion = profileCompletion + 10;
+          await updateProfilePic(
+              profilePic!, context, newProfileCompletion.toString());
+        }
       }
     }
   }
