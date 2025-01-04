@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/login_controller/LoginController.dart';
 import 'package:heavens_students/controller/profile_controller/ProfileController.dart';
@@ -55,7 +55,8 @@ class _GeneralInformationState extends State<GeneralInformation> {
     log("back image sized---$backImageSize");
     log("front image sized---$frontImageSize");
 
-    const maxSizeInBytes = 400 * 1024;
+    const maxSizeInBytes = 1 * 1024 * 1024;
+
     var login_controller =
         context.watch<LoginController>().studentDetailModel?.student;
     log("login_controller?.adharBackImage---${login_controller?.adharFrontImage}");
@@ -139,7 +140,7 @@ class _GeneralInformationState extends State<GeneralInformation> {
                     height: 3,
                   ),
                   Text(
-                    "Maximum File Size:400 KB",
+                    "Maximum File Size 1 MB",
                     style: TextStyle(
                         color: Colors.red.withOpacity(.8), fontSize: 10),
                   ),
@@ -157,55 +158,62 @@ class _GeneralInformationState extends State<GeneralInformation> {
                           Column(
                             children: [
                               InkWell(
-                                onTap: () {
-                                  if (login_controller.adharFrontImage == "" ||
-                                      login_controller
-                                              .profileCompletionPercentage !=
-                                          "100") {
-                                    provider.showOptions(context, true);
-                                  }
-                                  return;
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(5),
-                                  height:
-                                      MediaQuery.of(context).size.height * .14,
-                                  width: MediaQuery.of(context).size.width * .4,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      color: ColorConstants.primary_black
-                                          .withOpacity(.3),
+                                  onTap: () {
+                                    if (login_controller.adharFrontImage ==
+                                            "" ||
+                                        login_controller
+                                                .profileCompletionPercentage !=
+                                            "100") {
+                                      provider.showOptions(context, true);
+                                    }
+                                    return;
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(5),
+                                    height: MediaQuery.of(context).size.height *
+                                        .14,
+                                    width:
+                                        MediaQuery.of(context).size.width * .4,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        color: ColorConstants.primary_black
+                                            .withOpacity(.3),
+                                      ),
                                     ),
-                                  ),
-                                  child: (provider.frontImage == null &&
-                                              login_controller
-                                                      .adharFrontImage ==
-                                                  "") ||
-                                          (login_controller.adharFrontImage ==
-                                                  null &&
-                                              provider.frontImage == null)
-                                      ? Icon(
-                                          Icons.add_a_photo_outlined,
-                                          size: 30,
-                                          color: ColorConstants.primary_black
-                                              .withOpacity(.5),
-                                        )
-                                      : login_controller.adharFrontImage !=
-                                                  "" &&
-                                              login_controller
-                                                      .adharFrontImage !=
-                                                  null
-                                          ? Image.network(
-                                              login_controller.adharFrontImage!,
-                                              fit: BoxFit.cover,
-                                            )
-                                          : Image.file(
-                                              provider.frontImage!,
-                                              fit: BoxFit.cover,
-                                            ),
-                                ),
-                              ),
+                                    child: (provider.frontImage == null &&
+                                                login_controller
+                                                        .adharFrontImage ==
+                                                    "") ||
+                                            (login_controller.adharFrontImage ==
+                                                    null &&
+                                                provider.frontImage == null)
+                                        ? Icon(
+                                            Icons.add_a_photo_outlined,
+                                            size: 30,
+                                            color: ColorConstants.primary_black
+                                                .withOpacity(.5),
+                                          )
+                                        : login_controller.adharFrontImage !=
+                                                    null &&
+                                                login_controller
+                                                    .adharFrontImage!.isNotEmpty
+                                            ? CachedNetworkImage(
+                                                imageUrl: login_controller
+                                                    .adharFrontImage!,
+                                                fit: BoxFit.cover,
+                                                // errorWidget:
+                                                //     (context, url, error) =>
+                                                //         Icon(
+                                                //   Icons.error,
+                                                //   color: Colors.red,
+                                                // ),
+                                              )
+                                            : Image.file(
+                                                provider.frontImage!,
+                                                fit: BoxFit.cover,
+                                              ),
+                                  )),
                               Text(
                                 "Front page",
                                 style: TextStyle(
@@ -258,8 +266,9 @@ class _GeneralInformationState extends State<GeneralInformation> {
                                       : login_controller.adharBackImage != "" &&
                                               login_controller.adharBackImage !=
                                                   null
-                                          ? Image.network(
-                                              login_controller.adharBackImage!,
+                                          ? CachedNetworkImage(
+                                              imageUrl: login_controller
+                                                  .adharBackImage!,
                                               fit: BoxFit.cover,
                                             )
                                           : Image.file(
@@ -303,7 +312,6 @@ class _GeneralInformationState extends State<GeneralInformation> {
                           ),
                         ),
                   onTap: () async {
-                    // Ensure profileCompletionPercentage is not null before parsing
                     if (login_controller.profileCompletionPercentage != null &&
                         int.parse(login_controller
                                 .profileCompletionPercentage!) >=
@@ -341,7 +349,6 @@ class _GeneralInformationState extends State<GeneralInformation> {
                         log("back image size---$backImageSize");
                         log("front image size---$frontImageSize");
 
-                        // Check for front image upload
                         if (provider.frontImage == null &&
                             (login_controller.adharFrontImage == null ||
                                 login_controller.adharFrontImage!.isEmpty)) {
@@ -350,7 +357,7 @@ class _GeneralInformationState extends State<GeneralInformation> {
                               backgroundColor:
                                   const Color.fromARGB(255, 188, 50, 48),
                               content: Text(
-                                "Please upload the front page image",
+                                "Please upload the Aadhar front page image",
                                 style: TextStyle(
                                   color: ColorConstants.primary_white,
                                   fontSize: 16,
@@ -368,7 +375,7 @@ class _GeneralInformationState extends State<GeneralInformation> {
                               backgroundColor:
                                   const Color.fromARGB(255, 188, 50, 48),
                               content: Text(
-                                "Please upload the back page image",
+                                "Please upload the Aadhar back page image.",
                                 style: TextStyle(
                                   color: ColorConstants.primary_white,
                                   fontSize: 16,
@@ -384,7 +391,7 @@ class _GeneralInformationState extends State<GeneralInformation> {
                               backgroundColor:
                                   const Color.fromARGB(255, 188, 50, 48),
                               content: Text(
-                                "Front image size must be less than or equal to 400 KB.",
+                                "Front image size must be less than or equal to 1 MB.",
                                 style: TextStyle(
                                   color: ColorConstants.primary_white,
                                   fontSize: 16,
@@ -400,7 +407,7 @@ class _GeneralInformationState extends State<GeneralInformation> {
                               backgroundColor:
                                   const Color.fromARGB(255, 188, 50, 48),
                               content: Text(
-                                "Back image size must be less than or equal to 400 KB.",
+                                "Back image size must be less than or equal to 1 MB.",
                                 style: TextStyle(
                                   color: ColorConstants.primary_white,
                                   fontSize: 16,
@@ -411,10 +418,8 @@ class _GeneralInformationState extends State<GeneralInformation> {
                         } else {
                           var phone = year_controller.text;
 
-                          // Ensure phone contains a valid integer string
                           int year = int.parse(phone);
 
-                          // Proceed based on whether the photo is uploaded
                           String completionStatus =
                               (login_controller.photo != null &&
                                       login_controller.photo!.isNotEmpty)

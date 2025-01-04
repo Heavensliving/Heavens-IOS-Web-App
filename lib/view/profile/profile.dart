@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/profile_controller/ProfileController.dart';
 import 'package:provider/provider.dart';
@@ -147,10 +148,11 @@ class _ProfilescreenState extends State<Profilescreen> {
       return const NetworkImage(
         "https://example.com/default-profile-pic.png",
       );
-    } else {}
+    }
+
     return localPic != null
         ? FileImage(localPic)
-        : NetworkImage(photoUrl ?? "");
+        : CachedNetworkImageProvider(photoUrl ?? "");
   }
 
   List<Widget> buildProfileCards(BuildContext context) {

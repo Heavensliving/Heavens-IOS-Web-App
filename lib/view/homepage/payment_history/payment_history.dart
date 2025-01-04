@@ -134,7 +134,7 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("Due Date",
+                                  Text("Cleared Month",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 18)),
