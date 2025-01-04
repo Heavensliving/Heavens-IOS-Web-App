@@ -79,7 +79,7 @@ class HomepageController with ChangeNotifier {
     // log("response---${response.body}");
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body); // Decode as List
+      final List<dynamic> data = json.decode(response.body);
       raisedTicketModels =
           data.map((item) => RaisedTicketModel.fromJson(item)).toList();
       log("Successfully fetched raised tickets.");
@@ -90,7 +90,7 @@ class HomepageController with ChangeNotifier {
     }
 
     isLoading = false;
-    notifyListeners(); // Notify listeners after loading is complete
+    notifyListeners();
   }
   // get fees details
 

@@ -157,12 +157,14 @@ class _QrcodePageState extends State<QrcodePage> {
                                 ColorConstants.primary_black.withOpacity(.5)),
                       ),
                       widget.isAddons
-                          ? Text(
-                              "${widget.addonItems}",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.primary_black,
-                                fontWeight: FontWeight.w500,
+                          ? Expanded(
+                              child: Text(
+                                "${widget.addonItems}",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: ColorConstants.primary_black,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             )
                           : Container(
@@ -178,12 +180,14 @@ class _QrcodePageState extends State<QrcodePage> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "${widget.foodItems[index]}",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorConstants.primary_black,
-                                        fontWeight: FontWeight.w500,
+                                    Expanded(
+                                      child: Text(
+                                        "${widget.foodItems[index]}",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: ColorConstants.primary_black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                   ],
