@@ -381,7 +381,7 @@ class _VerticalCardState extends State<VerticalCard> {
           ),
           SizedBox(height: screenWidth * 0.01), // Responsive spacing
           widget.quantity == 0
-              ? SizedBox(height: screenWidth * 0.01)
+              ? SizedBox(height: screenWidth * 0.03)
               : widget.quantity <= widget.lowsctock
                   ? Row(
                       children: [
@@ -402,7 +402,7 @@ class _VerticalCardState extends State<VerticalCard> {
                         )
                       ],
                     )
-                  : SizedBox(height: screenWidth * 0.01),
+                  : SizedBox(height: screenWidth * 0.03),
           SizedBox(height: screenWidth * 0.01),
           widget.quantity == 0
               ? Container(

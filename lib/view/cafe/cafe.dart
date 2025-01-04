@@ -400,6 +400,8 @@ class _CafeState extends State<Cafe> {
                 ? Padding(
                     padding: const EdgeInsets.only(left: 30),
                     child: Container(
+                      // padding: EdgeInsets.symmetric(
+                      //     horizontal: MediaQuery.of(context).size.width * 1),
                       width: MediaQuery.of(context).size.width * 1,
                       child: FloatingActionButton.extended(
                         label: Row(
@@ -414,7 +416,7 @@ class _CafeState extends State<Cafe> {
                               ),
                             ),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width * .38,
+                              width: MediaQuery.of(context).size.width * .27,
                             ),
                             Text(
                               'View Cart >',
