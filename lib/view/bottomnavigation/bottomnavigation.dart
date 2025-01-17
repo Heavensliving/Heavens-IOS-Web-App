@@ -87,6 +87,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
             setState(() {
               selectedIndex = value;
             });
+
+            
           },
           items: [
             BottomNavigationBarItem(
