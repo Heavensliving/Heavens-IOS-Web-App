@@ -32,55 +32,126 @@ class _MessmanagerState extends State<Messmanager> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      initialIndex: 1,
-      length: 3,
-      child: Scaffold(
-        backgroundColor: ColorConstants.primary_white.withOpacity(.8),
-        appBar: AppBar(
-          backgroundColor: ColorConstants.primary_white.withOpacity(.8),
-          centerTitle: true,
-          leading: SizedBox(),
-          title: const Text(
-            "Mess Manager",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          bottom: TabBar(
-            indicatorColor: ColorConstants.dark_red2,
-            indicatorWeight: 3,
-            labelColor: ColorConstants.dark_red2,
-            unselectedLabelColor: ColorConstants.primary_black.withOpacity(.5),
-            tabs: const [
-              Tab(text: "Yesterday"),
-              Tab(text: "Today"),
-              Tab(text: "Tomorrow"),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            buildMealList(context, offsetDays: -1),
-            buildMealList(context, offsetDays: 0),
-            buildMealList(context, offsetDays: 1),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: ColorConstants.dark_red,
-          child: const Icon(Icons.add,
-              size: 32, color: ColorConstants.primary_white),
-          onPressed: () {
-            final messController = context.read<MessController>();
-            messController.addOns.clear();
-            messController.total.clear();
-            messController.cumulativeTotal = 0;
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MealSelectionPage()),
-            );
-          },
-        ),
-      ),
-    );
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final now = DateTime.now();
+    final currentHour = now.hour;
+
+    return currentHour >= 23 || currentHour < 4
+        ? Scaffold(
+            backgroundColor: Colors.white,
+            body: Padding(
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image.asset(
+                        "assets/images/cafe_closed.png",
+                        height: screenHeight * 0.25,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.05),
+                    Text(
+                      "Our mess is unavailable!!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.0),
+                    Text(
+                      "from 11 PM to 4 AM.\nWe look forward to serving you shortly!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        color: ColorConstants.primary_black.withOpacity(.5),
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.03),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorConstants.dark_red2,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(
+                        "Back",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: screenWidth > 600 ? 18 : 16,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        : DefaultTabController(
+            initialIndex: 1,
+            length: 3,
+            child: Scaffold(
+              backgroundColor: ColorConstants.primary_white.withOpacity(.8),
+              appBar: AppBar(
+                backgroundColor: ColorConstants.primary_white.withOpacity(.8),
+                centerTitle: true,
+                leading: SizedBox(),
+                title: const Text(
+                  "Mess Manager",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                bottom: TabBar(
+                  indicatorColor: ColorConstants.dark_red2,
+                  indicatorWeight: 3,
+                  labelColor: ColorConstants.dark_red2,
+                  unselectedLabelColor:
+                      ColorConstants.primary_black.withOpacity(.5),
+                  tabs: const [
+                    Tab(text: "Yesterday"),
+                    Tab(text: "Today"),
+                    Tab(text: "Tomorrow"),
+                  ],
+                ),
+              ),
+              body: TabBarView(
+                children: [
+                  buildMealList(context, offsetDays: -1),
+                  buildMealList(context, offsetDays: 0),
+                  buildMealList(context, offsetDays: 1),
+                ],
+              ),
+              floatingActionButton: FloatingActionButton(
+                backgroundColor: ColorConstants.dark_red,
+                child: const Icon(Icons.add,
+                    size: 32, color: ColorConstants.primary_white),
+                onPressed: () {
+                  final messController = context.read<MessController>();
+                  messController.addOns.clear();
+                  messController.total.clear();
+                  messController.cumulativeTotal = 0;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MealSelectionPage()),
+                  );
+                },
+              ),
+            ),
+          );
   }
 
   Widget buildMealList(BuildContext context, {required int offsetDays}) {

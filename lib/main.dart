@@ -7,12 +7,12 @@ import 'package:heavens_students/controller/homepage_controller/HomepageControll
 import 'package:heavens_students/controller/homepage_controller/carousal_controller.dart';
 import 'package:heavens_students/controller/login_controller/LoginController.dart';
 import 'package:heavens_students/controller/mess_controller/MessController.dart';
+import 'package:heavens_students/controller/notification_controller/notification_controller.dart';
 import 'package:heavens_students/controller/order_controller/order_controller.dart';
 import 'package:heavens_students/controller/other_functions/otherFunctions.dart';
 import 'package:heavens_students/controller/profile_controller/ProfileController.dart';
 import 'package:heavens_students/controller/profile_controller/profilePic_controller.dart';
 import 'package:heavens_students/firebase_options.dart';
-import 'package:heavens_students/view/MessManager/AddOnPage/AddonPage.dart';
 import 'package:heavens_students/view/homepage/homepage.dart';
 import 'package:heavens_students/view/homepage/payment_history/payment_history.dart';
 import 'package:heavens_students/view/homepage/raised_tickets/raised_tickets.dart';
@@ -24,10 +24,14 @@ import 'package:heavens_students/view/sign_In/SignIn.dart';
 import 'package:heavens_students/view/splash_screen/SplashScreen.dart';
 import 'package:provider/provider.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(HeavensStudent());
+  await NotificationController.initializeNotifications();
+
+  runApp(const HeavensStudent());
 }
 
 class HeavensStudent extends StatefulWidget {
@@ -53,16 +57,17 @@ class _HeavensStudentState extends State<HeavensStudent> {
         ChangeNotifierProvider(create: (context) => NetworkController()),
         ChangeNotifierProvider(create: (context) => OrderController()),
         ChangeNotifierProvider(create: (context) => CarousalImageController()),
+        ChangeNotifierProvider(create: (context) => NotificationController()),
       ],
       child: Consumer<NetworkController>(
         builder: (context, networkController, child) {
-          // if (networkController.connectivityResult == ConnectivityResult.none) {
-          //   WidgetsBinding.instance.addPostFrameCallback((_) {
-          //     networkController.handleNavigation(context);
-          //   });
-          // }
+          // Handle network changes and navigation
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            networkController.handleNavigation();
+          });
 
           return MaterialApp(
+            navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
             home: SplashScreen(),
             routes: {
@@ -73,8 +78,6 @@ class _HeavensStudentState extends State<HeavensStudent> {
               '/personal_information': (context) => const PersonalInformation(),
               '/change_password': (context) => const ChangePassword(),
               '/stay_detail': (context) => const StayDetails(),
-              '/mealselection': (context) => MealSelectionPage(),
-              // '/forgotpsd': (context) => ForgotPassword(),
               '/nointernet': (context) => NoInternetScreen(),
             },
           );
