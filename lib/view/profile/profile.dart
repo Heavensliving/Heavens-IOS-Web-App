@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/profile_controller/ProfileController.dart';
@@ -72,25 +73,102 @@ class _ProfilescreenState extends State<Profilescreen> {
     );
   }
 
+  // Widget buildProfileHeader(PicController picController, dynamic student) {
+  //   log(" name -----${student?.name ?? name ?? ""}");
+  //   return Row(
+  //     mainAxisSize: MainAxisSize.min,
+  //     children: [
+  //       Stack(
+  //         children: [
+  //           CircleAvatar(
+  //             backgroundColor: Colors.grey.withOpacity(.2),
+  //             backgroundImage: _getProfileImage(
+  //               student?.photo,
+  //               picController.profilePic,
+  //             ),
+  //             radius: 35,
+  //             child: picController.isLoading
+  //                 ? const CircularProgressIndicator(
+  //                     color: ColorConstants.primary_white,
+  //                   )
+  //                 : const SizedBox(),
+  //           ),
+  //           Positioned(
+  //             right: 0,
+  //             bottom: 1,
+  //             child: InkWell(
+  //               onTap: () {
+  //                 picController.showOptions2(context, true);
+  //               },
+  //               child: const CircleAvatar(
+  //                 radius: 14,
+  //                 child: Icon(
+  //                   Icons.edit,
+  //                   size: 17,
+  //                   color: ColorConstants.primary_white,
+  //                 ),
+  //                 backgroundColor: ColorConstants.dark_red2,
+  //               ),
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //       const SizedBox(width: 10),
+  //       Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Text(
+  //             overflow: TextOverflow.ellipsis, maxLines: 1,
+  //             "${student.name ?? name ?? ""}",
+  //             // "sxnjs",
+  //             style: const TextStyle(
+  //               fontWeight: FontWeight.w500,
+  //               fontSize: 18,
+  //             ),
+  //           ),
+  //           // SizedBox(
+  //           //   height: 100,
+  //           // ),
+  //           Text(
+  //             student?.email ?? email ?? "",
+  //             style: TextStyle(
+  //               fontWeight: FontWeight.w500,
+  //               fontSize: 14,
+  //               overflow: TextOverflow.ellipsis,
+  //               color: ColorConstants.primary_black.withOpacity(.5),
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ],
+  //   );
+  // }
   Widget buildProfileHeader(PicController picController, dynamic student) {
     log(" name -----${student?.name ?? name ?? ""}");
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Stack(
           children: [
-            CircleAvatar(
-              backgroundColor: Colors.grey.withOpacity(.2),
-              backgroundImage: _getProfileImage(
-                student?.photo,
-                picController.profilePic,
+            GestureDetector(
+              onTap: () {
+                _showImageDialog(
+                    context, student?.photo, picController.profilePic);
+              },
+              child: CircleAvatar(
+                backgroundColor: Colors.grey.withOpacity(.2),
+                backgroundImage: _getProfileImage(
+                  student?.photo,
+                  picController.profilePic,
+                ),
+                radius: 35,
+                child: picController.isLoading
+                    ? const CircularProgressIndicator(
+                        color: ColorConstants.primary_white,
+                      )
+                    : const SizedBox(),
               ),
-              radius: 35,
-              child: picController.isLoading
-                  ? const CircularProgressIndicator(
-                      color: ColorConstants.primary_white,
-                    )
-                  : const SizedBox(),
             ),
             Positioned(
               right: 0,
@@ -117,17 +195,14 @@ class _ProfilescreenState extends State<Profilescreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              overflow: TextOverflow.ellipsis, maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
               "${student.name ?? name ?? ""}",
-              // "sxnjs",
               style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 18,
               ),
             ),
-            // SizedBox(
-            //   height: 100,
-            // ),
             Text(
               student?.email ?? email ?? "",
               style: TextStyle(
@@ -140,6 +215,39 @@ class _ProfilescreenState extends State<Profilescreen> {
           ],
         ),
       ],
+    );
+  }
+
+  void _showImageDialog(
+      BuildContext context, String? photoUrl, File? profilePic) {
+    // Create a dialog to show the image
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.transparent,
+          contentPadding: EdgeInsets.zero,
+          content: Container(
+            width: double.maxFinite,
+            height: MediaQuery.of(context).size.height * .4,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: NetworkImage(photoUrl ?? ""),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          // actions: <Widget>[
+          //   TextButton(
+          //     child: const Text('Close'),
+          //     onPressed: () {
+          //       Navigator.of(context).pop();
+          //     },
+          //   ),
+          // ],
+        );
+      },
     );
   }
 

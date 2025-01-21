@@ -4,6 +4,7 @@ import 'package:heavens_students/controller/mess_controller/MessController.dart'
 import 'package:heavens_students/core/constants/constants.dart';
 import 'package:heavens_students/view/MessManager/AddOnPage/AddonPage.dart';
 import 'package:heavens_students/view/MessManager/widgets/customMessMangerCard.dart';
+import 'package:heavens_students/view/bottomnavigation/bottomnavigation.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -50,7 +51,7 @@ class _MessmanagerState extends State<Messmanager> {
                       borderRadius: BorderRadius.circular(15),
                       child: Image.asset(
                         "assets/images/cafe_closed.png",
-                        height: screenHeight * 0.25,
+                        height: screenHeight * 0.4,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -69,15 +70,20 @@ class _MessmanagerState extends State<Messmanager> {
                       "from 11 PM to 4 AM.\nWe look forward to serving you shortly!",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 13,
                         color: ColorConstants.primary_black.withOpacity(.5),
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.03),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  BottomNavigation(initialIndex: 0),
+                            ));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: ColorConstants.dark_red2,

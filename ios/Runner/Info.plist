@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
-	<string></string> <!-- Optional: Can be removed if not needed -->
+	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -37,24 +37,24 @@
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-        <string>UIInterfaceOrientationPortraitUpsideDown</string>
-        <string>UIInterfaceOrientationLandscapeLeft</string>
-        <string>UIInterfaceOrientationLandscapeRight</string>
-    </array>
-    <key>CADisableMinimumFrameDurationOnPhone</key>
-    <true/>
-    <key>UIApplicationSupportsIndirectInputEvents</key>
-    <true/>
-    <key>NSPhotoLibraryUsageDescription</key>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
     <string>This app requires access to your photo library to add and update your profile picture and verifying your address.</string>
-    <key>NSCameraUsageDescription</key>
-    <string>This app requires access to your camera for uploading profile picture and address proof.</string>
-    <key>UIBackgroundModes</key>
-    <array>
-        <string>fetch</string>
-        <string>remote-notification</string>
-    </array>
-    <key>FirebaseAppDelegateProxyEnabled</key>
-    <true/> <!-- Change this to true if using Firebase's automatic handling -->
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires access to your camera for uploading profile picture and address proof.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+    <string>fetch</string>
+    <string>remote-notification</string>
+	</array>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+<false/>
 </dict>
 </plist>

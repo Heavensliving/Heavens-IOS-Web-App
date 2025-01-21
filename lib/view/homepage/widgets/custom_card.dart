@@ -56,7 +56,8 @@ class _CustomCardState extends State<CustomCard> {
                 children: [
                   Container(
                     height: screenHeight * .14,
-                    width: 80,
+
+                    // width: ,
                     child: Image.asset(
                       widget.image,
                       fit: BoxFit.cover,
