@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/cafe_controller/CafeController.dart';
 import 'package:heavens_students/controller/cart_controller.dart';
-import 'package:heavens_students/controller/connectivity_controlller/connectivity_icon.dart';
+import 'package:heavens_students/controller/connectivity_controlller/connectivity_controller.dart';
 import 'package:heavens_students/controller/homepage_controller/HomepageController.dart';
 import 'package:heavens_students/controller/homepage_controller/carousal_controller.dart';
 import 'package:heavens_students/controller/login_controller/LoginController.dart';
@@ -26,12 +29,29 @@ import 'package:provider/provider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await NotificationController.initializeNotifications();
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  log("Handling a background message: ${message.messageId}");
+}
 
-  runApp(const HeavensStudent());
+void main() async {
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Ensures that Flutter is initialized
+
+  try {
+    // Initialize Firebase with options for the current platform
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    log("Firebase initialized successfully.");
+  } catch (e) {
+    // Log any errors during initialization
+    log("Error initializing Firebase: $e");
+    return; // Exit if Firebase initialization fails
+  }
+
+  runApp(
+      HeavensStudent()); // Start the app only after successful initialization
 }
 
 class HeavensStudent extends StatefulWidget {
@@ -61,11 +81,9 @@ class _HeavensStudentState extends State<HeavensStudent> {
       ],
       child: Consumer<NetworkController>(
         builder: (context, networkController, child) {
-          // Handle network changes and navigation
           WidgetsBinding.instance.addPostFrameCallback((_) {
             networkController.handleNavigation();
           });
-
           return MaterialApp(
             navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,

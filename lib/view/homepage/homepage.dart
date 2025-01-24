@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/cafe_controller/CafeController.dart';
-import 'package:heavens_students/controller/connectivity_controlller/connectivity_icon.dart';
+import 'package:heavens_students/controller/connectivity_controlller/connectivity_controller.dart';
 import 'package:heavens_students/controller/homepage_controller/HomepageController.dart';
 import 'package:heavens_students/controller/homepage_controller/carousal_controller.dart';
 import 'package:heavens_students/controller/login_controller/LoginController.dart';

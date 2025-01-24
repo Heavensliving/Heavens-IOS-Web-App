@@ -28,17 +28,26 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _initializeApp() async {
     await Future.delayed(const Duration(seconds: 3));
 
+    if (!mounted) return;
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isLoggedIn = prefs.getBool('islogged') ?? false;
     log("--$isLoggedIn");
 
     if (isLoggedIn) {
+      if (!mounted) return;
       await context.read<LoginController>().getStudentDetail(context);
+
+      if (!mounted) return;
       await context.read<CarousalImageController>().getCarousalImages();
+
+      if (!mounted) return;
       await context.read<CafeController>().getCafeItems();
-      await context.read<CarousalImageController>().getCarousalImages();
+
+      if (!mounted) return;
       await context.read<HomepageController>().checkPaymentStatus(context);
 
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -46,6 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       );
     } else {
+      if (!mounted) return;
       Navigator.pushReplacementNamed(context, "/signin");
     }
   }

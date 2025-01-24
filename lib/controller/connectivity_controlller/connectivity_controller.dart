@@ -19,27 +19,57 @@ class NetworkController extends ChangeNotifier {
 
   NetworkController() {
     _checkInitialConnectivity();
-    _startListeningToConnectivityChanges();
+    startListeningToConnectivityChanges();
   }
 
   ConnectivityResult get connectivityResult => _connectivityResult;
 
+  // Future<void> _checkInitialConnectivity() async {
+  //   List<ConnectivityResult> results = await Connectivity().checkConnectivity();
+  //   log("results----$results");
+
+  //   _connectivityResult =
+  //       results.isNotEmpty ? results.first : ConnectivityResult.none;
+  //   notifyListeners();
+  // }
+
   Future<void> _checkInitialConnectivity() async {
+    // Check the initial connectivity
     List<ConnectivityResult> results = await Connectivity().checkConnectivity();
-    log("results----$results");
-    _connectivityResult =
-        results.isNotEmpty ? results.first : ConnectivityResult.none;
-    notifyListeners();
+    log("Initial Connectivity: $results");
+
+    // Only update if connectivity is 'none' and it's different from current state
+    if (results == ConnectivityResult.none &&
+        _connectivityResult != ConnectivityResult.none) {
+      log("Connectivity changed to none");
+      _connectivityResult = ConnectivityResult.none;
+      notifyListeners();
+    }
   }
 
-  void _startListeningToConnectivityChanges() {
+  // void _startListeningToConnectivityChanges() {
+  //   _connectivitySubscription = Connectivity()
+  //       .onConnectivityChanged
+  //       .listen((List<ConnectivityResult> results) {
+  //     _connectivityResult =
+  //         results.isNotEmpty ? results.first : ConnectivityResult.none;
+  //     notifyListeners();
+  //     handleNavigation();
+  //   });
+  // }
+
+  void startListeningToConnectivityChanges() {
     _connectivitySubscription = Connectivity()
         .onConnectivityChanged
-        .listen((List<ConnectivityResult> results) {
-      _connectivityResult =
-          results.isNotEmpty ? results.first : ConnectivityResult.none;
-      notifyListeners();
-      handleNavigation();
+        .listen((List<ConnectivityResult> result) {
+      log("Connectivity Changed: $result");
+
+      // If the result is 'none' and it differs from current state, update
+      if (result == ConnectivityResult.none &&
+          _connectivityResult != ConnectivityResult.none) {
+        _connectivityResult = ConnectivityResult.none;
+        notifyListeners();
+      }
     });
   }
 
