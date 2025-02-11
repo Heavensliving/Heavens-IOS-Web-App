@@ -14,7 +14,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class NetworkController extends ChangeNotifier {
   ConnectivityResult _connectivityResult = ConnectivityResult.none;
-
   late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
 
   NetworkController() {
@@ -23,71 +22,41 @@ class NetworkController extends ChangeNotifier {
   }
 
   ConnectivityResult get connectivityResult => _connectivityResult;
-
-  // Future<void> _checkInitialConnectivity() async {
-  //   List<ConnectivityResult> results = await Connectivity().checkConnectivity();
-  //   log("results----$results");
-
-  //   _connectivityResult =
-  //       results.isNotEmpty ? results.first : ConnectivityResult.none;
-  //   notifyListeners();
-  // }
+  bool get isConnected => _connectivityResult != ConnectivityResult.none;
 
   Future<void> _checkInitialConnectivity() async {
-    // Check the initial connectivity
-    List<ConnectivityResult> results = await Connectivity().checkConnectivity();
+    final results = await Connectivity().checkConnectivity();
     log("Initial Connectivity: $results");
 
-    // Only update if connectivity is 'none' and it's different from current state
-    if (results == ConnectivityResult.none &&
-        _connectivityResult != ConnectivityResult.none) {
-      log("Connectivity changed to none");
+    if (results != ConnectivityResult.none) {
+      _connectivityResult = results.first;
+    } else {
       _connectivityResult = ConnectivityResult.none;
       notifyListeners();
+      handleNavigation();
     }
   }
-
-  // void _startListeningToConnectivityChanges() {
-  //   _connectivitySubscription = Connectivity()
-  //       .onConnectivityChanged
-  //       .listen((List<ConnectivityResult> results) {
-  //     _connectivityResult =
-  //         results.isNotEmpty ? results.first : ConnectivityResult.none;
-  //     notifyListeners();
-  //     handleNavigation();
-  //   });
-  // }
 
   void startListeningToConnectivityChanges() {
     _connectivitySubscription = Connectivity()
         .onConnectivityChanged
         .listen((List<ConnectivityResult> result) {
       log("Connectivity Changed: $result");
-
-      // If the result is 'none' and it differs from current state, update
-      if (result == ConnectivityResult.none &&
-          _connectivityResult != ConnectivityResult.none) {
-        _connectivityResult = ConnectivityResult.none;
+      if (result != _connectivityResult) {
+        _connectivityResult = result.first;
         notifyListeners();
+      }
+
+      if (_connectivityResult == ConnectivityResult.none) {
+        handleNavigation();
       }
     });
   }
-
-  bool get isConnected => _connectivityResult != ConnectivityResult.none;
 
   void handleNavigation() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!isConnected) {
         navigatorKey.currentState?.pushReplacementNamed('/nointernet');
-      } else {
-        // if (ModalRoute.of(navigatorKey.currentContext!)?.settings.name !=
-        //     '/home') {
-        //   navigatorKey.currentState?.pushReplacement(
-        //     MaterialPageRoute(
-        //       builder: (context) => BottomNavigation(initialIndex: 0),
-        //     ),
-        //   );
-        // }
       }
     });
   }

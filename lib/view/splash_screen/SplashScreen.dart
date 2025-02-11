@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/cafe_controller/CafeController.dart';
+import 'package:heavens_students/controller/connectivity_controlller/connectivity_controller.dart';
 import 'package:heavens_students/controller/homepage_controller/HomepageController.dart';
 import 'package:heavens_students/controller/homepage_controller/carousal_controller.dart';
 import 'package:heavens_students/controller/login_controller/LoginController.dart';
@@ -32,9 +33,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isLoggedIn = prefs.getBool('islogged') ?? false;
-    log("--$isLoggedIn");
+    // var isTokenExpired = context.read<NetworkController>().isTokenExpired;
+
+    log("isTokenExpired--$isLoggedIn");
 
     if (isLoggedIn) {
+      context.read<NetworkController>().checkAccessToken(context);
+
       if (!mounted) return;
       await context.read<LoginController>().getStudentDetail(context);
 
