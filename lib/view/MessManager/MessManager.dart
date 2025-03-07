@@ -64,21 +64,24 @@ class _MessmanagerState extends State<Messmanager> {
             buildMealList(context, offsetDays: 1),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: ColorConstants.dark_red,
-          child: const Icon(Icons.add,
-              size: 32, color: ColorConstants.primary_white),
-          onPressed: () {
-            final messController = context.read<MessController>();
-            messController.addOns.clear();
-            messController.total.clear();
-            messController.cumulativeTotal = 0;
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MealSelectionPage()),
-            );
-          },
-        ),
+        
+        //for maintanace ongoing floating button disabled and add addon button in bottom nav bar
+
+        // floatingActionButton: FloatingActionButton(
+        //   backgroundColor: ColorConstants.dark_red,
+        //   child: const Icon(Icons.add,
+        //       size: 32, color: ColorConstants.primary_white),
+        //   onPressed: () {
+        //     final messController = context.read<MessController>();
+        //     messController.addOns.clear();
+        //     messController.total.clear();
+        //     messController.cumulativeTotal = 0;
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(builder: (context) => MealSelectionPage()),
+        //     );
+        //   },
+        // ),
       ),
     );
   }
