@@ -44,7 +44,7 @@ class CarousalImageController with ChangeNotifier {
       log('Error occurred: $e');
     } finally {
       isLoading = false;
-      notifyListeners(); // Notify listeners regardless of success or failure
+      notifyListeners();
     }
   }
 }

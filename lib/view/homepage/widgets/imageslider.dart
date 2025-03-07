@@ -20,7 +20,7 @@ class _ImageSliderState extends State<ImageSlider> {
 
   @override
   void initState() {
-    log("image list--${widget.imageList.length}");
+    log("image list--${widget.imageList[0]}");
     super.initState();
     discountOffers = widget.imageList;
     timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
