@@ -550,7 +550,8 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:heavens_students/core/constants/base_url.dart';
-import 'package:http/http.dart' as http; // Import the http package
+import 'package:heavens_students/view/no_internet_screen/noInternetScreen.dart';
+import 'package:http/http.dart' as http;
 import 'package:heavens_students/controller/cafe_controller/CafeController.dart';
 import 'package:heavens_students/controller/connectivity_controlller/connectivity_icon.dart';
 import 'package:heavens_students/controller/homepage_controller/HomepageController.dart';
@@ -567,6 +568,8 @@ import 'package:heavens_students/view/homepage/widgets/imageslider.dart';
 import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/services.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:cached_network_image/cached_network_image.dart'; // Add this import
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -584,11 +587,15 @@ class _HomepageState extends State<Homepage> {
   double containerHeight = 0.27; // Default height (27% of screen height)
   String emergencyMessageText = "";
   bool emergencyMessageEnable = false; // Add this line
-
+  bool _isConnected = true;
+  bool _isLoading = false;
+  Color homeBodyBGColor = Colors.brown[50]!; // Default background color
 
   @override
   void initState() {
     super.initState();
+    _checkInternetConnection();
+    _setupConnectivityListener();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       checkNotificationPermission(context);
     });
@@ -596,8 +603,45 @@ class _HomepageState extends State<Homepage> {
     fetchAppBarColor(); // Fetch the color when the widget is initialized
   }
 
+  Future<void> _checkInternetConnection() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    setState(() {
+      _isConnected =
+          connectivityResult.any((result) => result != ConnectivityResult.none);
+    });
+  }
+
+  void _setupConnectivityListener() {
+    Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> results) async {
+      bool isNowConnected =
+          results.any((result) => result != ConnectivityResult.none);
+
+      if (isNowConnected && !_isConnected) {
+        // Internet connection restored
+        setState(() {
+          _isConnected = true;
+          _isLoading = true; // Show loading indicator
+        });
+
+        // Reload data
+        await loadStudentData();
+        await fetchAppBarColor();
+
+        setState(() {
+          _isLoading = false; // Hide loading indicator
+        });
+      } else {
+        setState(() {
+          _isConnected = isNowConnected;
+        });
+      }
+    });
+  }
+
   // Method to fetch the app bar color from the API
-   Future<void> fetchAppBarColor() async {
+  Future<void> fetchAppBarColor() async {
     try {
       final response = await http.get(Uri.parse('${UrlConst.baseUrl}/appui/'));
 
@@ -630,10 +674,16 @@ class _HomepageState extends State<Homepage> {
                 : 0.27; // Default height if not provided
 
             // Extract the emergencyMessageText
-            final String emergencyText = firstItem['emergencyMessageText'] ?? "Your dynamic message goes here.";
+            final String emergencyText = firstItem['emergencyMessageText'] ??
+                "Your dynamic message goes here.";
 
             // Extract the emergencyMessageEnable
-            final bool emergencyEnable = firstItem['emergencyMessageEnable'] ?? false;
+            final bool emergencyEnable =
+                firstItem['emergencyMessageEnable'] ?? false;
+
+            // Extract the homeBodyBGColor
+            final String homeBodyBGHexColor = firstItem['homeBodyBGColor'] ??
+                '#F5F5DC'; // Default color if not provided
 
             // Print the fetched values for debugging
             debugPrint('Fetched appBarColor: $hexColor');
@@ -642,20 +692,27 @@ class _HomepageState extends State<Homepage> {
             debugPrint('Fetched containerHeight: $height');
             debugPrint('Fetched emergencyMessageText: $emergencyText');
             debugPrint('Fetched emergencyMessageEnable: $emergencyEnable');
+            debugPrint('Fetched homeBodyBGColor: $homeBodyBGHexColor');
 
             setState(() {
-              appBarColor = Color(int.parse(hexColor.replaceFirst('#', '0xFF')));
-              mainContainerColor = Color(int.parse(containerHexColor.replaceFirst('#', '0xFF')));
+              appBarColor =
+                  Color(int.parse(hexColor.replaceFirst('#', '0xFF')));
+              mainContainerColor =
+                  Color(int.parse(containerHexColor.replaceFirst('#', '0xFF')));
               mainContainerImage = containerImage;
               containerHeight = height; // Update container height
               emergencyMessageText = emergencyText; // Update emergency message
-              emergencyMessageEnable = emergencyEnable; // Update emergency message enable
+              emergencyMessageEnable =
+                  emergencyEnable; // Update emergency message enable
+              homeBodyBGColor = Color(int.parse(homeBodyBGHexColor.replaceFirst(
+                  '#', '0xFF'))); // Update home body background color
             });
           } else {
             debugPrint('Data list is empty');
           }
         } else {
-          debugPrint('Invalid response format: "data" field is missing or not a list');
+          debugPrint(
+              'Invalid response format: "data" field is missing or not a list');
         }
       } else {
         throw Exception('Failed to load app bar color');
@@ -666,6 +723,11 @@ class _HomepageState extends State<Homepage> {
   }
 
   Future<void> checkNotificationPermission(BuildContext context) async {
+    // Check if the platform is iOS
+    if (Platform.isIOS) {
+      return; // Don't show the notification popup on iOS
+    }
+
     var status = await Permission.notification.status;
     if (!status.isGranted) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -762,6 +824,11 @@ class _HomepageState extends State<Homepage> {
     if (!mounted) return;
 
     context.read<HomepageController>().getFeesDetails();
+
+    // Debug print to check carousal images
+    var imageController =
+        context.read<CarousalImageController>().carousalModels;
+    debugPrint('Carousal Images: ${imageController?[0].homeScreenImages}');
   }
 
   @override
@@ -772,6 +839,18 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    if (!_isConnected) {
+      return const NoInternetScreen();
+    }
+
+    if (_isLoading) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     final prov = context.watch<LoginController>().studentDetailModel?.student;
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -791,9 +870,9 @@ class _HomepageState extends State<Homepage> {
       containerColor = Colors.red;
     }
     return Scaffold(
-      backgroundColor: Colors.brown[50],
+      backgroundColor: homeBodyBGColor,
       appBar: AppBar(
-        toolbarHeight: 80, // Increased height of the AppBar
+        toolbarHeight: 60, // Increased height of the AppBar
         backgroundColor: appBarColor, // Use the fetched color
         elevation: 0,
         title: Row(
@@ -805,7 +884,7 @@ class _HomepageState extends State<Homepage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    value.studentDetailModel?.student?.name ?? "Student Name",
+                    "Heavens Living",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: screenWidth * 0.045,
@@ -815,7 +894,7 @@ class _HomepageState extends State<Homepage> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    value.studentDetailModel?.student?.studentId ?? "ID",
+                    "Bande Nalla Sandra, Jigani",
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: screenWidth * 0.035,
@@ -900,18 +979,22 @@ class _HomepageState extends State<Homepage> {
                 ),
                 image: mainContainerImage != null
                     ? DecorationImage(
-                        image: NetworkImage(
-                            mainContainerImage!), // Use the fetched image
+                        image: CachedNetworkImageProvider(
+                            mainContainerImage!), // Use cached image
                         fit: BoxFit.cover, // Adjust the image fit
                       )
                     : null, // No image if null
               ),
+              child: mainContainerImage == null
+                  ? Center(child: CircularProgressIndicator())
+                  : null,
             ),
 
             SizedBox(height: 5),
-          if (emergencyMessageEnable) // Conditionally render the container
+            if (emergencyMessageEnable) // Conditionally render the container
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
@@ -928,7 +1011,7 @@ class _HomepageState extends State<Homepage> {
                         blurRadius: 5,
                         spreadRadius: 2,
                         offset: Offset(0, 2),
-                      ),
+                      )
                     ],
                   ),
                   child: Row(
@@ -946,10 +1029,12 @@ class _HomepageState extends State<Homepage> {
                         ),
                       ),
                       SizedBox(width: 22),
-                      Image.network(
-                        "https://cdn-icons-png.flaticon.com/512/552/552871.png",
+                      CachedNetworkImage(
+                        imageUrl:
+                            "https://www.shareicon.net/data/512x512/2015/12/11/686006_message_512x512.png",
                         width: 24,
                         height: 24,
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
                     ],
                   ),
@@ -974,55 +1059,96 @@ class _HomepageState extends State<Homepage> {
                       builder: (context, value, child) => ImageSlider(
                         imageList: value.carousalModels![0].homeScreenImages,
                       ),
-                    ),
+                    )
+                  else
+                    Center(child: Text('No images available')),
                   SizedBox(height: 30),
-                  buildRowCards(
-                    context,
-                    [
-                      CustomCard(
-                          onTap: () {
-                            showCustomSnackbar(context,
-                                "At this time, we are unable to accept online payments.");
-                          },
-                          image: ImageConstants.fee_payments,
-                          heading: "Fee Payments",
-                          subtitle: "Pay your fees easily."),
-                      CustomCard(
-                        onTap: () =>
-                            Navigator.pushNamed(context, "/payment_history"),
-                        image: ImageConstants.payment_history,
-                        heading: "Payment History",
-                        subtitle: "View Transactions.",
-                      )
-                    ],
+                  // New Explore Items Section
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Colors.grey.shade400, // Light grey border
+                        width: 1,
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Explore items",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildCircleAvatar(
+                              context,
+                              imagePath:
+                                  "assets/images/wallet.png", // Path to your image asset
+                              label: "Payment History",
+                              onTap: () => Navigator.pushNamed(
+                                  context, "/payment_history"),
+                            ),
+                            _buildCircleAvatar(
+                              context,
+                              imagePath:
+                                  "assets/images/maintanace.png", // Path to your image asset
+                              label: "Maintenance",
+                              onTap: () {
+                                if (prov?.profileCompletionPercentage !=
+                                    "100") {
+                                  showCustomSnackbar(context,
+                                      "Complete your profile for full access.");
+                                } else if (prov!.isBlocked == true) {
+                                  showCustomSnackbar(context,
+                                      "Complete your payment to gain entry");
+                                } else {
+                                  showBottomSheet(context);
+                                }
+                              },
+                            ),
+                            _buildCircleAvatar(
+                              context,
+                              imagePath:
+                                  "assets/images/raisedtkt.png", // Path to your image asset
+                              label: "Raised Tickets",
+                              onTap: () =>
+                                  Navigator.pushNamed(context, "/raised"),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                            height: 40), // Spacing before the divider
+                        Divider(
+                          color: Colors.grey.shade400, // Light grey divider
+                          thickness: 1, // Ensure visibility
+                          height: 1, // Reduce spacing
+                        ),
+                        const SizedBox(
+                            height: 10), // Spacing between divider and text
+                        Consumer<LoginController>(
+                          builder: (context, value, child) => Text(
+                            "${value.studentDetailModel?.student?.name ?? "Student Name"} - ${value.studentDetailModel?.student?.studentId ?? "ID"}",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 15),
-                  buildRowCards(
-                    context,
-                    [
-                      CustomCard(
-                          onTap: () {
-                            if (prov?.profileCompletionPercentage != "100") {
-                              showCustomSnackbar(context,
-                                  "Complete your profile for full access.");
-                            } else if (prov!.isBlocked == true) {
-                              showCustomSnackbar(context,
-                                  "Complete your payment to gain entry");
-                            } else {
-                              showBottomSheet(context);
-                            }
-                          },
-                          image: ImageConstants.maintenance,
-                          heading: "Maintenance",
-                          subtitle: "Report issue easily."),
-                      CustomCard(
-                        onTap: () => Navigator.pushNamed(context, "/raised"),
-                        image: ImageConstants.raisedtickets,
-                        heading: "Raised Tickets",
-                        subtitle: "Track your requests.",
-                      )
-                    ],
-                  ),
+
+                  SizedBox(height: 20),
+                  // Old card layout (unchanged, for reference)
+
                   SizedBox(
                     height: 10,
                   )
@@ -1035,6 +1161,42 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
+  // Helper method to build a circle avatar with a label
+  Widget _buildCircleAvatar(
+  BuildContext context, {
+  required String imagePath,
+  required String label,
+  required VoidCallback onTap,
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Column(
+      children: [
+        CircleAvatar(
+          radius: 30, // Slightly larger avatar
+          backgroundColor: Colors.grey.shade200, // Background color
+          child: Padding(
+            padding: const EdgeInsets.all(8.0), // Adjust padding
+            child: Image.asset(
+              imagePath,
+              width: 40, // Increase width for better fit
+              height: 40, // Increase height
+              fit: BoxFit.contain, // Ensures image fits well inside
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    ),
+  );
+}
+
+  // Method to build row of cards
   Widget buildRowCards(BuildContext context, List<Widget> cards) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Row(
@@ -1188,5 +1350,14 @@ class _HomepageState extends State<Homepage> {
         );
       },
     );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.detached ||
+        state == AppLifecycleState.paused) {
+      // Clear the image cache when the app is closed or paused
+      CachedNetworkImage.evictFromCache(mainContainerImage!);
+    }
   }
 }
