@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/anasuc/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/anasuc/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/RelWithDebInfo/6e2b6u76/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/anasuc/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/RelWithDebInfo/6e2b6u76/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
