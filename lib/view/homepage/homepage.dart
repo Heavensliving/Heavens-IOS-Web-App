@@ -569,7 +569,7 @@ import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:cached_network_image/cached_network_image.dart'; // Add this import
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -590,6 +590,7 @@ class _HomepageState extends State<Homepage> {
   bool _isConnected = true;
   bool _isLoading = false;
   Color homeBodyBGColor = Colors.brown[50]!; // Default background color
+  bool showContainer = true; // Default value, will be updated from the API
 
   @override
   void initState() {
@@ -685,6 +686,9 @@ class _HomepageState extends State<Homepage> {
             final String homeBodyBGHexColor = firstItem['homeBodyBGColor'] ??
                 '#F5F5DC'; // Default color if not provided
 
+            // Extract the showContainer value
+            final bool showContainerValue = firstItem['showContainer'] ?? true;
+
             // Print the fetched values for debugging
             debugPrint('Fetched appBarColor: $hexColor');
             debugPrint('Fetched mainContainerColor: $containerHexColor');
@@ -693,6 +697,7 @@ class _HomepageState extends State<Homepage> {
             debugPrint('Fetched emergencyMessageText: $emergencyText');
             debugPrint('Fetched emergencyMessageEnable: $emergencyEnable');
             debugPrint('Fetched homeBodyBGColor: $homeBodyBGHexColor');
+            debugPrint('Fetched showContainer: $showContainerValue');
 
             setState(() {
               appBarColor =
@@ -706,6 +711,7 @@ class _HomepageState extends State<Homepage> {
                   emergencyEnable; // Update emergency message enable
               homeBodyBGColor = Color(int.parse(homeBodyBGHexColor.replaceFirst(
                   '#', '0xFF'))); // Update home body background color
+              showContainer = showContainerValue; // Update showContainer value
             });
           } else {
             debugPrint('Data list is empty');
@@ -966,29 +972,29 @@ class _HomepageState extends State<Homepage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Move this outside of Padding so it gets full width
-            Container(
-              width: double.infinity, // Full width
-              height: MediaQuery.of(context).size.height *
-                  containerHeight, // Use fetched height
-              decoration: BoxDecoration(
-                color: mainContainerColor, // Background color
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25),
+            if (showContainer) // Conditionally show the container
+              Container(
+                width: double.infinity, // Full width
+                height: MediaQuery.of(context).size.height *
+                    containerHeight, // Use fetched height
+                decoration: BoxDecoration(
+                  color: mainContainerColor, // Background color
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    bottomRight: Radius.circular(25),
+                  ),
+                  image: mainContainerImage != null
+                      ? DecorationImage(
+                          image: CachedNetworkImageProvider(
+                              mainContainerImage!), // Use cached image
+                          fit: BoxFit.cover, // Adjust the image fit
+                        )
+                      : null, // No image if null
                 ),
-                image: mainContainerImage != null
-                    ? DecorationImage(
-                        image: CachedNetworkImageProvider(
-                            mainContainerImage!), // Use cached image
-                        fit: BoxFit.cover, // Adjust the image fit
-                      )
-                    : null, // No image if null
+                child: mainContainerImage == null
+                    ? Center(child: CircularProgressIndicator())
+                    : null,
               ),
-              child: mainContainerImage == null
-                  ? Center(child: CircularProgressIndicator())
-                  : null,
-            ),
 
             SizedBox(height: 5),
             if (emergencyMessageEnable) // Conditionally render the container
@@ -1163,38 +1169,38 @@ class _HomepageState extends State<Homepage> {
 
   // Helper method to build a circle avatar with a label
   Widget _buildCircleAvatar(
-  BuildContext context, {
-  required String imagePath,
-  required String label,
-  required VoidCallback onTap,
-}) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Column(
-      children: [
-        CircleAvatar(
-          radius: 30, // Slightly larger avatar
-          backgroundColor: Colors.grey.shade200, // Background color
-          child: Padding(
-            padding: const EdgeInsets.all(8.0), // Adjust padding
-            child: Image.asset(
-              imagePath,
-              width: 40, // Increase width for better fit
-              height: 40, // Increase height
-              fit: BoxFit.contain, // Ensures image fits well inside
+    BuildContext context, {
+    required String imagePath,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          CircleAvatar(
+            radius: 30, // Slightly larger avatar
+            backgroundColor: Colors.grey.shade200, // Background color
+            child: Padding(
+              padding: const EdgeInsets.all(8.0), // Adjust padding
+              child: Image.asset(
+                imagePath,
+                width: 40, // Increase width for better fit
+                height: 40, // Increase height
+                fit: BoxFit.contain, // Ensures image fits well inside
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    ),
-  );
-}
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
 
   // Method to build row of cards
   Widget buildRowCards(BuildContext context, List<Widget> cards) {
