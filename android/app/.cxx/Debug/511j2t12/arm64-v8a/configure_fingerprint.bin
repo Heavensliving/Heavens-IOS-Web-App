@@ -2,6 +2,7 @@ C/C++ Structured Logá
 Ñ
 Å/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Debug/511j2t12/arm64-v8a/additional_project_files.txtC
 A
+<<<<<<< Updated upstream
 ?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	Ö≤òº‹2 ûŒñº‹2É
 Ä
 ~/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Debug/511j2t12/arm64-v8a/android_gradle_build.json	À≤òº‹2˘ £Œñº‹2â
@@ -26,3 +27,29 @@ w/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Deb
 |/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Debug/511j2t12/arm64-v8a/symbol_folder_index.txt	Ã≤òº‹2s ßŒñº‹2V
 T
 R/Users/anasuc/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt	Ã≤òº‹2§ Û¬ÂÏ—2
+=======
+?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	é˛¬∫‹2 à˛¬∫‹2É
+Ä
+~/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Debug/511j2t12/arm64-v8a/android_gradle_build.json	é˛¬∫‹2˘ ä˛¬∫‹2â
+Ü
+É/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Debug/511j2t12/arm64-v8a/android_gradle_build_mini.json	é˛¬∫‹2Ä ã˛¬∫‹2t
+r
+p/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Debug/511j2t12/arm64-v8a/build.ninja	é˛¬∫‹2î» ˛˝¬∫‹2x
+v
+t/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Debug/511j2t12/arm64-v8a/build.ninja.txt	é˛¬∫‹2}
+{
+y/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Debug/511j2t12/arm64-v8a/build_file_index.txt	è˛¬∫‹2R é˛¬∫‹2~
+|
+z/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Debug/511j2t12/arm64-v8a/compile_commands.json	è˛¬∫‹2É
+Ä
+~/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Debug/511j2t12/arm64-v8a/compile_commands.json.bin	è˛¬∫‹2	ä
+á
+Ñ/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Debug/511j2t12/arm64-v8a/metadata_generation_command.txt	è˛¬∫‹2
+¯ é˛¬∫‹2{
+y
+w/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Debug/511j2t12/arm64-v8a/prefab_config.json	è˛¬∫‹2( é˛¬∫‹2Ä
+~
+|/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Debug/511j2t12/arm64-v8a/symbol_folder_index.txt	è˛¬∫‹2s é˛¬∫‹2V
+T
+R/Users/anasuc/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt	è˛¬∫‹2§ Û¬ÂÏ—2
+>>>>>>> Stashed changes
