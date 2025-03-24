@@ -132,9 +132,10 @@ class NetworkController extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final accessToken = prefs.getString("access_token") ?? "";
     // Duration tokenTime = JwtDecoder.getTokenTime(accessToken);
-
+    DateTime expirationDate = JwtDecoder.getExpirationDate(accessToken);
     bool isTokenExpired = JwtDecoder.isExpired(accessToken);
     log("Token is expired or not ----${isTokenExpired}");
+    log("expiray date ----${expirationDate}");
     if (isTokenExpired) {
       log("Token is expired.");
       await prefs.clear();
