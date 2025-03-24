@@ -76,12 +76,13 @@ class CustomTextField extends StatelessWidget {
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
-                  color: ColorConstants.primary_black.withOpacity(.2),
+                  color: ColorConstants.primary_black.withValues(alpha: .2),
                 )),
             disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
-                  color: color ?? ColorConstants.primary_black.withOpacity(.2),
+                  color: color ??
+                      ColorConstants.primary_black.withValues(alpha: .2),
                 )),
 
             prefixIcon: prefix,
@@ -91,8 +92,8 @@ class CustomTextField extends StatelessWidget {
                 ? EdgeInsets.symmetric(vertical: 10, horizontal: 10)
                 : contentPadding,
             hintText: hintText,
-            hintStyle:
-                TextStyle(color: ColorConstants.primary_black.withOpacity(.5)),
+            hintStyle: TextStyle(
+                color: ColorConstants.primary_black.withValues(alpha: .5)),
             prefixText: prefixText,
             // isDense: true,
             prefixIconConstraints: BoxConstraints(minWidth: 0, minHeight: 0),

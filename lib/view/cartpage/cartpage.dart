@@ -56,7 +56,7 @@ class _CartPageState extends State<CartPage> {
                     "Order is empty. You can make orders from the home screen.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: ColorConstants.primary_black.withOpacity(.7),
+                      color: ColorConstants.primary_black.withValues(alpha: .7),
                     ),
                   ),
                   SizedBox(height: 100),
@@ -131,7 +131,7 @@ class _CartPageState extends State<CartPage> {
                               Container(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 15),
-                                color: Colors.grey.withOpacity(.2),
+                                color: Colors.grey.withValues(alpha: .2),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -167,7 +167,7 @@ class _CartPageState extends State<CartPage> {
                                             style: TextStyle(
                                               color: ColorConstants
                                                   .primary_black
-                                                  .withOpacity(.5),
+                                                  .withValues(alpha: .5),
                                             ),
                                           ),
                                         ),
@@ -184,7 +184,7 @@ class _CartPageState extends State<CartPage> {
                                           style: TextStyle(
                                               color: ColorConstants
                                                   .primary_black
-                                                  .withOpacity(.5)),
+                                                  .withValues(alpha: .5)),
                                         ),
                                       ],
                                     ),
@@ -223,7 +223,7 @@ class _CartPageState extends State<CartPage> {
                               Container(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 15),
-                                color: Colors.grey.withOpacity(.2),
+                                color: Colors.grey.withValues(alpha: .2),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -311,7 +311,7 @@ class _CartPageState extends State<CartPage> {
                   children: [
                     Container(
                       height: .5,
-                      color: ColorConstants.primary_black.withOpacity(.2),
+                      color: ColorConstants.primary_black.withValues(alpha: .2),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -333,7 +333,7 @@ class _CartPageState extends State<CartPage> {
                                 Icons.error_outline,
                                 size: 15,
                                 color: ColorConstants.primary_black
-                                    .withOpacity(.3),
+                                    .withValues(alpha: .3),
                               )
                             ],
                           ),
@@ -390,7 +390,7 @@ class _CartPageState extends State<CartPage> {
                                           ),
                                           backgroundColor: ColorConstants
                                               .primary_black
-                                              .withOpacity(0.5),
+                                              .withValues(alpha: 0.5),
                                           duration: Duration(seconds: 3),
                                           shape: RoundedRectangleBorder(
                                             borderRadius:

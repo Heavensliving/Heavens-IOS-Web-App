@@ -71,7 +71,7 @@
 //           //   overflow: TextOverflow.ellipsis,
 //           //   style: TextStyle(
 //           //     fontWeight: FontWeight.w400,
-//           //     color: ColorConstants.primary_black.withOpacity(.5),
+//           //     color: ColorConstants.primary_black.withValues(alpha: .5),
 //           //     fontSize: 15,
 //           //   ),
 //           // ),
@@ -121,7 +121,7 @@
 //                     borderRadius: BorderRadius.circular(10),
 //                     color: ColorConstants.primary_white,
 //                     border: Border.all(
-//                       color: ColorConstants.primary_black.withOpacity(.2),
+//                       color: ColorConstants.primary_black.withValues(alpha: .2),
 //                     ),
 //                   ),
 //                   child: Center(
@@ -170,7 +170,7 @@
 //                           color: ColorConstants.primary_white,
 //                           borderRadius: BorderRadius.circular(7),
 //                           border: Border.all(
-//                             color: ColorConstants.primary_black.withOpacity(.2),
+//                             color: ColorConstants.primary_black.withValues(alpha: .2),
 //                           ),
 //                         ),
 //                         child: Center(
@@ -190,7 +190,7 @@
 //                           EdgeInsets.symmetric(horizontal: 15, vertical: 3),
 //                       decoration: BoxDecoration(
 //                         border: Border.all(
-//                           color: ColorConstants.primary_black.withOpacity(.2),
+//                           color: ColorConstants.primary_black.withValues(alpha: .2),
 //                         ),
 //                         color: ColorConstants.primary_white,
 //                         borderRadius: BorderRadius.circular(10),
@@ -412,7 +412,8 @@ class _VerticalCardState extends State<VerticalCard> {
                     borderRadius: BorderRadius.circular(10),
                     color: ColorConstants.primary_white,
                     border: Border.all(
-                        color: ColorConstants.primary_black.withOpacity(.2)),
+                        color:
+                            ColorConstants.primary_black.withValues(alpha: .2)),
                   ),
                   child: Center(
                     child: Text(
@@ -458,8 +459,8 @@ class _VerticalCardState extends State<VerticalCard> {
                           color: ColorConstants.primary_white,
                           borderRadius: BorderRadius.circular(7),
                           border: Border.all(
-                              color:
-                                  ColorConstants.primary_black.withOpacity(.2)),
+                              color: ColorConstants.primary_black
+                                  .withValues(alpha: .2)),
                         ),
                         child: Center(
                           child: Text(
@@ -480,8 +481,8 @@ class _VerticalCardState extends State<VerticalCard> {
                           vertical: screenWidth * 0.015), // Responsive padding
                       decoration: BoxDecoration(
                         border: Border.all(
-                            color:
-                                ColorConstants.primary_black.withOpacity(.2)),
+                            color: ColorConstants.primary_black
+                                .withValues(alpha: .2)),
                         color: ColorConstants.primary_white,
                         borderRadius: BorderRadius.circular(10),
                       ),

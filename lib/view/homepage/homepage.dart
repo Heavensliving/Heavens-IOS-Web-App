@@ -92,10 +92,10 @@ class _HomepageState extends State<Homepage> {
       containerColor = Colors.red;
     }
     return Scaffold(
-      backgroundColor: Colors.grey.withOpacity(.1),
+      backgroundColor: Colors.grey.withValues(alpha: .1),
       // appBar: AppBar(
       //   toolbarHeight: 80,
-      //   backgroundColor: Colors.grey.withOpacity(.1),
+      //   backgroundColor: Colors.grey.withValues(alpha: .1),
       //   elevation: 0,
       //   leadingWidth: screenWidth * 0.6,
       //   leading: Padding(
@@ -389,7 +389,7 @@ class _HomepageState extends State<Homepage> {
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
-                                  color: Colors.black.withOpacity(0.5),
+                                  color: Colors.black.withValues(alpha: 0.5),
                                 ),
                               ),
                               hintText: "Select the reason",

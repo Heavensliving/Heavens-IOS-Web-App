@@ -40,7 +40,7 @@ class _RaisedTicketsState extends State<RaisedTickets> {
                 style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 18,
-                    color: ColorConstants.primary_black.withOpacity(.5)),
+                    color: ColorConstants.primary_black.withValues(alpha: .5)),
               ),
             )
           : SingleChildScrollView(

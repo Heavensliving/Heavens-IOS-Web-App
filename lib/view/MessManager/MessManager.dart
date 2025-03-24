@@ -36,9 +36,9 @@ class _MessmanagerState extends State<Messmanager> {
       initialIndex: 1,
       length: 3,
       child: Scaffold(
-        backgroundColor: ColorConstants.primary_white.withOpacity(.8),
+        backgroundColor: ColorConstants.primary_white.withValues(alpha: .8),
         appBar: AppBar(
-          backgroundColor: ColorConstants.primary_white.withOpacity(.8),
+          backgroundColor: ColorConstants.primary_white.withValues(alpha: .8),
           centerTitle: true,
           leading: SizedBox(),
           title: const Text(
@@ -49,7 +49,8 @@ class _MessmanagerState extends State<Messmanager> {
             indicatorColor: ColorConstants.dark_red2,
             indicatorWeight: 3,
             labelColor: ColorConstants.dark_red2,
-            unselectedLabelColor: ColorConstants.primary_black.withOpacity(.5),
+            unselectedLabelColor:
+                ColorConstants.primary_black.withValues(alpha: .5),
             tabs: const [
               Tab(text: "Yesterday"),
               Tab(text: "Today"),
@@ -64,7 +65,7 @@ class _MessmanagerState extends State<Messmanager> {
             buildMealList(context, offsetDays: 1),
           ],
         ),
-        
+
         //for maintanace ongoing floating button disabled and add addon button in bottom nav bar
 
         // floatingActionButton: FloatingActionButton(

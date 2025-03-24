@@ -46,7 +46,7 @@ class _CustomCardState extends State<CustomCard> {
                 style: TextStyle(
                     fontWeight: FontWeight.normal,
                     fontSize: 14,
-                    color: ColorConstants.primary_black.withOpacity(.5)),
+                    color: ColorConstants.primary_black.withValues(alpha: .5)),
               ),
               // SizedBox(
               //   height: 10,

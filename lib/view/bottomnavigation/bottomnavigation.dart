@@ -65,7 +65,7 @@
 //           backgroundColor: ColorConstants.primary_white,
 //           type: BottomNavigationBarType.fixed,
 //           currentIndex: selectedIndex,
-//           unselectedItemColor: Colors.grey.withOpacity(.5),
+//           unselectedItemColor: Colors.grey.withValues(alpha: .5),
 //           selectedItemColor: ColorConstants.dark_red2,
 //           showUnselectedLabels: true,
 //           onTap: (value) {
@@ -88,7 +88,6 @@
 //               selectedIndex = value;
 //             });
 
-            
 //           },
 //           items: [
 //             BottomNavigationBarItem(
@@ -204,7 +203,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           backgroundColor: ColorConstants.primary_white,
           type: BottomNavigationBarType.fixed,
           currentIndex: selectedIndex,
-          unselectedItemColor: Colors.grey.withOpacity(.5),
+          unselectedItemColor: Colors.grey.withValues(alpha: .5),
           selectedItemColor: ColorConstants.dark_red2,
           showUnselectedLabels: true,
           onTap: (value) {
@@ -263,7 +262,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
             //   label: "Orders",
             // ),
             BottomNavigationBarItem(
-              activeIcon: Icon(Icons.restaurant_menu_outlined), // New Addon icon
+              activeIcon:
+                  Icon(Icons.restaurant_menu_outlined), // New Addon icon
               icon: Icon(Icons.restaurant_menu_outlined),
               label: "Addon",
             ),

@@ -85,7 +85,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 17,
-                      color: ColorConstants.primary_black.withOpacity(.5)),
+                      color:
+                          ColorConstants.primary_black.withValues(alpha: .5)),
                 ),
               ),
             )
@@ -124,7 +125,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
                                         color: ColorConstants.primary_black
-                                            .withOpacity(.5)),
+                                            .withValues(alpha: .5)),
                                   ),
                                   SizedBox(height: 10),
                                   // List of items within this order
@@ -135,7 +136,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
                                         color: ColorConstants.primary_black
-                                            .withOpacity(.5)),
+                                            .withValues(alpha: .5)),
                                   ),
                                   SizedBox(height: 5),
                                   ...items.map((item) {
@@ -147,7 +148,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         style: TextStyle(
                                             fontSize: 14,
                                             // color: ColorConstants.dark_red
-                                            //     .withOpacity(.7),
+                                            //     .withValues(alpha: .7),
                                             fontWeight: FontWeight.w500),
                                       ),
                                     );

@@ -30,7 +30,7 @@ class _ResturantPageState extends State<ResturantPage> {
                   hintText: "Search dishes",
                   suffixIcon: Icon(
                     Icons.search,
-                    color: ColorConstants.primary_black.withOpacity(.5),
+                    color: ColorConstants.primary_black.withValues(alpha: .5),
                   ),
                 ),
                 SizedBox(
@@ -45,7 +45,7 @@ class _ResturantPageState extends State<ResturantPage> {
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
                               color: ColorConstants.primary_black
-                                  .withOpacity(.3))),
+                                  .withValues(alpha: .3))),
                       child: Row(
                         children: [
                           Icon(
@@ -75,7 +75,7 @@ class _ResturantPageState extends State<ResturantPage> {
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
                               color: ColorConstants.primary_black
-                                  .withOpacity(.3))),
+                                  .withValues(alpha: .3))),
                       child: Row(
                         children: [
                           Icon(

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/login_controller/LoginController.dart';
 import 'package:heavens_students/core/constants/constants.dart';
@@ -104,7 +103,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                             fontWeight: FontWeight.w500,
                                             fontSize: 13,
                                             color: ColorConstants.primary_black
-                                                .withOpacity(.5)),
+                                                .withValues(alpha: .5)),
                                       ),
                                       Text(
                                         "Rate per item:" +
@@ -113,7 +112,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                             fontWeight: FontWeight.w500,
                                             fontSize: 13,
                                             color: ColorConstants.primary_black
-                                                .withOpacity(.5)),
+                                                .withValues(alpha: .5)),
                                       ),
                                       SizedBox(
                                         height: 5,
@@ -150,7 +149,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(.2),
+                        color: Colors.grey.withValues(alpha: .2),
                         borderRadius: BorderRadius.circular(10)),
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                     child: Column(
@@ -179,7 +178,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                             //       textAlign: TextAlign.left,
                             //       style: TextStyle(
                             //           color: ColorConstants.primary_black
-                            //               .withOpacity(.5)),
+                            //               .withValues(alpha: .5)),
                             //       provider?.address ?? ""),
                             // ),
 
@@ -198,7 +197,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 ].join(",\n"),
                                 style: TextStyle(
                                   color: ColorConstants.primary_black
-                                      .withOpacity(.5),
+                                      .withValues(alpha: .5),
                                 ),
                               ),
                             ),
@@ -219,7 +218,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                             Text(
                                 style: TextStyle(
                                     color: ColorConstants.primary_black
-                                        .withOpacity(.5)),
+                                        .withValues(alpha: .5)),
                                 "6788787890989"),
                           ],
                         ),
@@ -242,7 +241,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(.1),
+                        color: Colors.grey.withValues(alpha: .1),
                         borderRadius: BorderRadius.circular(10)),
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                     child: Column(
@@ -251,8 +250,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                         Text(
                           "You Selected",
                           style: TextStyle(
-                              color:
-                                  ColorConstants.primary_black.withOpacity(.5)),
+                              color: ColorConstants.primary_black
+                                  .withValues(alpha: .5)),
                         ),
                         SizedBox(
                           height: 5,

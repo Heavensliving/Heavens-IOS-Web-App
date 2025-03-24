@@ -61,7 +61,8 @@ class _FinishSetupCardState extends State<FinishSetupCard> {
                   Text(
                     "To get the full access",
                     style: TextStyle(
-                        color: ColorConstants.primary_black.withOpacity(.5),
+                        color:
+                            ColorConstants.primary_black.withValues(alpha: .5),
                         fontWeight: FontWeight.w400,
                         fontSize: 15),
                   ),

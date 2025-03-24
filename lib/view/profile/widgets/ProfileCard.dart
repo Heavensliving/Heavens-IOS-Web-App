@@ -79,7 +79,8 @@ class ProfileCards extends StatelessWidget {
                       )
                     : Icon(
                         Icons.arrow_forward_ios_rounded,
-                        color: ColorConstants.primary_black.withOpacity(.5),
+                        color:
+                            ColorConstants.primary_black.withValues(alpha: .5),
                         size: 18,
                       )
               ],

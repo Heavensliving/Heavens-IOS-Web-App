@@ -59,7 +59,8 @@ class _SigninState extends State<Signin> {
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
-                        color: ColorConstants.primary_black.withOpacity(.5)),
+                        color:
+                            ColorConstants.primary_black.withValues(alpha: .5)),
                   ),
                   SizedBox(
                     height: 60,
@@ -72,8 +73,8 @@ class _SigninState extends State<Signin> {
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
-                            color:
-                                ColorConstants.primary_black.withOpacity(.9)),
+                            color: ColorConstants.primary_black
+                                .withValues(alpha: .9)),
                       ),
                       CustomTextField(
                         controller: EmailController,
@@ -103,8 +104,8 @@ class _SigninState extends State<Signin> {
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
-                            color:
-                                ColorConstants.primary_black.withOpacity(.9)),
+                            color: ColorConstants.primary_black
+                                .withValues(alpha: .9)),
                       ),
                       CustomTextField(
                         isPassword: true,
@@ -137,8 +138,8 @@ class _SigninState extends State<Signin> {
                         child: Text(
                           "Forgot Password?",
                           style: TextStyle(
-                              color:
-                                  ColorConstants.primary_black.withOpacity(.5),
+                              color: ColorConstants.primary_black
+                                  .withValues(alpha: .5),
                               fontWeight: FontWeight.w500),
                         ),
                       ),

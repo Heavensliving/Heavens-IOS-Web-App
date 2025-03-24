@@ -104,7 +104,7 @@ class _CafeState extends State<Cafe> {
             ),
           )
         : Scaffold(
-            backgroundColor: Colors.grey.withOpacity(0.1),
+            backgroundColor: Colors.grey.withValues(alpha: 0.1),
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(60),
               child: AppBar(

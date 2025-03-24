@@ -46,7 +46,8 @@ class _MyOrdersState extends State<MyOrders>
           indicatorWeight: 3,
           labelColor: ColorConstants.dark_red,
           indicatorSize: TabBarIndicatorSize.tab,
-          unselectedLabelColor: ColorConstants.primary_black.withOpacity(.5),
+          unselectedLabelColor:
+              ColorConstants.primary_black.withValues(alpha: .5),
           controller: tabController,
           tabs: [
             Tab(text: "Ongoing"),

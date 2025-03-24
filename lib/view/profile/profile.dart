@@ -80,7 +80,7 @@ class _ProfilescreenState extends State<Profilescreen> {
         Stack(
           children: [
             CircleAvatar(
-              backgroundColor: Colors.grey.withOpacity(.2),
+              backgroundColor: Colors.grey.withValues(alpha: .2),
               backgroundImage: _getProfileImage(
                 student?.photo,
                 picController.profilePic,
@@ -134,7 +134,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                 fontWeight: FontWeight.w500,
                 fontSize: 14,
                 overflow: TextOverflow.ellipsis,
-                color: ColorConstants.primary_black.withOpacity(.5),
+                color: ColorConstants.primary_black.withValues(alpha: .5),
               ),
             ),
           ],
@@ -222,7 +222,7 @@ class _ProfilescreenState extends State<Profilescreen> {
           icon: icon,
           lang: isLangCard,
         ),
-        Divider(color: ColorConstants.primary_black.withOpacity(.1)),
+        Divider(color: ColorConstants.primary_black.withValues(alpha: .1)),
       ],
     );
   }
@@ -238,7 +238,7 @@ class _ProfilescreenState extends State<Profilescreen> {
           data: "Logout",
           icon: Icons.logout_outlined,
         ),
-        Divider(color: ColorConstants.primary_black.withOpacity(.1)),
+        Divider(color: ColorConstants.primary_black.withValues(alpha: .1)),
       ],
     );
   }

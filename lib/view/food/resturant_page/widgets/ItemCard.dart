@@ -123,7 +123,7 @@ class _ItemCardState extends State<ItemCard> {
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
-                      color: ColorConstants.primary_black.withOpacity(.5),
+                      color: ColorConstants.primary_black.withValues(alpha: .5),
                     ),
                   ),
                   GestureDetector(
@@ -134,7 +134,8 @@ class _ItemCardState extends State<ItemCard> {
                     },
                     child: Text(_isExpanded ? "Less" : "More",
                         style: TextStyle(
-                            color: ColorConstants.primary_black.withOpacity(.8),
+                            color: ColorConstants.primary_black
+                                .withValues(alpha: .8),
                             fontWeight: FontWeight.bold)),
                   )
                 ],

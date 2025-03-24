@@ -21,17 +21,17 @@ class LoginCard extends StatelessWidget {
             Container(
               height: 1,
               width: 100,
-              color: ColorConstants.primary_black.withOpacity(.5),
+              color: ColorConstants.primary_black.withValues(alpha: .5),
             ),
             Text(
               "   Or Sign In With   ",
               style: TextStyle(
-                  color: ColorConstants.primary_black.withOpacity(.5)),
+                  color: ColorConstants.primary_black.withValues(alpha: .5)),
             ),
             Container(
               height: 1,
               width: 100,
-              color: ColorConstants.primary_black.withOpacity(.5),
+              color: ColorConstants.primary_black.withValues(alpha: .5),
             ),
           ],
         ),

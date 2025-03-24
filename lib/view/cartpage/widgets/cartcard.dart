@@ -107,8 +107,8 @@ class _CartCardState extends State<CartCard> {
                     decoration: BoxDecoration(
                       border: Border.all(
                           color: const Color.fromARGB(255, 18, 74, 20)
-                              .withOpacity(.8)),
-                      color: Colors.green.withOpacity(.2),
+                              .withValues(alpha: .8)),
+                      color: Colors.green.withValues(alpha: .2),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Row(
@@ -183,8 +183,8 @@ class _CartCardState extends State<CartCard> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
-                              color:
-                                  ColorConstants.primary_black.withOpacity(.7)),
+                              color: ColorConstants.primary_black
+                                  .withValues(alpha: .7)),
                         ),
                         InkWell(
                           onTap: () {

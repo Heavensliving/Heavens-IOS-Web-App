@@ -78,7 +78,7 @@ class _ImageSliderState extends State<ImageSlider> {
                       shape: BoxShape.circle,
                       color: selectedPage == index
                           ? ColorConstants.dark_red2
-                          : ColorConstants.primary_black.withOpacity(0.4),
+                          : ColorConstants.primary_black.withValues(alpha: 0.4),
                     ),
                   );
                 }),

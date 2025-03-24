@@ -75,7 +75,8 @@ class _CustomMessMangerCardState extends State<CustomMessMangerCard> {
                       style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 15,
-                        color: ColorConstants.primary_black.withOpacity(0.5),
+                        color:
+                            ColorConstants.primary_black.withValues(alpha: 0.5),
                       ),
                     ),
                   ],
@@ -334,7 +335,7 @@ class _CustomMessMangerCardState extends State<CustomMessMangerCard> {
             style: TextStyle(
               fontWeight: FontWeight.normal,
               fontSize: 15,
-              color: ColorConstants.primary_black.withOpacity(0.5),
+              color: ColorConstants.primary_black.withValues(alpha: 0.5),
             ),
           )
         else
@@ -346,7 +347,7 @@ class _CustomMessMangerCardState extends State<CustomMessMangerCard> {
               style: TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: 15,
-                color: ColorConstants.primary_black.withOpacity(0.5),
+                color: ColorConstants.primary_black.withValues(alpha: 0.5),
               ),
             ),
             separatorBuilder: (context, index) => const SizedBox(height: 10),

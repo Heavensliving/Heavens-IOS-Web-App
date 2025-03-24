@@ -22,8 +22,8 @@ class NoOrderscreen extends StatelessWidget {
           Text(
             "Order is empty. You can make orders from the home screen.",
             textAlign: TextAlign.center,
-            style:
-                TextStyle(color: ColorConstants.primary_black.withOpacity(.7)),
+            style: TextStyle(
+                color: ColorConstants.primary_black.withValues(alpha: .7)),
           ),
           SizedBox(height: 100),
           Custombutton(

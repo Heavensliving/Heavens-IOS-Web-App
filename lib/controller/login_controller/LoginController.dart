@@ -183,7 +183,7 @@ class LoginController with ChangeNotifier {
         log("it sends");
         await ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            backgroundColor: ColorConstants.primary_black.withOpacity(.3),
+            backgroundColor: ColorConstants.primary_black.withValues(alpha: .3),
             content: Text("We've Successfully Sent You an Email!"),
           ),
         );

@@ -12,7 +12,7 @@ void showCustomSnackbar(BuildContext context, String message) {
           fontWeight: FontWeight.w400,
         ),
       ),
-      backgroundColor: ColorConstants.primary_black.withOpacity(.5),
+      backgroundColor: ColorConstants.primary_black.withValues(alpha: .5),
       duration: Duration(seconds: 3),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),

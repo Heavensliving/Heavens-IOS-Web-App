@@ -73,7 +73,7 @@
 //                   style: TextStyle(
 //                       fontWeight: FontWeight.w500,
 //                       fontSize: 17,
-//                       color: ColorConstants.primary_black.withOpacity(.5)),
+//                       color: ColorConstants.primary_black.withValues(alpha: .5)),
 //                 ),
 //               ),
 //             )
@@ -135,7 +135,7 @@
 //                             return Container(
 //                               decoration: BoxDecoration(
 //                                 borderRadius: BorderRadius.circular(10),
-//                                 color: ColorConstants.dark_red.withOpacity(.1),
+//                                 color: ColorConstants.dark_red.withValues(alpha: .1),
 //                               ),
 //                               padding: EdgeInsets.symmetric(vertical: 5),
 //                               child: VerticalCard(
@@ -201,7 +201,7 @@
 //                                     ),
 //                                   ),
 //                                   backgroundColor: ColorConstants.primary_black
-//                                       .withOpacity(.5),
+//                                       .withValues(alpha: .5),
 //                                   duration: Duration(seconds: 3),
 //                                   shape: RoundedRectangleBorder(
 //                                     borderRadius: BorderRadius.circular(10),
@@ -254,7 +254,7 @@
 //         decoration: BoxDecoration(
 //           color: selectedMeal == mealType
 //               ? ColorConstants.dark_red
-//               : ColorConstants.dark_red.withOpacity(0.1),
+//               : ColorConstants.dark_red.withValues(alpha: 0.1),
 //           borderRadius: BorderRadius.circular(20),
 //         ),
 //         child: Text(
@@ -449,11 +449,12 @@ class _MealSelectionPageState extends State<MealSelectionPage> {
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 17,
-                        color: ColorConstants.primary_black.withOpacity(.5),
+                        color:
+                            ColorConstants.primary_black.withValues(alpha: .5),
+                      ),
                     ),
-                  ),
-                )
-              ): Column(
+                  ))
+              : Column(
                   children: [
                     Expanded(
                       child: SingleChildScrollView(
@@ -463,7 +464,8 @@ class _MealSelectionPageState extends State<MealSelectionPage> {
                           children: [
                             widget.selectedmeal == null
                                 ? Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Select add-on",
@@ -506,7 +508,8 @@ class _MealSelectionPageState extends State<MealSelectionPage> {
                                 return Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: ColorConstants.dark_red.withOpacity(.1),
+                                    color: ColorConstants.dark_red
+                                        .withValues(alpha: .1),
                                   ),
                                   padding: EdgeInsets.symmetric(vertical: 5),
                                   child: VerticalCard(
@@ -578,8 +581,9 @@ class _MealSelectionPageState extends State<MealSelectionPage> {
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
-                                      backgroundColor:
-                                          ColorConstants.primary_black.withOpacity(.5),
+                                      backgroundColor: ColorConstants
+                                          .primary_black
+                                          .withValues(alpha: .5),
                                       duration: Duration(seconds: 3),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10),
@@ -637,7 +641,7 @@ class _MealSelectionPageState extends State<MealSelectionPage> {
         decoration: BoxDecoration(
           color: selectedMeal == mealType
               ? ColorConstants.dark_red
-              : ColorConstants.dark_red.withOpacity(0.1),
+              : ColorConstants.dark_red.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
@@ -655,109 +659,112 @@ class _MealSelectionPageState extends State<MealSelectionPage> {
   }
 
   void showConfirmOrderDialog(
-    BuildContext context, List foodItems, String mealType) {
-  bool _isProcessingOrder = false; // Local variable inside the function
-  showDialog(
-    context: context,
-    builder: (context) => StatefulBuilder(
-      builder: (context, setState) {
-        return AlertDialog(
-          title: Text("Confirm Order"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Meal Type: $mealType',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: mealType == 'Veg' ? Colors.green : Colors.red,
-                ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'Food Items:',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 5),
-              for (var item in foodItems)
-                Text(
-                  '- ${item["name"]} (${item["quantity"]})',
-                  style: TextStyle(fontSize: 14),
-                ),
-              SizedBox(height: 20),
-            ],
-          ),
-          actions: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+      BuildContext context, List foodItems, String mealType) {
+    bool _isProcessingOrder = false; // Local variable inside the function
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+            title: Text("Confirm Order"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Custombutton(
-  onTap: () async {
-    setState(() {
-      _isProcessingOrder = true; // Show loading indicator
-    });
-
-    var provider = context.read<MessController>();
-    final formattedDate = DateFormat('MMM d, yyyy').format(DateTime.now());
-
-    await provider.postAddOns(
-      context,
-      mealType,
-      provider.addOns,
-      "true",
-      "$formattedDate",
-    );
-
-    log("Addons ordered: ${provider.addOns}");
-
-    setState(() {
-      _isProcessingOrder = false; // Hide loading indicator
-    });
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ConfirmAnimated(
-          isAddons: true,
-        ),
-      ),
-    );
-  },
-  text: _isProcessingOrder ? "Processing..." : "Confirm Order", // Avoid null
-  fontSize: 17,
-  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-  child: _isProcessingOrder
-      ? SizedBox(
-          height: 24,
-          width: 24,
-          child: CircularProgressIndicator(
-            color: Colors.white,
-            strokeWidth: 2,
-          ),
-        )
-      : null,
-),
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (!_isProcessingOrder) Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(color: Colors.red),
+                Text(
+                  'Meal Type: $mealType',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: mealType == 'Veg' ? Colors.green : Colors.red,
                   ),
                 ),
+                SizedBox(height: 10),
+                Text(
+                  'Food Items:',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 5),
+                for (var item in foodItems)
+                  Text(
+                    '- ${item["name"]} (${item["quantity"]})',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                SizedBox(height: 20),
               ],
             ),
-          ],
-        );
-      },
-    ),
-  );
-}
+            actions: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Custombutton(
+                      onTap: () async {
+                        setState(() {
+                          _isProcessingOrder = true; // Show loading indicator
+                        });
 
+                        var provider = context.read<MessController>();
+                        final formattedDate =
+                            DateFormat('MMM d, yyyy').format(DateTime.now());
+
+                        await provider.postAddOns(
+                          context,
+                          mealType,
+                          provider.addOns,
+                          "true",
+                          "$formattedDate",
+                        );
+
+                        log("Addons ordered: ${provider.addOns}");
+
+                        setState(() {
+                          _isProcessingOrder = false; // Hide loading indicator
+                        });
+
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ConfirmAnimated(
+                              isAddons: true,
+                            ),
+                          ),
+                        );
+                      },
+                      text: _isProcessingOrder
+                          ? "Processing..."
+                          : "Confirm Order", // Avoid null
+                      fontSize: 17,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      child: _isProcessingOrder
+                          ? SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : null,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      if (!_isProcessingOrder) Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
 }

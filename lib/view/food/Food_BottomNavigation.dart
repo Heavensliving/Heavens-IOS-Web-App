@@ -59,7 +59,7 @@ class _FoodBottomNavigationState extends State<FoodBottomNavigation> {
           type: BottomNavigationBarType.fixed,
           currentIndex: selectedIndex,
           // fixedColor: ColorConstants.rose,
-          unselectedItemColor: Colors.grey.withOpacity(.5),
+          unselectedItemColor: Colors.grey.withValues(alpha: .5),
           selectedItemColor: ColorConstants.dark_red2,
 
           // iconSize: 10,

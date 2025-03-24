@@ -142,7 +142,7 @@ class _GeneralInformationState extends State<GeneralInformation> {
                   Text(
                     "Maximum File Size 1 MB",
                     style: TextStyle(
-                        color: Colors.red.withOpacity(.8), fontSize: 10),
+                        color: Colors.red.withValues(alpha: .8), fontSize: 10),
                   ),
                   SizedBox(
                     height: 20,
@@ -178,7 +178,7 @@ class _GeneralInformationState extends State<GeneralInformation> {
                                       borderRadius: BorderRadius.circular(10),
                                       border: Border.all(
                                         color: ColorConstants.primary_black
-                                            .withOpacity(.3),
+                                            .withValues(alpha: .3),
                                       ),
                                     ),
                                     child: (provider.frontImage == null &&
@@ -192,7 +192,7 @@ class _GeneralInformationState extends State<GeneralInformation> {
                                             Icons.add_a_photo_outlined,
                                             size: 30,
                                             color: ColorConstants.primary_black
-                                                .withOpacity(.5),
+                                                .withValues(alpha: .5),
                                           )
                                         : login_controller.adharFrontImage !=
                                                     null &&
@@ -218,7 +218,7 @@ class _GeneralInformationState extends State<GeneralInformation> {
                                 "Front page",
                                 style: TextStyle(
                                     color: ColorConstants.primary_black
-                                        .withOpacity(.5),
+                                        .withValues(alpha: .5),
                                     fontWeight: FontWeight.w500,
                                     fontSize: 15),
                               ),
@@ -248,7 +248,7 @@ class _GeneralInformationState extends State<GeneralInformation> {
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(
                                       color: ColorConstants.primary_black
-                                          .withOpacity(.3),
+                                          .withValues(alpha: .3),
                                     ),
                                   ),
                                   child: (provider.backImage == null &&
@@ -261,7 +261,7 @@ class _GeneralInformationState extends State<GeneralInformation> {
                                           Icons.add_a_photo_outlined,
                                           size: 30,
                                           color: ColorConstants.primary_black
-                                              .withOpacity(.5),
+                                              .withValues(alpha: .5),
                                         )
                                       : login_controller.adharBackImage != "" &&
                                               login_controller.adharBackImage !=
@@ -281,7 +281,7 @@ class _GeneralInformationState extends State<GeneralInformation> {
                                 "Back page",
                                 style: TextStyle(
                                     color: ColorConstants.primary_black
-                                        .withOpacity(.5),
+                                        .withValues(alpha: .5),
                                     fontWeight: FontWeight.w500,
                                     fontSize: 15),
                               ),
@@ -323,8 +323,8 @@ class _GeneralInformationState extends State<GeneralInformation> {
                         customSnackBar(
                           message: "Add profile picture",
                           context: context,
-                          backgroundColor:
-                              ColorConstants.primary_black.withOpacity(.5),
+                          backgroundColor: ColorConstants.primary_black
+                              .withValues(alpha: .5),
                         );
                         Navigator.push(
                           context,
@@ -368,7 +368,6 @@ class _GeneralInformationState extends State<GeneralInformation> {
                         }
                         // Check for back image upload
                         else if (provider.backImage == null &&
-                        
                             (login_controller.adharBackImage == null ||
                                 login_controller.adharBackImage!.isEmpty)) {
                           ScaffoldMessenger.of(context).showSnackBar(

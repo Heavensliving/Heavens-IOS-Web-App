@@ -51,7 +51,8 @@ class _PersonalInformationState extends State<PersonalInformation>
             indicatorColor: ColorConstants.dark_red2,
             indicatorWeight: 3,
             labelColor: ColorConstants.dark_red2,
-            unselectedLabelColor: ColorConstants.primary_black.withOpacity(.5),
+            unselectedLabelColor:
+                ColorConstants.primary_black.withValues(alpha: .5),
             tabs: [
               Tab(text: "Personal Information"),
               Tab(text: "Parent Details"),

@@ -25,7 +25,7 @@ class DeliveredDetailCard extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 23,
-              backgroundColor: ColorConstants.dark_red.withOpacity(.1),
+              backgroundColor: ColorConstants.dark_red.withValues(alpha: .1),
               child: Center(
                 child: Icon(
                   Icons.shopping_bag_outlined,
@@ -48,7 +48,8 @@ class DeliveredDetailCard extends StatelessWidget {
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 13,
-                      color: ColorConstants.primary_black.withOpacity(.5)),
+                      color:
+                          ColorConstants.primary_black.withValues(alpha: .5)),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -85,7 +86,7 @@ class DeliveredDetailCard extends StatelessWidget {
                   color: status == "delivered" || status == "cancelled"
                       ? const Color.fromARGB(255, 255, 211, 208)
                       : const Color.fromARGB(255, 132, 197, 135)
-                          .withOpacity(.5)),
+                          .withValues(alpha: .5)),
             ),
             SizedBox(
               height: 5,
@@ -93,7 +94,7 @@ class DeliveredDetailCard extends StatelessWidget {
             Text(
               date,
               style: TextStyle(
-                color: ColorConstants.primary_black.withOpacity(.5),
+                color: ColorConstants.primary_black.withValues(alpha: .5),
                 fontSize: 15,
                 fontWeight: FontWeight.normal,
               ),

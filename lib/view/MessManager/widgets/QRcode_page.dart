@@ -87,7 +87,7 @@ class _QrcodePageState extends State<QrcodePage> {
             Container(
               height: screenHeight * 0.7,
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-              color: Colors.grey.withOpacity(.2),
+              color: Colors.grey.withValues(alpha: .2),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,8 +98,8 @@ class _QrcodePageState extends State<QrcodePage> {
                       Text(
                         "Meal Type",
                         style: TextStyle(
-                            color:
-                                ColorConstants.primary_black.withOpacity(.5)),
+                            color: ColorConstants.primary_black
+                                .withValues(alpha: .5)),
                       ),
                       Text(
                         widget.mealType,
@@ -113,8 +113,8 @@ class _QrcodePageState extends State<QrcodePage> {
                       Text(
                         "Meal Time",
                         style: TextStyle(
-                            color:
-                                ColorConstants.primary_black.withOpacity(.5)),
+                            color: ColorConstants.primary_black
+                                .withValues(alpha: .5)),
                       ),
                       Text(
                         time,
@@ -128,8 +128,8 @@ class _QrcodePageState extends State<QrcodePage> {
                       Text(
                         "Location",
                         style: TextStyle(
-                            color:
-                                ColorConstants.primary_black.withOpacity(.5)),
+                            color: ColorConstants.primary_black
+                                .withValues(alpha: .5)),
                       ),
                       Text(
                         context
@@ -153,8 +153,8 @@ class _QrcodePageState extends State<QrcodePage> {
                       Text(
                         widget.isAddons ? "Adon Item" : "Food Items",
                         style: TextStyle(
-                            color:
-                                ColorConstants.primary_black.withOpacity(.5)),
+                            color: ColorConstants.primary_black
+                                .withValues(alpha: .5)),
                       ),
                       widget.isAddons
                           ? Expanded(
@@ -198,8 +198,8 @@ class _QrcodePageState extends State<QrcodePage> {
                       Text(
                         "Booking Status",
                         style: TextStyle(
-                            color:
-                                ColorConstants.primary_black.withOpacity(.5)),
+                            color: ColorConstants.primary_black
+                                .withValues(alpha: .5)),
                       ),
                       Text(
                         widget.bookingStatus == "delivered"

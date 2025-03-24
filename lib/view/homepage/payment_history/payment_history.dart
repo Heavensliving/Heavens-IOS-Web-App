@@ -43,7 +43,7 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                 style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 18,
-                    color: ColorConstants.primary_black.withOpacity(.5)),
+                    color: ColorConstants.primary_black.withValues(alpha: .5)),
               ))
             : ListView.separated(
                 itemBuilder: (context, index) {
@@ -98,7 +98,7 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                                       text: "₹ ",
                                       style: TextStyle(
                                           color: ColorConstants.primary_black
-                                              .withOpacity(.5),
+                                              .withValues(alpha: .5),
                                           fontSize: 18),
                                       children: [
                                         TextSpan(
@@ -125,7 +125,7 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                                   Text("UPI",
                                       style: TextStyle(
                                           color: ColorConstants.primary_black
-                                              .withOpacity(.5),
+                                              .withValues(alpha: .5),
                                           fontWeight: FontWeight.w400,
                                           fontSize: 16)),
                                 ],
@@ -142,7 +142,7 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                                       "${provider.feesModel?[index].paymentClearedMonthYear}",
                                       style: TextStyle(
                                           color: ColorConstants.primary_black
-                                              .withOpacity(.5),
+                                              .withValues(alpha: .5),
                                           fontWeight: FontWeight.w400,
                                           fontSize: 16)),
                                 ],
@@ -158,7 +158,7 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                                   Text(formattedPaidDate,
                                       style: TextStyle(
                                           color: ColorConstants.primary_black
-                                              .withOpacity(.5),
+                                              .withValues(alpha: .5),
                                           fontWeight: FontWeight.w400,
                                           fontSize: 16)),
                                 ],
@@ -202,7 +202,8 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                           },
                           child: Icon(
                             Icons.cloud_download_outlined,
-                            color: ColorConstants.primary_black.withOpacity(.5),
+                            color: ColorConstants.primary_black
+                                .withValues(alpha: .5),
                           ),
                         ),
                       )
