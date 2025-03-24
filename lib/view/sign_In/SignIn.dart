@@ -7,7 +7,6 @@ import 'package:heavens_students/core/constants/constants.dart';
 import 'package:heavens_students/core/widgets/CustomButton.dart';
 import 'package:heavens_students/core/widgets/CustomTextformField.dart';
 import 'package:heavens_students/view/sign_In/forgot_password/ForgotPassword.dart';
-import 'package:heavens_students/view/sign_In/widgets/login_card.dart';
 import 'package:provider/provider.dart';
 
 class Signin extends StatefulWidget {

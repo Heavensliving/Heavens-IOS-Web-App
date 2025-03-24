@@ -1,78 +1,98 @@
-// import 'dart:async';
-// import 'package:connectivity_plus/connectivity_plus.dart';
-// import 'package:flutter/material.dart';
-// import 'package:heavens_students/view/bottomnavigation/bottomnavigation.dart';
-
-// class NetworkController extends ChangeNotifier {
-//   final Connectivity connectivity = Connectivity();
-//   late StreamSubscription _connectivitySubscription;
-//   ConnectivityResult _connectivityResult = ConnectivityResult.none;
-
-//   NetworkController() {
-//     _connectivitySubscription =
-//         connectivity.onConnectivityChanged.listen((event) {
-//       if (event.isNotEmpty) {
-//         _updateConnectionStatus(event.first);
-//       }
-//     });
-//   }
-
-//   ConnectivityResult get connectivityResult => _connectivityResult;
-
-//   void _updateConnectionStatus(ConnectivityResult result) {
-//     _connectivityResult = result;
-//     notifyListeners();
-//   }
-
-//   void handleNavigation(BuildContext context) {
-//     WidgetsBinding.instance.addPostFrameCallback((_) {
-//       if (context.mounted) {
-//         if (_connectivityResult == ConnectivityResult.none) {
-//           Navigator.pushNamed(context, "/nointernet");
-//         } else {
-//           Navigator.pushAndRemoveUntil(
-//             context,
-//             MaterialPageRoute(
-//               builder: (context) => BottomNavigation(initialIndex: 0),
-//             ),
-//             (route) => false,
-//           );
-//         }
-//       }
-//     });
-//   }
-
-//   @override
-//   void dispose() {
-//     // Cancel the subscription when the controller is disposed
-//     _connectivitySubscription.cancel();
-//     super.dispose();
-//   }
-// }
-
 import 'dart:async';
 import 'dart:developer';
-import 'package:heavens_students/controller/profile_controller/ProfileController.dart';
-import 'package:heavens_students/controller/profile_controller/profilePic_controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:heavens_students/core/constants/custom_scafold.dart';
 import 'package:heavens_students/view/bottomnavigation/bottomnavigation.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NetworkController extends ChangeNotifier {
+  // final Connectivity connectivity = Connectivity();
+  // late StreamSubscription _connectivitySubscription;
+  // ConnectivityResult _connectivityResult = ConnectivityResult.none;
+
+  // NetworkController() {
+  //   _connectivitySubscription =
+  //       connectivity.onConnectivityChanged.listen((event) {
+  //     if (event.isNotEmpty) {
+  //       _updateConnectionStatus(event.first);
+  //       // handleNavigation(con);
+  //     }
+  //   });
+  // }
+
+  // ConnectivityResult get connectivityResult => _connectivityResult;
+  // void _updateConnectionStatus(ConnectivityResult result) {
+  //   _connectivityResult = result;
+  //   notifyListeners();
+  // }
+
+  // void handleNavigation(BuildContext context) {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     if (context.mounted) {
+  //       if (_connectivityResult == ConnectivityResult.none) {
+  //         Navigator.pushNamed(context, "/nointernet");
+  //       }
+  //     }
+  //   });
+  // }
+
   final Connectivity connectivity = Connectivity();
   late StreamSubscription _connectivitySubscription;
   ConnectivityResult _connectivityResult = ConnectivityResult.none;
+  BuildContext? _context;
 
   NetworkController() {
+    _init();
+  }
+
+  // Call this when you have a valid context
+  void setContext(BuildContext context) {
+    _context = context;
+    _checkInitialConnectivity();
+  }
+
+  Future<void> _init() async {
+    final results = await connectivity.checkConnectivity();
+    _updateConnectionStatus(_determinePrimaryStatus(results));
+
     _connectivitySubscription =
-        connectivity.onConnectivityChanged.listen((event) {
-      if (event.isNotEmpty) {
-        _updateConnectionStatus(event.first);
+        connectivity.onConnectivityChanged.listen((results) {
+      if (results.isNotEmpty) {
+        final newStatus = _determinePrimaryStatus(results);
+        _updateConnectionStatus(newStatus);
+        _handleConnectivityChange(newStatus);
+      }
+    });
+  }
+
+  Future<void> _checkInitialConnectivity() async {
+    final results = await connectivity.checkConnectivity();
+    final status = _determinePrimaryStatus(results);
+    _updateConnectionStatus(status);
+    _handleConnectivityChange(status);
+  }
+
+  ConnectivityResult _determinePrimaryStatus(List<ConnectivityResult> results) {
+    return results.contains(ConnectivityResult.none)
+        ? ConnectivityResult.none
+        : results.firstWhere(
+            (result) => result != ConnectivityResult.none,
+            orElse: () => ConnectivityResult.none,
+          );
+  }
+
+  void _handleConnectivityChange(ConnectivityResult result) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_context != null && _context!.mounted) {
+        if (result == ConnectivityResult.none) {
+          Navigator.of(_context!).pushNamedAndRemoveUntil(
+            '/nointernet',
+            (route) => route.settings.name == '/nointernet',
+          );
+        }
       }
     });
   }
@@ -84,23 +104,28 @@ class NetworkController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void handleNavigation(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (context.mounted) {
-        if (_connectivityResult == ConnectivityResult.none) {
-          Navigator.pushNamed(context, "/nointernet");
-        } else {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BottomNavigation(initialIndex: 0),
-            ),
-            (route) => false,
-          );
-        }
-      }
-    });
-  }
+  // Future<void> _checkInitialConnectivity() async {
+  //   final result = await connectivity.checkConnectivity();
+  //   _updateConnectionStatus(result);
+  // }
+
+  // void handleNavigation() {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     if (_connectivityResult == ConnectivityResult.none) {
+  //       // Navigate to no internet screen if there's no connectivity
+  //       Navigator.pushNamed(context, "/nointernet");
+  //     } else {
+  //       // Navigate to the main screen if connected
+  //       Navigator.pushAndRemoveUntil(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => BottomNavigation(initialIndex: 0),
+  //         ),
+  //         (route) => false,
+  //       );
+  //     }
+  //   });
+  // }
 
   @override
   void dispose() {
@@ -147,24 +172,22 @@ class NetworkController extends ChangeNotifier {
     }
   }
 
-  checkAccessToken(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final accessToken = prefs.getString("access_token") ?? "";
-    // Duration tokenTime = JwtDecoder.getTokenTime(accessToken);
-    DateTime expirationDate = JwtDecoder.getExpirationDate(accessToken);
-    bool isTokenExpired = JwtDecoder.isExpired(accessToken);
-    log("Token is expired or not ----${isTokenExpired}");
-    log("expiray date ----${expirationDate}");
-    if (isTokenExpired) {
-      log("Token is expired.");
-      await prefs.clear();
-      await context.read<ProfileController>().logout();
-      context.read<PicController>().profilePic = null;
+  Future<void> checkAccessToken({
+    required Future<void> Function() onLogout,
+    required void Function() navigateToSignIn,
+  }) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final accessToken = prefs.getString("access_token") ?? "";
 
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil('/signin', (Route<dynamic> route) => false);
-    } else {
-      log("Token is valid.");
+      if (accessToken.isEmpty || JwtDecoder.isExpired(accessToken)) {
+        log("Token expired or missing");
+        await prefs.clear();
+        await onLogout();
+        navigateToSignIn();
+      }
+    } catch (e, stackTrace) {
+      log("Token validation failed", error: e, stackTrace: stackTrace);
     }
   }
 }

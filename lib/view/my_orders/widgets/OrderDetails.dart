@@ -26,19 +26,19 @@ class OrderDetails extends StatefulWidget {
 
 class _OrderDetailsState extends State<OrderDetails> {
   @override
-  void initState() {}
-  final List<IconData> icons = [
-    Icons.shopping_bag_outlined,
-    Icons.local_shipping_outlined,
-    Icons.assignment_turned_in_outlined,
-    Icons.check_circle_outline,
-    Icons.receipt_long_outlined,
-    Icons.shopping_cart_outlined
-    // Add more icons as needed
-  ];
+  // void initState() {}
+  // final List<IconData> icons = [
+  //   Icons.shopping_bag_outlined,
+  //   Icons.local_shipping_outlined,
+  //   Icons.assignment_turned_in_outlined,
+  //   Icons.check_circle_outline,
+  //   Icons.receipt_long_outlined,
+  //   Icons.shopping_cart_outlined
+  //   // Add more icons as needed
+  // ];
   @override
   Widget build(BuildContext context) {
-    TextEditingController rate_controller = TextEditingController();
+    // TextEditingController rate_controller = TextEditingController();
     var provider = context.watch<LoginController>().studentDetailModel?.student;
     return Scaffold(
       appBar: AppBar(
@@ -75,7 +75,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                     //   date: widget.date,
                     // ),
                     itemBuilder: (context, index) {
-                      var status = widget.status;
+                      // var status = widget.status;
                       return Column(
                         children: [
                           Row(

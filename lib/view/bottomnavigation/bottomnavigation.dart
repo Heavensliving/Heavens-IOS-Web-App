@@ -141,9 +141,7 @@ import 'package:heavens_students/core/constants/constants.dart';
 import 'package:heavens_students/core/widgets/customSnackbar.dart';
 import 'package:heavens_students/view/MessManager/AddOnPage/AddonPage.dart';
 import 'package:heavens_students/view/MessManager/MessManager.dart';
-import 'package:heavens_students/view/cafe/cafe.dart';
 import 'package:heavens_students/view/homepage/homepage.dart';
-import 'package:heavens_students/view/my_orders/MyOrders.dart';
 import 'package:heavens_students/view/profile/profile.dart';
 import 'package:provider/provider.dart';
 

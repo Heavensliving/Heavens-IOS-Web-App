@@ -52,8 +52,8 @@ class _CafeState extends State<Cafe> {
     }
     var imageController =
         context.watch<CarousalImageController>().carousalModels;
-    var cafe_controller = context.watch<CafeController>();
-    double screenWidth = MediaQuery.of(context).size.width;
+    // var cafe_controller = context.watch<CafeController>();
+    // double screenWidth = MediaQuery.of(context).size.width;
     return iscafeclosed
         ? Scaffold(
             body: Padding(
