@@ -1,3 +1,37 @@
+// import 'dart:async';
+// import 'package:connectivity_plus/connectivity_plus.dart';
+// import 'package:flutter/material.dart';
+// import 'package:heavens_students/view/bottomnavigation/bottomnavigation.dart';
+
+// class NetworkController extends ChangeNotifier {
+//   final Connectivity connectivity = Connectivity();
+//   late StreamSubscription _connectivitySubscription;
+//   ConnectivityResult _connectivityResult = ConnectivityResult.none;
+
+//   NetworkController() {
+//     _connectivitySubscription =
+//         connectivity.onConnectivityChanged.listen((event) {
+//       if (event.isNotEmpty) {
+//         _updateConnectionStatus(event.first);
+//       }
+//     });
+//   }
+
+//   ConnectivityResult get connectivityResult => _connectivityResult;
+
+//   void _updateConnectionStatus(ConnectivityResult result) {
+//     _connectivityResult = result;
+//     notifyListeners();
+//   }
+
+//   @override
+//   void dispose() {
+//     // Cancel the subscription when the controller is disposed
+//     _connectivitySubscription.cancel();
+//     super.dispose();
+//   }
+// }
+
 <<<<<<< HEAD
 =======
 // import 'dart:async';
@@ -35,40 +69,6 @@
 // }
 
 >>>>>>> 8831dc7 (changes added in connectivity controller)
-// import 'dart:async';
-// import 'package:connectivity_plus/connectivity_plus.dart';
-// import 'package:flutter/material.dart';
-// import 'package:heavens_students/view/bottomnavigation/bottomnavigation.dart';
-
-// class NetworkController extends ChangeNotifier {
-//   final Connectivity connectivity = Connectivity();
-//   late StreamSubscription _connectivitySubscription;
-//   ConnectivityResult _connectivityResult = ConnectivityResult.none;
-
-//   NetworkController() {
-//     _connectivitySubscription =
-//         connectivity.onConnectivityChanged.listen((event) {
-//       if (event.isNotEmpty) {
-//         _updateConnectionStatus(event.first);
-//       }
-//     });
-//   }
-
-//   ConnectivityResult get connectivityResult => _connectivityResult;
-
-//   void _updateConnectionStatus(ConnectivityResult result) {
-//     _connectivityResult = result;
-//     notifyListeners();
-//   }
-
-//   @override
-//   void dispose() {
-//     // Cancel the subscription when the controller is disposed
-//     _connectivitySubscription.cancel();
-//     super.dispose();
-//   }
-// }
-
 import 'dart:async';
 import 'dart:developer';
 import 'package:heavens_students/controller/profile_controller/ProfileController.dart';
@@ -77,10 +77,6 @@ import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:heavens_students/core/constants/custom_scafold.dart';
-<<<<<<< HEAD
-import 'package:heavens_students/main.dart';
-=======
->>>>>>> 8831dc7 (changes added in connectivity controller)
 import 'package:heavens_students/view/bottomnavigation/bottomnavigation.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:provider/provider.dart';
@@ -91,46 +87,23 @@ class NetworkController extends ChangeNotifier {
   final Connectivity connectivity = Connectivity();
   late StreamSubscription _connectivitySubscription;
   ConnectivityResult _connectivityResult = ConnectivityResult.none;
-  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
 
   NetworkController() {
-    _checkInitialConnectivity();
-    startListeningToConnectivityChanges();
-  }
-
-  ConnectivityResult get connectivityResult => _connectivityResult;
-  bool get isConnected => _connectivityResult != ConnectivityResult.none;
-
-  Future<void> _checkInitialConnectivity() async {
-    final results = await Connectivity().checkConnectivity();
-    log("Initial Connectivity: $results");
-
-    if (results != ConnectivityResult.none) {
-      _connectivityResult = results.first;
-    } else {
-      _connectivityResult = ConnectivityResult.none;
-      notifyListeners();
-      handleNavigation();
-    }
-  }
-
-  void startListeningToConnectivityChanges() {
-    _connectivitySubscription = Connectivity()
-        .onConnectivityChanged
-        .listen((List<ConnectivityResult> result) {
-      log("Connectivity Changed: $result");
-      if (result != _connectivityResult) {
-        _connectivityResult = result.first;
-        notifyListeners();
-      }
-
-      if (_connectivityResult == ConnectivityResult.none) {
-        handleNavigation();
+    _connectivitySubscription =
+        connectivity.onConnectivityChanged.listen((event) {
+      if (event.isNotEmpty) {
+        _updateConnectionStatus(event.first);
       }
     });
   }
+  void _updateConnectionStatus(ConnectivityResult result) {
+    _connectivityResult = result;
+    notifyListeners();
+  }
 
-  void handleNavigation() {
+  ConnectivityResult get connectivityResult => _connectivityResult;
+
+  void handleNavigation(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!isConnected) {
         navigatorKey.currentState?.pushReplacementNamed('/nointernet');
@@ -230,29 +203,12 @@ class NetworkController extends ChangeNotifier {
     }
   }
 
-<<<<<<< HEAD
-  // when access token expires then logout
-
-  bool isTokenExpired(String token) {
-    return JwtDecoder.isExpired(token);
-  }
-
-  checkAccessToken(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final accessToken = prefs.getString("access_token") ?? "";
-    Duration tokenTime = JwtDecoder.getTokenTime(accessToken);
-
-    bool isTokenExpired = JwtDecoder.isExpired(accessToken);
-    log("Token is expired or not ----${tokenTime.inDays}");
-=======
   checkAccessToken(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final accessToken = prefs.getString("access_token") ?? "";
     // Duration tokenTime = JwtDecoder.getTokenTime(accessToken);
-
+    DateTime expirationDate = JwtDecoder.getExpirationDate(accessToken);
     bool isTokenExpired = JwtDecoder.isExpired(accessToken);
-    log("Token is expired or not ----${isTokenExpired}");
->>>>>>> 8831dc7 (changes added in connectivity controller)
     log("Token is expired or not ----${isTokenExpired}");
     log("expiray date ----${expirationDate}");
     if (isTokenExpired) {
@@ -268,8 +224,3 @@ class NetworkController extends ChangeNotifier {
     }
   }
 }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 8831dc7 (changes added in connectivity controller)
