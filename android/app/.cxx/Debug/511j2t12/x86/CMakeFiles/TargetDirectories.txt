@@ -1,0 +1,2 @@
+/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Debug/511j2t12/x86/CMakeFiles/edit_cache.dir
+/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/Debug/511j2t12/x86/CMakeFiles/rebuild_cache.dir
