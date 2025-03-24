@@ -33,11 +33,17 @@ class _SplashScreenState extends State<SplashScreen> {
     log("--$isLoggedIn");
 
     if (isLoggedIn) {
-      await context.read<LoginController>().getStudentDetail(context);
-      await context.read<CarousalImageController>().getCarousalImages();
-      await context.read<CafeController>().getCafeItems();
-      await context.read<CarousalImageController>().getCarousalImages();
-      await context.read<HomepageController>().checkPaymentStatus(context);
+      try {
+        Future.wait<void>([
+          context.read<LoginController>().getStudentDetail(context),
+          context.read<CarousalImageController>().getCarousalImages(),
+          context.read<CafeController>().getCafeItems(),
+          context.read<CarousalImageController>().getCarousalImages(),
+          context.read<HomepageController>().checkPaymentStatus(context),
+        ]);
+      } catch (e) {
+        log("error occured in splash screen $e");
+      }
 
       Navigator.pushReplacement(
         context,
