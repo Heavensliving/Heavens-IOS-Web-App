@@ -9,123 +9,48 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NetworkController extends ChangeNotifier {
-  // final Connectivity connectivity = Connectivity();
-  // late StreamSubscription _connectivitySubscription;
-  // ConnectivityResult _connectivityResult = ConnectivityResult.none;
-
-  // NetworkController() {
-  //   _connectivitySubscription =
-  //       connectivity.onConnectivityChanged.listen((event) {
-  //     if (event.isNotEmpty) {
-  //       _updateConnectionStatus(event.first);
-  //       // handleNavigation(con);
-  //     }
-  //   });
-  // }
-
-  // ConnectivityResult get connectivityResult => _connectivityResult;
-  // void _updateConnectionStatus(ConnectivityResult result) {
-  //   _connectivityResult = result;
-  //   notifyListeners();
-  // }
-
-  // void handleNavigation(BuildContext context) {
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     if (context.mounted) {
-  //       if (_connectivityResult == ConnectivityResult.none) {
-  //         Navigator.pushNamed(context, "/nointernet");
-  //       }
-  //     }
-  //   });
-  // }
-
   final Connectivity connectivity = Connectivity();
-  late StreamSubscription _connectivitySubscription;
+  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
   ConnectivityResult _connectivityResult = ConnectivityResult.none;
-  BuildContext? _context;
+  bool isInitialized = false;
 
   NetworkController() {
     _init();
   }
 
-  // Call this when you have a valid context
-  void setContext(BuildContext context) {
-    _context = context;
-    _checkInitialConnectivity();
-  }
+  ConnectivityResult get connectivityResult => _connectivityResult;
+  bool get isConnected => _connectivityResult != ConnectivityResult.none;
 
   Future<void> _init() async {
+    try {
+      // Get initial connectivity status (returns List<ConnectivityResult>)
+      final results = await connectivity.checkConnectivity();
+      // Take the first result (or none if empty)
+      _connectivityResult =
+          results.isNotEmpty ? results.first : ConnectivityResult.none;
+      isInitialized = true;
+      notifyListeners();
+
+      // Listen for connectivity changes
+      _connectivitySubscription = connectivity.onConnectivityChanged
+          .listen((List<ConnectivityResult> results) {
+        log('Connectivity changed: $results');
+        // Take the first result (or none if empty)
+        _connectivityResult =
+            results.isNotEmpty ? results.first : ConnectivityResult.none;
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error initializing NetworkController', error: e);
+    }
+  }
+
+  Future<void> checkConnection() async {
     final results = await connectivity.checkConnectivity();
-    _updateConnectionStatus(_determinePrimaryStatus(results));
-
-    _connectivitySubscription =
-        connectivity.onConnectivityChanged.listen((results) {
-      if (results.isNotEmpty) {
-        final newStatus = _determinePrimaryStatus(results);
-        _updateConnectionStatus(newStatus);
-        _handleConnectivityChange(newStatus);
-      }
-    });
-  }
-
-  Future<void> _checkInitialConnectivity() async {
-    final results = await connectivity.checkConnectivity();
-    final status = _determinePrimaryStatus(results);
-    _updateConnectionStatus(status);
-    _handleConnectivityChange(status);
-  }
-
-  ConnectivityResult _determinePrimaryStatus(List<ConnectivityResult> results) {
-    return results.contains(ConnectivityResult.none)
-        ? ConnectivityResult.none
-        : results.firstWhere(
-            (result) => result != ConnectivityResult.none,
-            orElse: () => ConnectivityResult.none,
-          );
-  }
-
-  void _handleConnectivityChange(ConnectivityResult result) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_context != null && _context!.mounted) {
-        if (result == ConnectivityResult.none) {
-          Navigator.of(_context!).pushNamedAndRemoveUntil(
-            '/nointernet',
-            (route) => route.settings.name == '/nointernet',
-          );
-        }
-      }
-    });
-  }
-
-  ConnectivityResult get connectivityResult => _connectivityResult;
-
-  void _updateConnectionStatus(ConnectivityResult result) {
-    _connectivityResult = result;
+    _connectivityResult =
+        results.isNotEmpty ? results.first : ConnectivityResult.none;
     notifyListeners();
   }
-
-  // Future<void> _checkInitialConnectivity() async {
-  //   final result = await connectivity.checkConnectivity();
-  //   _updateConnectionStatus(result);
-  // }
-
-  // void handleNavigation() {
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     if (_connectivityResult == ConnectivityResult.none) {
-  //       // Navigate to no internet screen if there's no connectivity
-  //       Navigator.pushNamed(context, "/nointernet");
-  //     } else {
-  //       // Navigate to the main screen if connected
-  //       Navigator.pushAndRemoveUntil(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => BottomNavigation(initialIndex: 0),
-  //         ),
-  //         (route) => false,
-  //       );
-  //     }
-  //   });
-  // }
 
   @override
   void dispose() {
@@ -136,17 +61,11 @@ class NetworkController extends ChangeNotifier {
   Future<void> retryConnection(BuildContext context) async {
     try {
       log("Checking connectivity...");
-
-      // await Future.delayed(
-      //     Duration(seconds: 1));
-
       final response = await http.get(Uri.parse('https://www.google.com'));
-
       log("Current connectivity status: ${response.statusCode}");
 
       if (response.statusCode == 200) {
         log("Internet connected, navigating to the main screen.");
-
         if (Navigator.canPop(context)) {
           Navigator.of(context).pop();
         } else {

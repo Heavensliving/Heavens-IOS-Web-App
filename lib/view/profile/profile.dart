@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/profile_controller/ProfileController.dart';
+import 'package:heavens_students/core/constants/image_constants.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -79,18 +81,26 @@ class _ProfilescreenState extends State<Profilescreen> {
       children: [
         Stack(
           children: [
-            CircleAvatar(
-              backgroundColor: Colors.grey.withValues(alpha: .2),
-              backgroundImage: _getProfileImage(
-                student?.photo,
-                picController.profilePic,
+            InkWell(
+              hoverColor: Colors.transparent,
+              onTap: student?.photo == null || student?.photo == ""
+                  ? null
+                  : () {
+                      _showFullScreenImage(context, student?.photo ?? "");
+                    },
+              child: CircleAvatar(
+                backgroundColor: Colors.grey.withValues(alpha: .2),
+                backgroundImage: _getProfileImage(
+                  student?.photo,
+                  picController.profilePic,
+                ),
+                radius: 35,
+                child: picController.isLoading
+                    ? CircularProgressIndicator(
+                        color: ColorConstants.primary_white,
+                      )
+                    : const SizedBox(),
               ),
-              radius: 35,
-              child: picController.isLoading
-                  ? const CircularProgressIndicator(
-                      color: ColorConstants.primary_white,
-                    )
-                  : const SizedBox(),
             ),
             Positioned(
               right: 0,
@@ -304,6 +314,24 @@ class _ProfilescreenState extends State<Profilescreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showFullScreenImage(BuildContext context, String profileImageUrl) {
+    showDialog(
+      context: context,
+      builder: (context) => GestureDetector(
+        onTap: () => Navigator.pop(context),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Dialog(
+            backgroundColor: Colors.transparent,
+            child: CircleAvatar(
+                radius: MediaQuery.of(context).size.width * 0.4,
+                backgroundImage: CachedNetworkImageProvider(profileImageUrl)),
+          ),
+        ),
       ),
     );
   }

@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/cafe_controller/CafeController.dart';
@@ -24,7 +27,6 @@ import 'package:heavens_students/view/splash_screen/SplashScreen.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:provider/provider.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,73 +45,67 @@ class _HeavensStudentState extends State<HeavensStudent> {
   @override
   void initState() {
     super.initState();
-    _checkForUpdate();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _checkForUpdate();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<NetworkController>(
-      builder: (context, value, child) {
-        return MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (_) => LoginController()),
-            ChangeNotifierProvider(create: (context) => Otherfunctions()),
-            ChangeNotifierProvider(create: (context) => MessController()),
-            ChangeNotifierProvider(create: (context) => HomepageController()),
-            ChangeNotifierProvider(create: (context) => CafeController()),
-            ChangeNotifierProvider(create: (context) => CartController()),
-            ChangeNotifierProvider(create: (_) => NetworkController()),
-            ChangeNotifierProvider(create: (_) => ProfileController()),
-            ChangeNotifierProvider(create: (_) => PicController()),
-            ChangeNotifierProvider(create: (context) => OrderController()),
-            ChangeNotifierProvider(
-                create: (context) => CarousalImageController()),
-          ],
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: const SplashScreen(),
-            routes: {
-              'home': (context) => const Homepage(),
-              '/raised': (context) => const RaisedTickets(),
-              '/payment_history': (context) => const PaymentHistory(),
-              '/signin': (context) => const Signin(),
-              '/personal_information': (context) => const PersonalInformation(),
-              '/change_password': (context) => const ChangePassword(),
-              '/stay_detail': (context) => const StayDetails(),
-              '/nointernet': (context) => NoInternetScreen(),
-            },
-          ),
-        );
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LoginController()),
+        ChangeNotifierProvider(create: (_) => Otherfunctions()),
+        ChangeNotifierProvider(create: (_) => MessController()),
+        ChangeNotifierProvider(create: (_) => HomepageController()),
+        ChangeNotifierProvider(create: (_) => CafeController()),
+        ChangeNotifierProvider(create: (_) => CartController()),
+        ChangeNotifierProvider(create: (_) => NetworkController()),
+        ChangeNotifierProvider(create: (_) => ProfileController()),
+        ChangeNotifierProvider(create: (_) => PicController()),
+        ChangeNotifierProvider(create: (_) => OrderController()),
+        ChangeNotifierProvider(create: (_) => CarousalImageController()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen(),
+        routes: {
+          'home': (context) => const Homepage(),
+          '/raised': (context) => const RaisedTickets(),
+          '/payment_history': (context) => const PaymentHistory(),
+          '/signin': (context) => const Signin(),
+          '/personal_information': (context) => const PersonalInformation(),
+          '/change_password': (context) => const ChangePassword(),
+          '/stay_detail': (context) => const StayDetails(),
+          '/nointernet': (context) => NoInternetScreen(),
+        },
+      ),
     );
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Set the context for the NetworkController
-    Provider.of<NetworkController>(context, listen: false).setContext(context);
+  // Widget _buildHomeScreen(
+  //     BuildContext context, NetworkController networkController) {
+  //   // Always show SplashScreen first
+  //   if (!networkController.isInitialized) {
+  //     return const SplashScreen();
+  //   }
 
-    // Check initial connectivity status and navigate if necessary
-    final networkController =
-        Provider.of<NetworkController>(context, listen: false);
-    if (networkController.connectivityResult == ConnectivityResult.none) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushReplacementNamed(context, '/nointernet');
-      });
-    }
-  }
+  //   // Show NoInternetScreen when disconnected, otherwise show the appropriate screen
+  //   return networkController.isConnected
+  //       ? const SplashScreen()
+  //       : const NoInternetScreen();
+  // }
 
-  // Check for updates
-  void _checkForUpdate() async {
-    if (Theme.of(context).platform == TargetPlatform.android) {
+  Future<void> _checkForUpdate() async {
+    final platform = Theme.of(context).platform;
+
+    if (platform == TargetPlatform.android) {
       await _checkAndroidUpdate();
-    } else if (Theme.of(context).platform == TargetPlatform.iOS) {
+    } else if (platform == TargetPlatform.iOS) {
       await _checkiOSUpdate();
     }
   }
 
-  // Android: In-App Update (Immediate or Flexible)
   Future<void> _checkAndroidUpdate() async {
     try {
       AppUpdateInfo updateInfo = await InAppUpdate.checkForUpdate();
@@ -117,7 +113,7 @@ class _HeavensStudentState extends State<HeavensStudent> {
         await InAppUpdate.performImmediateUpdate();
       }
     } catch (e) {
-      print("Error checking for Android update: $e");
+      log("Error checking for Android update: $e");
     }
   }
 

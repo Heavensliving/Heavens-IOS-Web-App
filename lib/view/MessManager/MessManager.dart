@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/mess_controller/MessController.dart';
 import 'package:heavens_students/core/constants/constants.dart';
+import 'package:heavens_students/core/constants/image_constants.dart';
 import 'package:heavens_students/view/MessManager/widgets/customMessMangerCard.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -88,6 +89,29 @@ class _MessmanagerState extends State<Messmanager> {
 
   Widget buildMealList(BuildContext context, {required int offsetDays}) {
     context.read<MessController>().getMessorderDetails();
+
+    if (offsetDays == 1) {
+      final now = DateTime.now();
+      if (now.hour == 23) {
+        return Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(ImageConstants.closed),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .05,
+              ),
+              Text(
+                "No meals available at this time.",
+                style: TextStyle(
+                    color: ColorConstants.primary_black.withValues(alpha: .5),
+                    fontSize: 15),
+              ),
+            ],
+          ),
+        );
+      }
+    }
 
     return Padding(
       padding: const EdgeInsets.all(10),

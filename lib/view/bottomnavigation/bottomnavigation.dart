@@ -134,14 +134,18 @@
 //     );
 //   }
 // }
+import 'dart:async';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:heavens_students/controller/connectivity_controlller/connectivity_controller.dart';
 import 'package:heavens_students/controller/login_controller/LoginController.dart';
 import 'package:heavens_students/core/constants/constants.dart';
 import 'package:heavens_students/core/widgets/customSnackbar.dart';
 import 'package:heavens_students/view/MessManager/AddOnPage/AddonPage.dart';
 import 'package:heavens_students/view/MessManager/MessManager.dart';
 import 'package:heavens_students/view/homepage/homepage.dart';
+import 'package:heavens_students/view/no_internet_screen/noInternetScreen.dart';
 import 'package:heavens_students/view/profile/profile.dart';
 import 'package:provider/provider.dart';
 
@@ -155,19 +159,38 @@ class BottomNavigation extends StatefulWidget {
 
 class _BottomNavigationState extends State<BottomNavigation> {
   int selectedIndex = 0;
+  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
 
   @override
   void initState() {
     super.initState();
+    ini();
+  }
+
+  ini() {
     selectedIndex = widget.initialIndex;
+
+    // Initialize network listener
+    final networkController =
+        Provider.of<NetworkController>(context, listen: false);
+    _connectivitySubscription =
+        networkController.connectivity.onConnectivityChanged.listen((results) {
+      if (!mounted) return;
+      networkController.checkConnection();
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _connectivitySubscription.cancel();
+    super.dispose();
   }
 
   final List<Widget> allScreens = [
     Homepage(),
     Messmanager(),
-    // Cafe(), // Temporarily commented out
-    // MyOrders(), // Temporarily commented out
-    MealSelectionPage(), // Add the new Addon option
+    MealSelectionPage(),
     Profilescreen(),
   ];
 
@@ -179,6 +202,20 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     var student = context.watch<LoginController>().studentDetailModel?.student;
+    final networkController = context.watch<NetworkController>();
+
+    // Show NoInternetScreen if not connected
+    if (!networkController.isConnected) {
+      return NoInternetScreen(
+          // onRetry: () async {
+          //   await networkController.checkConnection();
+          //   if (networkController.isConnected) {
+          //     // If connection is restored, rebuild the widget
+          //     setState(() {});
+          //   }
+          // },
+          );
+    }
 
     bool isProfileComplete = student?.profileCompletionPercentage == "100";
     bool isBlocked = student?.isBlocked == true;
@@ -248,20 +285,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 activeIcon: Icon(Icons.fastfood),
                 icon: Icon(Icons.fastfood_outlined),
               ),
-            // Temporarily commented out the Cafe and Orders items
-            // BottomNavigationBarItem(
-            //   activeIcon: Icon(Icons.local_cafe),
-            //   icon: Icon(Icons.local_cafe_outlined),
-            //   label: "Cafe",
-            // ),
-            // BottomNavigationBarItem(
-            //   activeIcon: Icon(Icons.shopping_bag_rounded),
-            //   icon: Icon(Icons.shopping_bag_outlined),
-            //   label: "Orders",
-            // ),
             BottomNavigationBarItem(
-              activeIcon:
-                  Icon(Icons.restaurant_menu_outlined), // New Addon icon
+              activeIcon: Icon(Icons.restaurant_menu_outlined),
               icon: Icon(Icons.restaurant_menu_outlined),
               label: "Addon",
             ),

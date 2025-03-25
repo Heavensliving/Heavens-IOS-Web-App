@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heavens_students/model/menu_items_model.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:intl/intl.dart';
@@ -41,6 +42,7 @@ class _CustomMessMangerCardState extends State<CustomMessMangerCard> {
 
   @override
   Widget build(BuildContext context) {
+    // print("status------${widget.status}");
     final provider = context.watch<MessController>();
     final today = DateFormat('MMM d, yyyy').format(DateTime.now());
 
@@ -159,12 +161,12 @@ class _CustomMessMangerCardState extends State<CustomMessMangerCard> {
       );
     } else {
       return Text(
-        "Cancelled",
+        widget.status == "Cancelled" ? "Cancelled" : "Not Booked",
         style: TextStyle(
           decoration: TextDecoration.lineThrough,
           decorationColor: Colors.red,
           color: Colors.red,
-          fontSize: 16,
+          fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
       );
@@ -188,63 +190,75 @@ class _CustomMessMangerCardState extends State<CustomMessMangerCard> {
       );
     } else {
       if (widget.status == null) {
-        return Row(
-          children: [
-            InkWell(
-              onTap: () {
-                provider.postAddOns(
-                  context,
-                  widget.meals,
-                  [],
-                  "false",
-                  widget.date,
-                );
-                provider.getMealAvailability(widget.date, widget.meals);
-              },
-              child: const CircleAvatar(
-                radius: 21,
-                backgroundColor: Colors.red,
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.close,
-                    color: Colors.red,
+        return provider.isLoading
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                      child: LoadingAnimationWidget.horizontalRotatingDots(
+                    color: ColorConstants.dark_red,
                     size: 20,
+                  )),
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.08),
+                ],
+              )
+            : Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      provider.postAddOns(
+                        context,
+                        widget.meals,
+                        [],
+                        "false",
+                        widget.date,
+                      );
+                      provider.getMealAvailability(widget.date, widget.meals);
+                    },
+                    child: const CircleAvatar(
+                      radius: 21,
+                      backgroundColor: Colors.red,
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.red,
+                          size: 20,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 20),
-            InkWell(
-              onTap: () {
-                provider.postAddOns(
-                  context,
-                  widget.meals,
-                  [],
-                  "true",
-                  widget.date,
-                );
-                provider.getMealAvailability(widget.date, widget.meals);
-                provider.total.clear();
-                provider.cumulativeTotal = 0;
-              },
-              child: const CircleAvatar(
-                radius: 21,
-                backgroundColor: Colors.green,
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.check,
-                    color: Colors.green,
-                    size: 20,
+                  const SizedBox(width: 20),
+                  InkWell(
+                    onTap: () {
+                      provider.postAddOns(
+                        context,
+                        widget.meals,
+                        [],
+                        "true",
+                        widget.date,
+                      );
+                      provider.getMealAvailability(widget.date, widget.meals);
+                      provider.total.clear();
+                      provider.cumulativeTotal = 0;
+                    },
+                    child: const CircleAvatar(
+                      radius: 21,
+                      backgroundColor: Colors.green,
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.check,
+                          color: Colors.green,
+                          size: 20,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ],
-        );
+                ],
+              );
       } else if (widget.status == "Booked" && widget.addOns == "true") {
         return InkWell(
           onTap: () {
@@ -288,13 +302,13 @@ class _CustomMessMangerCardState extends State<CustomMessMangerCard> {
           ),
         );
       } else {
-        return const Text(
-          "Cancelled",
+        return Text(
+          widget.status == "Cancelled" ? "Cancelled" : "Nothing Booked",
           style: TextStyle(
             decoration: TextDecoration.lineThrough,
             decorationColor: Colors.red,
             color: Colors.red,
-            fontSize: 16,
+            fontSize: 13,
             fontWeight: FontWeight.w500,
           ),
         );

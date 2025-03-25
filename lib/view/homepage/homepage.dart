@@ -876,8 +876,9 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       backgroundColor: homeBodyBGColor,
       appBar: AppBar(
-        toolbarHeight: 60, // Increased height of the AppBar
-        backgroundColor: appBarColor, // Use the fetched color
+        automaticallyImplyLeading: false,
+        toolbarHeight: 60,
+        backgroundColor: appBarColor,
         elevation: 0,
         leading: null,
         title: Row(
@@ -1057,14 +1058,19 @@ class _HomepageState extends State<Homepage> {
                       percent: prov?.profileCompletionPercentage ?? "0",
                     ),
                   SizedBox(height: 1),
-                  if (imageController?[0].homeScreenImages.isNotEmpty == true)
-                    Consumer<CarousalImageController>(
-                      builder: (context, value, child) => ImageSlider(
-                        imageList: value.carousalModels![0].homeScreenImages,
-                      ),
-                    )
-                  else
-                    Center(child: Text('No images available')),
+                  // if (imageController?[0].homeScreenImages.isNotEmpty == true)
+                  Consumer<CarousalImageController>(
+                    builder: (context, value, child) =>
+                        value.carousalModels?.length == 0
+                            ? SizedBox()
+                            : ImageSlider(
+                                imageList:
+                                    value.carousalModels![0].homeScreenImages,
+                              ),
+                  )
+                  // else
+                  //   Center(child: Text('No images available')),
+                  ,
                   SizedBox(height: 30),
                   // New Explore Items Section
                   Container(

@@ -4,4 +4,5 @@ class ImageConstants {
       "assets/images/Payment Information-cuate.png";
   static const String maintenance = "assets/images/Maintenance-rafiki.png";
   static const String raisedtickets = "assets/images/Admin-bro.png";
+  static const String closed = "assets/images/cafe_closed.png";
 }

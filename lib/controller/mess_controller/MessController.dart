@@ -11,6 +11,15 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MessController with ChangeNotifier {
+  bool _isloading = false;
+  bool get isLoading => _isloading;
+  set isLoading(bool value) {
+    _isloading = value;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
+  }
+
   List<MenuItemModel>? menuItemsModel;
   List<AddOnModel>? addOnModel;
   MessOrderModel? messOrderModel;
@@ -122,6 +131,7 @@ class MessController with ChangeNotifier {
 
   postAddOns(BuildContext context, String mealType, List addOns,
       String bookingStatus, String bookingDate) async {
+    isLoading = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final name = prefs.getString("name") ?? "";
     final roomno = prefs.getString("roomNo") ?? "";
@@ -183,6 +193,7 @@ class MessController with ChangeNotifier {
     } catch (e) {
       log('Error occurred: $e');
     } finally {
+      isLoading = false;
       notifyListeners();
     }
   }
