@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'dart:io';
 // import 'dart:html' as html;
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:heavens_students/controller/login_controller/LoginController.dart';
 import 'package:heavens_students/view/bottomnavigation/bottomnavigation.dart';
 import 'package:http/http.dart' as http;
@@ -296,36 +295,36 @@ class ProfileController with ChangeNotifier {
     BuildContext context,
     bool isFrontImage,
   ) async {
-    final result = await showCupertinoModalPopup(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-        actions: [
-          CupertinoActionSheetAction(
-            child: Text(
-              'Photo Gallery',
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
-            onPressed: () async {
-              Navigator.of(context).pop();
+    // final result = await showCupertinoModalPopup(
+    //   context: context,
+    //   builder: (context) => CupertinoActionSheet(
+    //     actions: [
+    //       CupertinoActionSheetAction(
+    //         child: Text(
+    //           'Photo Gallery',
+    //           style: TextStyle(fontWeight: FontWeight.w500),
+    //         ),
+    //         onPressed: () async {
+    //           Navigator.of(context).pop();
 
-              await pickImage(ImageSource.gallery, isFrontImage);
-              ;
-            },
-          ),
-          CupertinoActionSheetAction(
-            child: Text(
-              'Camera',
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
-            onPressed: () async {
-              Navigator.of(context).pop();
+    //           await pickImage(ImageSource.gallery, isFrontImage);
+    //           ;
+    //         },
+    //       ),
+    //       CupertinoActionSheetAction(
+    //         child: Text(
+    //           'Camera',
+    //           style: TextStyle(fontWeight: FontWeight.w500),
+    //         ),
+    //         onPressed: () async {
+    //           Navigator.of(context).pop();
 
-              await pickImage(ImageSource.camera, isFrontImage);
-            },
-          ),
-        ],
-      ),
-    );
+    //           await pickImage(ImageSource.camera, isFrontImage);
+    //         },
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 
   Future<void> pickImage(

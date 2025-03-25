@@ -25,8 +25,8 @@ Future<void> generatePdf({
   final ByteData bytes = await rootBundle.load('assets/images/hevens_logo.png');
   final Uint8List logoImage = bytes.buffer.asUint8List();
 
-  final amountPaidInWords = amountPaid;
-  final dueAmountInWords = dueAmount;
+  // final amountPaidInWords = amountPaid;
+  // final dueAmountInWords = dueAmount;
 
   pdf.addPage(
     pw.Page(

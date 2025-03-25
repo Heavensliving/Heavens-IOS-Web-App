@@ -16,7 +16,7 @@ class CarousalImageController with ChangeNotifier {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final accessToken = prefs.getString("access_token") ?? "";
-      final id = prefs.getString("id") ?? "";
+      // final id = prefs.getString("id") ?? "";
 
       final headers = {
         'Authorization': 'Bearer $accessToken',

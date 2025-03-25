@@ -857,9 +857,9 @@ class _HomepageState extends State<Homepage> {
 
     final prov = context.watch<LoginController>().studentDetailModel?.student;
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    var imageController =
-        context.watch<CarousalImageController>().carousalModels;
+    // final screenHeight = MediaQuery.of(context).size.height;
+    // var imageController =
+    //     context.watch<CarousalImageController>().carousalModels;
     String warningMessage;
     Color containerColor;
     log("warning status---${prov?.warningStatus}");
@@ -1276,7 +1276,7 @@ class _HomepageState extends State<Homepage> {
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
-                                  color: Colors.black.withOpacity(0.5),
+                                  color: Colors.black.withValues(alpha: .5),
                                 ),
                               ),
                               hintText: "Select the reason",

@@ -37,7 +37,7 @@ class MessController with ChangeNotifier {
     try {
       final response = await http.get(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
+        // final data = json.decode(response.body);
         menuItemsModel = menuItemModelFromJson(response.body);
         log("response of getting list---${response.body}");
       } else {
@@ -91,7 +91,7 @@ class MessController with ChangeNotifier {
     final response = await http.get(Uri.parse(url), headers: headers);
 
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
+      // final data = json.decode(response.body);
 
       List<AddOnModel> fetchedAddOns = addOnModelFromJson(response.body);
 
