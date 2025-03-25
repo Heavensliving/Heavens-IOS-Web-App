@@ -1,0 +1,2 @@
+/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/RelWithDebInfo/6e2b6u76/x86/CMakeFiles/edit_cache.dir
+/Users/anasuc/Downloads/heavens_living/Heavens-IOS-Web-App/android/app/.cxx/RelWithDebInfo/6e2b6u76/x86/CMakeFiles/rebuild_cache.dir

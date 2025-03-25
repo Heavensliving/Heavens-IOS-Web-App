@@ -16,12 +16,17 @@
 	<string>heavens_students</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	
+	<!-- Ensure this matches your pubspec.yaml version -->
 	<key>CFBundleShortVersionString</key>
-	<string>$(FLUTTER_BUILD_NAME)</string>
+	<string>1.2.0</string>
+
+	<!-- Ensure this matches your pubspec.yaml build number -->
+	<key>CFBundleVersion</key>
+	<string>3</string>
+
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -46,7 +51,7 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>This app requires access to your photo library to add and update your profile picture and verifying your address.</string>
+	<string>This app requires access to your photo library to add and update your profile picture and verifying your address.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This app requires access to your camera for uploading profile picture and address proof.</string>
 </dict>
