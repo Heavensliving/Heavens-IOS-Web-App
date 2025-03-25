@@ -69,33 +69,33 @@ class PicController extends ChangeNotifier {
   }
 
   Future<void> showOptions2(BuildContext context, bool isFrontImage) async {
-    // final result = await showCupertinoModalPopup(
-    //   context: context,
-    //   builder: (context) => CupertinoActionSheet(
-    //     actions: [
-    //       CupertinoActionSheetAction(
-    //         child: Text(
-    //           'Photo Gallery',
-    //           style: TextStyle(fontWeight: FontWeight.w500),
-    //         ),
-    //         onPressed: () async {
-    //           Navigator.of(context).pop();
-    //           await pickImage2(ImageSource.gallery, context);
-    //         },
-    //       ),
-    //       CupertinoActionSheetAction(
-    //         child: Text(
-    //           'Camera',
-    //           style: TextStyle(fontWeight: FontWeight.w500),
-    //         ),
-    //         onPressed: () async {
-    //           Navigator.of(context).pop();
-    //           await pickImage2(ImageSource.camera, context);
-    //         },
-    //       ),
-    //     ],
-    //   ),
-    // );
+    final result = await showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            child: Text(
+              'Photo Gallery',
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await pickImage2(ImageSource.gallery, context);
+            },
+          ),
+          CupertinoActionSheetAction(
+            child: Text(
+              'Camera',
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await pickImage2(ImageSource.camera, context);
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> pickImage2(ImageSource source, BuildContext context) async {
