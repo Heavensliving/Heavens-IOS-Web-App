@@ -22,8 +22,8 @@ class _SigninState extends State<Signin> {
   @override
   void initState() {
     if (kDebugMode) {
-      EmailController.text = 'anwar07sadath@gmail.com';
-      passwordController.text = 'Anwar@123';
+      EmailController.text = 'jaganprasad093@gmail.com';
+      passwordController.text = 'Jagan@123';
     }
     super.initState();
   }

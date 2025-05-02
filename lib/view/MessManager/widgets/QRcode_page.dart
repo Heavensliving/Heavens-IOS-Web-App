@@ -36,9 +36,9 @@ class _QrcodePageState extends State<QrcodePage> {
     log("booking status---${widget.bookingStatus}");
     var time = "";
     if (widget.mealType == "Breakfast") {
-      time = "8 AM - 9 PM";
+      time = "8 AM - 9 AM";
     } else if (widget.mealType == "Dinner") {
-      time = "12:45 AM - 2 PM";
+      time = "1 PM - 2 PM";
     } else {
       time = "8 PM - 9 PM";
     }

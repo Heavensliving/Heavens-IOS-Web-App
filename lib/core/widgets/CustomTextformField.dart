@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:heavens_students/core/constants/constants.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
   final bool isPassword;
@@ -21,11 +20,11 @@ class CustomTextField extends StatelessWidget {
   final int? maxLines;
   final Color? color;
   final FocusNode? focusNode;
-  Function(String)? onChanged;
+  final Function(String)? onChanged;
   final String? suffixText;
   final List<TextInputFormatter>? inputFormatters;
 
-  CustomTextField({
+  const CustomTextField({
     Key? key,
     required this.controller,
     required this.hintText,
@@ -51,71 +50,68 @@ class CustomTextField extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  bool _obscureText = true;
+
+  @override
   Widget build(BuildContext context) {
-    bool obscureText = isPassword;
-
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return TextFormField(
-          focusNode: focusNode,
-          onChanged: onChanged,
-          inputFormatters: inputFormatters,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          onTapOutside: (event) => FocusScope.of(context).unfocus(),
-          maxLines: isPassword ? 1 : maxLines,
-          enabled: enabled,
-          readOnly: readOnly ?? false,
-          onTap: onTap,
-          controller: controller,
-          obscureText: obscureText,
-          maxLength: maxLength,
-          minLines: minLines,
-          keyboardType: keyboardType,
-          decoration: InputDecoration(
-            suffixText: suffixText,
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: ColorConstants.primary_black.withValues(alpha: .2),
-                )),
-            disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: color ??
-                      ColorConstants.primary_black.withValues(alpha: .2),
-                )),
-
-            prefixIcon: prefix,
-            counterText: "",
-            errorText: errorText,
-            contentPadding: contentPadding == null
-                ? EdgeInsets.symmetric(vertical: 10, horizontal: 10)
-                : contentPadding,
-            hintText: hintText,
-            hintStyle: TextStyle(
-                color: ColorConstants.primary_black.withValues(alpha: .5)),
-            prefixText: prefixText,
-            // isDense: true,
-            prefixIconConstraints: BoxConstraints(minWidth: 0, minHeight: 0),
-            suffixIcon: isPassword
-                ? GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        obscureText = !obscureText;
-                      });
-                    },
-                    child: Icon(
-                      obscureText ? Icons.visibility : Icons.visibility_off,
-                    ),
-                  )
-                : suffixIcon,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-          validator: validator,
-        );
-      },
+    return TextFormField(
+      focusNode: widget.focusNode,
+      onChanged: widget.onChanged,
+      inputFormatters: widget.inputFormatters,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      onTapOutside: (event) => FocusScope.of(context).unfocus(),
+      maxLines: widget.isPassword ? 1 : widget.maxLines,
+      enabled: widget.enabled,
+      readOnly: widget.readOnly ?? false,
+      onTap: widget.onTap,
+      controller: widget.controller,
+      obscureText: widget.isPassword ? _obscureText : false,
+      maxLength: widget.maxLength,
+      minLines: widget.minLines,
+      keyboardType: widget.keyboardType,
+      decoration: InputDecoration(
+        suffixText: widget.suffixText,
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              color: Colors.black.withOpacity(0.2),
+            )),
+        disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              color: widget.color ?? Colors.black.withOpacity(0.2),
+            )),
+        prefixIcon: widget.prefix,
+        counterText: "",
+        errorText: widget.errorText,
+        contentPadding: widget.contentPadding ??
+            const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        hintText: widget.hintText,
+        hintStyle: TextStyle(color: Colors.black.withOpacity(0.5)),
+        prefixText: widget.prefixText,
+        prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+        suffixIcon: widget.isPassword
+            ? IconButton(
+                icon: Icon(
+                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+              )
+            : widget.suffixIcon,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      validator: widget.validator,
     );
   }
 }

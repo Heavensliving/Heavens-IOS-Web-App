@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:heavens_students/controller/login_controller/LoginController.dart';
 import 'package:http/http.dart' as http;
 import 'package:heavens_students/core/constants/base_url.dart';
@@ -125,18 +126,47 @@ class PicController extends ChangeNotifier {
 
   Future<String?> uploadImageToFirebase(File imageFile) async {
     try {
+      final compressedBackImage = await compressImage(imageFile);
       final storageRef = FirebaseStorage.instance.ref();
 
       String fileName = 'images/${DateTime.now().millisecondsSinceEpoch}.jpg';
       final imageRef = storageRef.child(fileName);
 
-      await imageRef.putFile(imageFile);
+      await imageRef.putFile(compressedBackImage);
 
       String downloadUrl = await imageRef.getDownloadURL();
       return downloadUrl;
     } catch (e) {
       print('Error uploading image: $e');
       return null;
+    }
+  }
+
+  Future<File> compressImage(File file) async {
+    try {
+      if (!file.existsSync()) {
+        throw Exception('Input file does not exist: ${file.path}');
+      }
+
+      final outputPath =
+          '${file.parent.path}/compressed_${file.uri.pathSegments.last}';
+
+      final result = await FlutterImageCompress.compressAndGetFile(
+        file.absolute.path,
+        outputPath,
+        quality: 80,
+        minWidth: 1024,
+        minHeight: 1024,
+      );
+
+      if (result != null) {
+        return File(result.path);
+      } else {
+        throw Exception('Failed to compress image: result is null');
+      }
+    } catch (e) {
+      print('Error compressing image: $e');
+      rethrow;
     }
   }
 }

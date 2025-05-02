@@ -4,6 +4,7 @@ import 'dart:io';
 // import 'dart:html' as html;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:heavens_students/controller/login_controller/LoginController.dart';
 import 'package:heavens_students/view/bottomnavigation/bottomnavigation.dart';
 import 'package:http/http.dart' as http;
@@ -167,12 +168,14 @@ class ProfileController with ChangeNotifier {
       String? backImageUrl;
 
       if (frontImage != null) {
-        frontImageUrl = await uploadImageToFirebase(frontImage);
+        final compressedFrontImage = await compressImage(frontImage);
+        frontImageUrl = await uploadImageToFirebase(compressedFrontImage);
         log('Front Image URL: $frontImageUrl');
       }
 
       if (backImage != null) {
-        backImageUrl = await uploadImageToFirebase(backImage);
+        final compressedBackImage = await compressImage(backImage);
+        backImageUrl = await uploadImageToFirebase(compressedBackImage);
         log('Back Image URL: $backImageUrl');
       }
 
@@ -267,18 +270,14 @@ class ProfileController with ChangeNotifier {
   Future<String?> uploadImageToFirebase(File imageFile) async {
     isLoading = true;
     try {
-      // Read the image file as bytes directly without decoding or compressing
       final imageBytes = await imageFile.readAsBytes();
 
-      // Create a reference to Firebase Storage
       final storageRef = FirebaseStorage.instance.ref();
       String fileName = 'images/${DateTime.now().millisecondsSinceEpoch}.jpg';
       final imageRef = storageRef.child(fileName);
 
-      // Upload the original image file directly
       await imageRef.putData(imageBytes);
 
-      // Get the download URL for the uploaded image
       String downloadUrl = await imageRef.getDownloadURL();
 
       isLoading = false;
@@ -289,6 +288,37 @@ class ProfileController with ChangeNotifier {
       notifyListeners();
       log('Error uploading image: $e');
       return null;
+    }
+  }
+
+  // Compress image
+
+  Future<File> compressImage(File file) async {
+    try {
+      if (!file.existsSync()) {
+        throw Exception('Input file does not exist: ${file.path}');
+      }
+
+      final outputPath =
+          '${file.parent.path}/compressed_${file.uri.pathSegments.last}';
+
+      // Compress the image
+      final result = await FlutterImageCompress.compressAndGetFile(
+        file.absolute.path,
+        outputPath,
+        quality: 80,
+        minWidth: 1024,
+        minHeight: 1024,
+      );
+
+      if (result != null) {
+        return File(result.path);
+      } else {
+        throw Exception('Failed to compress image: result is null');
+      }
+    } catch (e) {
+      print('Error compressing image: $e');
+      rethrow;
     }
   }
 

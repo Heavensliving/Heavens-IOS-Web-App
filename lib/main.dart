@@ -118,9 +118,9 @@ class _HeavensStudentState extends State<HeavensStudent> {
   }
 
   Future<void> _checkiOSUpdate() async {
-    final InAppReview inAppReview = InAppReview.instance;
-    if (await inAppReview.isAvailable()) {
-      inAppReview.openStoreListing(appStoreId: "1213344532");
-    }
+    //   final InAppReview inAppReview = InAppReview.instance;
+    //   if (await inAppReview.isAvailable()) {
+    //     inAppReview.openStoreListing(appStoreId: "1213344532");
+    //   }
   }
 }

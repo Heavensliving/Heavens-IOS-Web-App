@@ -50,10 +50,6 @@ class _GeneralInformationState extends State<GeneralInformation> {
   Widget build(BuildContext context) {
     // var prov = context.read<LoginController>().studentDetailModel?.student;
     var provider = context.watch<ProfileController>();
-    final frontImageSize = provider.frontImage?.lengthSync() ?? 0;
-    final backImageSize = provider.backImage?.lengthSync() ?? 0;
-    log("back image sized---$backImageSize");
-    log("front image sized---$frontImageSize");
 
     const maxSizeInBytes = 1 * 1024 * 1024;
 
@@ -136,22 +132,22 @@ class _GeneralInformationState extends State<GeneralInformation> {
                     "Aadhar Card",
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
                   ),
-                  SizedBox(
-                    height: 3,
-                  ),
-                  Text(
-                    "Maximum File Size 1 MB",
-                    style: TextStyle(
-                        color: Colors.red.withValues(alpha: .8), fontSize: 10),
-                  ),
+                  // SizedBox(
+                  //   height: 3,
+                  // ),
+                  // Text(
+                  //   "Maximum File Size 1 MB",
+                  //   style: TextStyle(
+                  //       color: Colors.red.withValues(alpha: .8), fontSize: 10),
+                  // ),
                   SizedBox(
                     height: 20,
                   ),
                   Consumer<ProfileController>(
                     builder: (context, provider, child) {
-                      log("null check---${login_controller.adharBackImage}");
-                      log("null check2---${provider.frontImage}");
-                      log("profile pic---${login_controller.photo}");
+                      // log("null check---${login_controller.adharBackImage}");
+                      // log("null check2---${provider.frontImage}");
+                      // log("profile pic---${login_controller.photo}");
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -346,9 +342,6 @@ class _GeneralInformationState extends State<GeneralInformation> {
                     } else {
                       // Validate the form before proceeding
                       if (formkey.currentState!.validate()) {
-                        log("back image size---$backImageSize");
-                        log("front image size---$frontImageSize");
-
                         if (provider.frontImage == null &&
                             (login_controller.adharFrontImage == null ||
                                 login_controller.adharFrontImage!.isEmpty)) {
@@ -365,9 +358,7 @@ class _GeneralInformationState extends State<GeneralInformation> {
                               ),
                             ),
                           );
-                        }
-                        // Check for back image upload
-                        else if (provider.backImage == null &&
+                        } else if (provider.backImage == null &&
                             (login_controller.adharBackImage == null ||
                                 login_controller.adharBackImage!.isEmpty)) {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -376,38 +367,6 @@ class _GeneralInformationState extends State<GeneralInformation> {
                                   const Color.fromARGB(255, 188, 50, 48),
                               content: Text(
                                 "Please upload the Aadhar back page image.",
-                                style: TextStyle(
-                                  color: ColorConstants.primary_white,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          );
-                        }
-                        // Check front image size
-                        else if (frontImageSize > maxSizeInBytes) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 188, 50, 48),
-                              content: Text(
-                                "Front image size must be less than or equal to 1 MB.",
-                                style: TextStyle(
-                                  color: ColorConstants.primary_white,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          );
-                        }
-                        // Check back image size
-                        else if (backImageSize > maxSizeInBytes) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 188, 50, 48),
-                              content: Text(
-                                "Back image size must be less than or equal to 1 MB.",
                                 style: TextStyle(
                                   color: ColorConstants.primary_white,
                                   fontSize: 16,
@@ -461,105 +420,6 @@ class _GeneralInformationState extends State<GeneralInformation> {
                   padding: EdgeInsets.symmetric(vertical: 10),
                 ),
               )
-
-              // Padding(
-              //     padding: const EdgeInsets.only(bottom: 20),
-              //     child: Custombutton(
-              //       child: provider.isLoading
-              //           ? CircularProgressIndicator(
-              //               color: ColorConstants.primary_white,
-              //             )
-              //           : Text(
-              //               "Submit",
-              //               style: TextStyle(
-              //                 color: Colors.white,
-              //                 fontWeight: FontWeight.bold,
-              //                 fontSize: 20,
-              //               ),
-              //             ),
-              //       onTap: () async {
-              //         if (login_controller.profileCompletionPercentage ==
-              //             "100") {
-              //           Navigator.push(
-              //               context,
-              //               MaterialPageRoute(
-              //                 builder: (context) =>
-              //                     BottomNavigation(initialIndex: 4),
-              //               ));
-              //         } else {
-              //           if (formkey.currentState!.validate()) {
-              //             if (provider.frontImage == null &&
-              //                 login_controller.adharFrontImage == "") {
-              //               ScaffoldMessenger.of(context).showSnackBar(
-              //                 SnackBar(
-              //                   backgroundColor:
-              //                       const Color.fromARGB(255, 188, 50, 48),
-              //                   content: Text(
-              //                     "Please upload the front page image",
-              //                     style: TextStyle(
-              //                       color: ColorConstants.primary_white,
-              //                       fontSize: 16,
-              //                     ),
-              //                   ),
-              //                 ),
-              //               );
-              //             } else if (provider.backImage == null &&
-              //                 login_controller.adharBackImage == "") {
-              //               ScaffoldMessenger.of(context).showSnackBar(
-              //                 SnackBar(
-              //                   backgroundColor:
-              //                       const Color.fromARGB(255, 188, 50, 48),
-              //                   content: Text(
-              //                     "Please upload the back page image",
-              //                     style: TextStyle(
-              //                       color: ColorConstants.primary_white,
-              //                       fontSize: 16,
-              //                     ),
-              //                   ),
-              //                 ),
-              //               );
-              //             } else {
-              //               var phone = year_controller.text;
-              //               int year = int.parse(phone);
-              //               await provider.addGeneralDetails(
-              //                   clgName_controller.text,
-              //                   course_controller.text,
-              //                   year,
-              //                   "100",
-              //                   context,
-              //                   provider.frontImage,
-              //                   provider.backImage);
-              //               context
-              //                   .read<LoginController>()
-              //                   .getStudentDetail(context);
-
-              //               Navigator.push(
-              //                   context,
-              //                   MaterialPageRoute(
-              //                     builder: (context) =>
-              //                         BottomNavigation(initialIndex: 4),
-              //                   ));
-              //             }
-              //           } else {
-              //             ScaffoldMessenger.of(context).showSnackBar(
-              //               SnackBar(
-              //                 backgroundColor:
-              //                     const Color.fromARGB(255, 188, 50, 48),
-              //                 content: Text(
-              //                   "Add Aadhar details",
-              //                   style: TextStyle(
-              //                     color: ColorConstants.primary_white,
-              //                     fontSize: 16,
-              //                   ),
-              //                 ),
-              //               ),
-              //             );
-              //           }
-              //         }
-              //       },
-              //       text: "Submit",
-              //       padding: EdgeInsets.symmetric(vertical: 10),
-              //     ))
             ],
           ),
         ),
