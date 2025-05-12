@@ -25,6 +25,8 @@ class _PaymentHistoryState extends State<PaymentHistory> {
   Widget build(BuildContext context) {
     var provider = context.watch<HomepageController>();
     var student = context.watch<LoginController>().studentDetailModel?.student;
+    final reversedFeesList = provider.feesModel?.reversed.toList();
+
     return Scaffold(
       backgroundColor: ColorConstants.primary_white,
       appBar: AppBar(
@@ -35,187 +37,170 @@ class _PaymentHistoryState extends State<PaymentHistory> {
         backgroundColor: ColorConstants.primary_white,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: provider.feesModel == null
-            ? Center(
-                child: Text(
-                "No payment has been made.",
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 18,
-                    color: ColorConstants.primary_black.withValues(alpha: .5)),
-              ))
-            : ListView.separated(
-                itemBuilder: (context, index) {
-                  String dateString =
-                      "${provider.feesModel?[index].paymentDate}";
-                  DateTime dateTime = DateTime.parse(dateString);
-                  String formattedPaidDate =
-                      DateFormat('MMM dd, yyyy').format(dateTime);
-                  String formattedMonth = DateFormat('MMMM').format(dateTime);
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: provider.feesModel == null
+              ? Center(
+                  child: Text(
+                  "No payment has been made.",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 18,
+                      color:
+                          ColorConstants.primary_black.withValues(alpha: .5)),
+                ))
+              : ListView.separated(
+                  itemBuilder: (context, index) {
+                    final fee = reversedFeesList?[index];
 
-                  return Stack(
-                    children: [
-                      Card(
-                        elevation: 4.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    provider.feesModel?[index].transactionId ??
-                                        "",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
-                                  Text(
-                                    "Paid",
-                                    style: TextStyle(
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Amount",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 18)),
-                                  RichText(
-                                    text: TextSpan(
-                                      text: "₹ ",
-                                      style: TextStyle(
-                                          color: ColorConstants.primary_black
-                                              .withValues(alpha: .5),
-                                          fontSize: 18),
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                              "${provider.feesModel?[index].amountPaid}",
-                                          style: TextStyle(
-                                              color: Colors.blue,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Payment Mode",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 18)),
-                                  Text("UPI",
-                                      style: TextStyle(
-                                          color: ColorConstants.primary_black
-                                              .withValues(alpha: .5),
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 16)),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Cleared Month",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 18)),
-                                  Text(
-                                      "${provider.feesModel?[index].paymentClearedMonthYear}",
-                                      style: TextStyle(
-                                          color: ColorConstants.primary_black
-                                              .withValues(alpha: .5),
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 16)),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Paid Date",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 18)),
-                                  Text(formattedPaidDate,
-                                      style: TextStyle(
-                                          color: ColorConstants.primary_black
-                                              .withValues(alpha: .5),
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 16)),
-                                ],
-                              ),
-                            ],
+                    String dateString = "${fee?.paymentDate}";
+                    DateTime dateTime = DateTime.parse(dateString);
+                    String formattedPaidDate =
+                        DateFormat('MMM dd, yyyy').format(dateTime);
+                    String formattedMonth = DateFormat('MMMM').format(dateTime);
+
+                    return Stack(
+                      children: [
+                        Card(
+                          elevation: 4.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Column(
+                                  children: [
+                                    Text(fee?.transactionId ?? "",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20)),
+                                    Text("Paid",
+                                        style: TextStyle(
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16)),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Amount",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18)),
+                                    RichText(
+                                      text: TextSpan(
+                                        text: "₹ ",
+                                        style: TextStyle(
+                                            color: ColorConstants.primary_black
+                                                .withValues(alpha: .5),
+                                            fontSize: 18),
+                                        children: [
+                                          TextSpan(
+                                            text: "${fee?.amountPaid}",
+                                            style: TextStyle(
+                                                color: Colors.blue,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Payment Mode",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18)),
+                                    Text("UPI",
+                                        style: TextStyle(
+                                            color: ColorConstants.primary_black
+                                                .withValues(alpha: .5),
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 16)),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Cleared Month",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18)),
+                                    Text("${fee?.paymentClearedMonthYear}",
+                                        style: TextStyle(
+                                            color: ColorConstants.primary_black
+                                                .withValues(alpha: .5),
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 16)),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Paid Date",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18)),
+                                    Text(formattedPaidDate,
+                                        style: TextStyle(
+                                            color: ColorConstants.primary_black
+                                                .withValues(alpha: .5),
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 16)),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Positioned(
-                        right: 30,
-                        top: 20,
-                        child: GestureDetector(
-                          onTap: () {
-                            String randomBillNo = generateRandomBillNumber();
-                            String randomInvoiceid = generateRandomBillNumber();
-                            generatePdf(
-                                dueAmount:
-                                    "${provider.feesModel?[index].totalAmountToPay ?? "0"}",
-                                month: formattedMonth,
-                                amountPaid: provider
-                                        .feesModel?[index].amountPaid
-                                        .toString() ??
-                                    "",
-                                transactionId:
-                                    provider.feesModel?[index].transactionId ??
-                                        "",
-                                contactNo: student?.contactNo ?? "",
-                                billNo: randomBillNo,
-                                dueDate: provider.feesModel?[index]
-                                        .paymentClearedMonthYear ??
-                                    "",
-                                name: student?.name ?? "",
-                                paymentMode:
-                                    provider.feesModel?[index].paymentMode ??
-                                        "",
-                                paidDate: formattedPaidDate,
-                                propertyName: student?.pgName ?? "",
-                                roomNo: student?.roomNo ?? "",
-                                studentId: student?.studentId ?? "",
-                                invoiceNo: randomInvoiceid);
-                          },
-                          child: Icon(
-                            Icons.cloud_download_outlined,
-                            color: ColorConstants.primary_black
-                                .withValues(alpha: .5),
+                        Positioned(
+                          right: 30,
+                          top: 20,
+                          child: GestureDetector(
+                            onTap: () {
+                              String randomBillNo = generateRandomBillNumber();
+                              String randomInvoiceid =
+                                  generateRandomBillNumber();
+                              generatePdf(
+                                  dueAmount: "${fee?.totalAmountToPay ?? "0"}",
+                                  month: formattedMonth,
+                                  amountPaid: fee?.amountPaid.toString() ?? "",
+                                  transactionId: fee?.transactionId ?? "",
+                                  contactNo: student?.contactNo ?? "",
+                                  billNo: randomBillNo,
+                                  dueDate: fee?.paymentClearedMonthYear ?? "",
+                                  name: student?.name ?? "",
+                                  paymentMode: fee?.paymentMode ?? "",
+                                  paidDate: formattedPaidDate,
+                                  propertyName: student?.pgName ?? "",
+                                  roomNo: student?.roomNo ?? "",
+                                  studentId: student?.studentId ?? "",
+                                  invoiceNo: randomInvoiceid);
+                            },
+                            child: Icon(
+                              Icons.cloud_download_outlined,
+                              color: ColorConstants.primary_black
+                                  .withValues(alpha: .5),
+                            ),
                           ),
-                        ),
-                      )
-                    ],
-                  );
-                },
-                separatorBuilder: (context, index) => SizedBox(
-                      height: 15,
-                    ),
-                itemCount:
-                    context.read<HomepageController>().feesModel?.length ?? 0),
-      ),
+                        )
+                      ],
+                    );
+                  },
+                  separatorBuilder: (context, index) => SizedBox(height: 15),
+                  itemCount: reversedFeesList?.length ?? 0,
+                )),
     );
   }
 

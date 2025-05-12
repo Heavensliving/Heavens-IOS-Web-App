@@ -22,13 +22,14 @@ class _SigninState extends State<Signin> {
   @override
   void initState() {
     if (kDebugMode) {
-      EmailController.text = 'jaganprasad093@gmail.com';
-      passwordController.text = 'Jagan@123';
+      EmailController.text = 'testing@gmail.com';
+      passwordController.text = 'Testing@123';
     }
     super.initState();
   }
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     var prov = context.watch<LoginController>();

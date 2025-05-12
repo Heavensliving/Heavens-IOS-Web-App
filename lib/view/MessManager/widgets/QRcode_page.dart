@@ -33,7 +33,7 @@ class QrcodePage extends StatefulWidget {
 class _QrcodePageState extends State<QrcodePage> {
   @override
   Widget build(BuildContext context) {
-    log("booking status---${widget.bookingStatus}");
+    // log("booking status---${widget.bookingStatus}");
     var time = "";
     if (widget.mealType == "Breakfast") {
       time = "8 AM - 9 AM";

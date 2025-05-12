@@ -58,7 +58,6 @@ class _CustomMessMangerCardState extends State<CustomMessMangerCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header section with meals and date
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -91,7 +90,6 @@ class _CustomMessMangerCardState extends State<CustomMessMangerCard> {
               ],
             ),
             const SizedBox(height: 20),
-
             Custombutton(
               onTap: () {
                 setState(() {
@@ -105,7 +103,6 @@ class _CustomMessMangerCardState extends State<CustomMessMangerCard> {
               text: widget.button_text,
               padding: const EdgeInsets.symmetric(vertical: 3),
             ),
-
             if (isExpandable) buildExpandableMenu(provider),
           ],
         ),
@@ -260,46 +257,9 @@ class _CustomMessMangerCardState extends State<CustomMessMangerCard> {
                 ],
               );
       } else if (widget.status == "Booked" && widget.addOns == "true") {
-        return InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  final selectedDate =
-                      DateFormat('MMM d, yyyy').parse(widget.date);
-                  final selectedDayOfWeek =
-                      DateFormat('EEEE').format(selectedDate);
-
-                  final dayMenu = provider.menuItemsModel?.firstWhere(
-                    (menu) => menu.dayOfWeek == selectedDayOfWeek,
-                    orElse: () => MenuItemModel(
-                        dayOfWeek: selectedDayOfWeek,
-                        breakfast: [],
-                        lunch: [],
-                        dinner: []),
-                  );
-
-                  final menuItems = widget.meals == "Breakfast"
-                      ? dayMenu?.breakfast ?? []
-                      : widget.meals == "Lunch"
-                          ? dayMenu?.lunch ?? []
-                          : dayMenu?.dinner ?? [];
-                  return QrcodePage(
-                    bookingStatus: widget.bookingStatus ?? "",
-                    isAddons: false,
-                    bookingId: widget.orderId ?? "",
-                    foodItems: menuItems,
-                    mealType: widget.meals,
-                  );
-                },
-              ),
-            );
-          },
-          child: QrImageView(
-            data: widget.orderId ?? "",
-            size: 50,
-          ),
+        return QrImageView(
+          data: widget.orderId ?? "",
+          size: 50,
         );
       } else {
         return Text(
