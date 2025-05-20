@@ -1,8 +1,8 @@
 import 'dart:developer';
-import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/profile_controller/ProfileController.dart';
+import 'package:heavens_students/view/profile/widgets/fullScreenImageWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -85,7 +85,8 @@ class _ProfilescreenState extends State<Profilescreen> {
               onTap: student?.photo == null || student?.photo == ""
                   ? null
                   : () {
-                      _showFullScreenImage(context, student?.photo ?? "");
+                      FullScreenImage.show(context,
+                          imageUrl: student?.photo ?? "");
                     },
               child: CircleAvatar(
                 backgroundColor: Colors.grey.withValues(alpha: .2),
@@ -168,8 +169,16 @@ class _ProfilescreenState extends State<Profilescreen> {
     return [
       buildProfileCard(
         context,
-        "Personal Information",
+        // "Personal Information",
+        "Edit Profile",
         Icons.person_2_outlined,
+        "/personal_information_card",
+      ),
+      buildProfileCard(
+        context,
+        // "Personal Information",
+        "General Information",
+        Icons.info_outline,
         "/personal_information",
       ),
       buildProfileCard(
@@ -207,7 +216,7 @@ class _ProfilescreenState extends State<Profilescreen> {
         context,
         "Terms & Conditions",
         Icons.description,
-        "/terms",
+        "/termsAndConditions",
       ),
     ];
   }
@@ -256,12 +265,13 @@ class _ProfilescreenState extends State<Profilescreen> {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: ColorConstants.primary_white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
         title: Row(
           children: [
-            Icon(Icons.logout, color: Colors.redAccent),
+            Icon(Icons.logout, color: ColorConstants.dark_red2),
             SizedBox(width: 8),
             Text(
               "Logout",
@@ -305,7 +315,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                   '/signin', (Route<dynamic> route) => false);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.redAccent,
+              backgroundColor: ColorConstants.dark_red2,
             ),
             child: Text(
               "Logout",
@@ -313,24 +323,6 @@ class _ProfilescreenState extends State<Profilescreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  void _showFullScreenImage(BuildContext context, String profileImageUrl) {
-    showDialog(
-      context: context,
-      builder: (context) => GestureDetector(
-        onTap: () => Navigator.pop(context),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-          child: Dialog(
-            backgroundColor: Colors.transparent,
-            child: CircleAvatar(
-                radius: MediaQuery.of(context).size.width * 0.4,
-                backgroundImage: CachedNetworkImageProvider(profileImageUrl)),
-          ),
-        ),
       ),
     );
   }

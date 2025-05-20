@@ -1,0 +1,257 @@
+import 'package:flutter/material.dart';
+import 'package:heavens_students/core/constants/constants.dart';
+
+class HostelTermsAndConditions extends StatelessWidget {
+  const HostelTermsAndConditions({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Terms & Conditions',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        centerTitle: true,
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back),
+        //   onPressed: () => Navigator.pop(context),
+        // ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+        child: Column(
+          children: [
+            // Header
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: ColorConstants.dark_red.withValues(alpha: .1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.home_work,
+                      size: 40, color: ColorConstants.dark_red),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Heavens Living Rules & Regulations',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Effective from: ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 30),
+
+            // Terms Sections
+            _buildTermSection(
+              context,
+              title: '1. Accommodation Rules',
+              points: [
+                // 'Check-in time is 12 PM and check-out time is 10 AM sharp.',
+                'No overnight guests allowed without prior permission.',
+                'Residents must keep their rooms clean and tidy.',
+                'Damage to property will result in penalty charges.',
+              ],
+            ),
+
+            _buildTermSection(
+              context,
+              title: '2. Payment Policy',
+              points: [
+                'Rent must be paid by the 5th of every month.',
+                'Late payment will incur a 5% penalty fee.',
+                'Security deposit is refundable only if the resident informs about departure at least one month in advance, after deduction of any damages.',
+                'No refunds for early termination of stay without prior notice.',
+                'Security deposit will be forfeited if proper one-month notice is not given before vacating.',
+              ],
+            ),
+
+            _buildTermSection(
+              context,
+              title: '3. Visitor Policy',
+              points: [
+                'Visitors allowed only in common areas between 8 AM to 8 PM.',
+                'All visitors must register at the reception.',
+                'Residents are responsible for their visitors\' conduct.',
+                'No visitors allowed in rooms without permission.',
+              ],
+            ),
+
+            _buildTermSection(
+              context,
+              title: '4. Food & Kitchen',
+              points: [
+                'Common kitchen available from 6 AM to 10 PM.',
+                'Clean utensils immediately after use.',
+                // 'No non-vegetarian food allowed in vegetarian PGs.',
+                'Food waste must be disposed properly.',
+              ],
+            ),
+
+            _buildTermSection(
+              context,
+              title: '5. Prohibited Activities',
+              points: [
+                'Smoking, alcohol, and drugs are strictly prohibited.',
+                'No loud music after 10 PM.',
+                'No commercial activities without permission.',
+                'No pets allowed in the premises.',
+              ],
+            ),
+
+            _buildTermSection(
+              context,
+              title: '6. Safety & Security',
+              points: [
+                'Main door must be locked after 11 PM.',
+                "Don't share access cards/keys with outsiders.",
+                'Emergency exits must remain clear at all times.',
+                'Report any suspicious activity to management immediately.',
+              ],
+            ),
+
+            // const SizedBox(height: 30),
+
+            // Container(
+            //   padding: const EdgeInsets.all(16),
+            //   decoration: BoxDecoration(
+            //     color: Colors.grey.shade100,
+            //     borderRadius: BorderRadius.circular(12),
+            //     border: Border.all(color: Colors.grey.shade300),
+            //   ),
+            //   child: Column(
+            //     children: [
+            //       const Text(
+            //         'By accepting these terms, you agree to comply with all hostel/PG rules and regulations.',
+            //         style: TextStyle(fontSize: 14),
+            //         textAlign: TextAlign.center,
+            //       ),
+            //       const SizedBox(height: 15),
+            //       Row(
+            //         children: [
+            //           Checkbox(value: true, onChanged: (val) {}),
+            //           const SizedBox(width: 8),
+            //           const Expanded(
+            //             child: Text(
+            //               'I accept all terms and conditions',
+            //               style: TextStyle(fontSize: 14),
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //       const SizedBox(height: 10),
+            //       SizedBox(
+            //         width: double.infinity,
+            //         child: ElevatedButton(
+            //           style: ElevatedButton.styleFrom(
+            //             padding: const EdgeInsets.symmetric(vertical: 15),
+            //             shape: RoundedRectangleBorder(
+            //               borderRadius: BorderRadius.circular(8),
+            //             ),
+            //           ),
+            //           onPressed: () {
+            //             // Handle acceptance
+            //             Navigator.pop(context);
+            //           },
+            //           child: const Text('Confirm Acceptance'),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTermSection(
+    BuildContext context, {
+    required String title,
+    required List<String> points,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey.withValues(alpha: .05),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withValues(alpha: .1),
+            spreadRadius: 2,
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: ColorConstants.dark_red2,
+            ),
+          ),
+          const SizedBox(height: 10),
+          ...points
+              .map((point) => Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 3),
+                          child: Icon(
+                            Icons.circle,
+                            size: 6,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            point,
+                            style: TextStyle(
+                              fontSize: 14,
+                              height: 1.4,
+                              color: Colors.grey.shade800,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ))
+              .toList(),
+        ],
+      ),
+    );
+  }
+}
