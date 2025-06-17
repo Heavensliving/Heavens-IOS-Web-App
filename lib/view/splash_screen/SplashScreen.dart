@@ -107,10 +107,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _navigateToSignIn(BuildContext context) {
-    Navigator.pushReplacementNamed(
-      context,
-      "/signin",
-    );
+    // Navigator.pushReplacementNamed(
+    //   context,
+    //   "/signin",
+    // );
+    Navigator.pushNamed(context, "/getstarted");
   }
 
   @override

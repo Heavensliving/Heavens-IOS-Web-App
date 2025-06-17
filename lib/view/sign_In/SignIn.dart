@@ -174,15 +174,6 @@ class _SigninState extends State<Signin> {
                             EmailController.text,
                             passwordController.text,
                             context);
-                        // context
-                        //     .read<LoginController>()
-                        //     .getStudentDetail(context);
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           BottomNavigation(initialIndex: 0),
-                        //     ));
                       }
                     },
                   ),

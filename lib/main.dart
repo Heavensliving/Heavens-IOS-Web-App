@@ -14,6 +14,7 @@ import 'package:heavens_students/controller/other_functions/otherFunctions.dart'
 import 'package:heavens_students/controller/profile_controller/ProfileController.dart';
 import 'package:heavens_students/controller/profile_controller/profilePic_controller.dart';
 import 'package:heavens_students/firebase_options.dart';
+import 'package:heavens_students/view/get_started/get_started.dart';
 import 'package:heavens_students/view/homepage/homepage.dart';
 import 'package:heavens_students/view/homepage/payment_history/payment_history.dart';
 import 'package:heavens_students/view/homepage/raised_tickets/raised_tickets.dart';
@@ -81,6 +82,7 @@ class _HeavensStudentState extends State<HeavensStudent> {
           '/stay_detail': (context) => const StayDetails(),
           '/nointernet': (context) => NoInternetScreen(),
           '/termsAndConditions': (context) => HostelTermsAndConditions(),
+          '/getstarted': (context) => GetStarted(),
         },
       ),
     );

@@ -167,17 +167,18 @@ class _ProfilescreenState extends State<Profilescreen> {
 
   List<Widget> buildProfileCards(BuildContext context) {
     return [
+      // buildProfileCard(
+      //   context,
+      //   // "Personal Information",
+      //   "Edit Profile",
+      //   Icons.person_2_outlined,
+      //   "/personal_information_card",
+      // ),
       buildProfileCard(
         context,
         // "Personal Information",
         "Edit Profile",
-        Icons.person_2_outlined,
-        "/personal_information_card",
-      ),
-      buildProfileCard(
-        context,
-        // "Personal Information",
-        "General Information",
+        // "General Information",
         Icons.info_outline,
         "/personal_information",
       ),

@@ -78,12 +78,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(
-              color: Colors.black.withOpacity(0.2),
+              color: Colors.black.withValues(alpha: 0.2),
             )),
         disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(
-              color: widget.color ?? Colors.black.withOpacity(0.2),
+              color: widget.color ?? Colors.black.withValues(alpha: 0.2),
             )),
         prefixIcon: widget.prefix,
         counterText: "",
@@ -91,7 +91,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         contentPadding: widget.contentPadding ??
             const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         hintText: widget.hintText,
-        hintStyle: TextStyle(color: Colors.black.withOpacity(0.5)),
+        hintStyle: TextStyle(color: Colors.black.withValues(alpha: 0.5)),
         prefixText: widget.prefixText,
         prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
         suffixIcon: widget.isPassword

@@ -146,7 +146,7 @@ class StayDetails extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
-                shadowColor: ColorConstants.dark_red.withOpacity(0.3),
+                shadowColor: ColorConstants.dark_red.withValues(alpha: 0.3),
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
@@ -154,7 +154,7 @@ class StayDetails extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: ColorConstants.dark_red.withOpacity(0.1),
+                          color: ColorConstants.dark_red.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
@@ -266,7 +266,7 @@ class StayDetails extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: ColorConstants.dark_red.withOpacity(0.1),
+            color: ColorConstants.dark_red.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(icon, color: ColorConstants.dark_red, size: 22),
