@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:heavens_students/core/constants/constants.dart';
+import 'package:url_launcher/url_launcher.dart'; // Add this import for URL handling
 
 class HostelTermsAndConditions extends StatelessWidget {
   const HostelTermsAndConditions({super.key});
+
+  // Function to open URL
+  Future<void> _launchUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri)) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +27,6 @@ class HostelTermsAndConditions extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back),
-        //   onPressed: () => Navigator.pop(context),
-        // ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
@@ -71,7 +76,6 @@ class HostelTermsAndConditions extends StatelessWidget {
               context,
               title: '1. Accommodation Rules',
               points: [
-                // 'Check-in time is 12 PM and check-out time is 10 AM sharp.',
                 'No overnight guests allowed without prior permission.',
                 'Residents must keep their rooms clean and tidy.',
                 'Damage to property will result in penalty charges.',
@@ -107,7 +111,6 @@ class HostelTermsAndConditions extends StatelessWidget {
               points: [
                 'Common kitchen available from 6 AM to 10 PM.',
                 'Clean utensils immediately after use.',
-                // 'No non-vegetarian food allowed in vegetarian PGs.',
                 'Food waste must be disposed properly.',
               ],
             ),
@@ -134,55 +137,22 @@ class HostelTermsAndConditions extends StatelessWidget {
               ],
             ),
 
-            // const SizedBox(height: 30),
-
-            // Container(
-            //   padding: const EdgeInsets.all(16),
-            //   decoration: BoxDecoration(
-            //     color: Colors.grey.shade100,
-            //     borderRadius: BorderRadius.circular(12),
-            //     border: Border.all(color: Colors.grey.shade300),
-            //   ),
-            //   child: Column(
-            //     children: [
-            //       const Text(
-            //         'By accepting these terms, you agree to comply with all hostel/PG rules and regulations.',
-            //         style: TextStyle(fontSize: 14),
-            //         textAlign: TextAlign.center,
-            //       ),
-            //       const SizedBox(height: 15),
-            //       Row(
-            //         children: [
-            //           Checkbox(value: true, onChanged: (val) {}),
-            //           const SizedBox(width: 8),
-            //           const Expanded(
-            //             child: Text(
-            //               'I accept all terms and conditions',
-            //               style: TextStyle(fontSize: 14),
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //       const SizedBox(height: 10),
-            //       SizedBox(
-            //         width: double.infinity,
-            //         child: ElevatedButton(
-            //           style: ElevatedButton.styleFrom(
-            //             padding: const EdgeInsets.symmetric(vertical: 15),
-            //             shape: RoundedRectangleBorder(
-            //               borderRadius: BorderRadius.circular(8),
-            //             ),
-            //           ),
-            //           onPressed: () {
-            //             // Handle acceptance
-            //             Navigator.pop(context);
-            //           },
-            //           child: const Text('Confirm Acceptance'),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
+            const SizedBox(height: 20),
+            GestureDetector(
+              onTap: () {
+                _launchUrl('https://www.heavensliving.in/terms&conditions');
+              },
+              child: Text(
+                'View Full Terms & Conditions',
+                style: TextStyle(
+                  color: ColorConstants.dark_red,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
           ],
         ),
       ),
@@ -206,7 +176,7 @@ class HostelTermsAndConditions extends StatelessWidget {
             spreadRadius: 2,
             blurRadius: 8,
             offset: const Offset(0, 2),
-          ),
+          )
         ],
       ),
       child: Column(
