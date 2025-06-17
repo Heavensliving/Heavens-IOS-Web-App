@@ -109,7 +109,7 @@ class HostelTermsAndConditions extends StatelessWidget {
               context,
               title: '4. Food & Kitchen',
               points: [
-                'Common kitchen available from 6 AM to 10 PM.',
+                'Common kitchen available from 6 AM to 10 PM. ',
                 'Clean utensils immediately after use.',
                 'Food waste must be disposed properly.',
               ],
