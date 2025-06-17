@@ -89,6 +89,7 @@ class _HeavensStudentState extends State<HeavensStudent> {
   //   if (!networkController.isInitialized) {
   //     return const SplashScreen();
   //   }
+  //deyy
 
   //   // Show NoInternetScreen when disconnected, otherwise show the appropriate screen
   //   return networkController.isConnected
