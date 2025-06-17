@@ -19,11 +19,11 @@
 	
 	<!-- Ensure this matches your pubspec.yaml version -->
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.1</string>
+	<string>1.2.2</string>
 
 	<!-- Ensure this matches your pubspec.yaml build number -->
 	<key>CFBundleVersion</key>
-	<string>4</string>
+	<string>5</string>
 
 	<key>CFBundleSignature</key>
 	<string>????</string>

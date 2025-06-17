@@ -1,16 +1,19 @@
 import 'dart:developer';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/login_controller/LoginController.dart';
 import 'package:heavens_students/controller/profile_controller/ProfileController.dart';
+import 'package:heavens_students/controller/profile_controller/profilePic_controller.dart';
 import 'package:heavens_students/core/constants/constants.dart';
 import 'package:heavens_students/core/widgets/CustomButton.dart';
 import 'package:heavens_students/core/widgets/CustomTextformField.dart';
+import 'package:heavens_students/view/profile/widgets/fullScreenImageWidget.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class PersonalInformationCard extends StatefulWidget {
-  final TabController tabController;
-  const PersonalInformationCard({super.key, required this.tabController});
+  final TabController? tabController;
+  const PersonalInformationCard({super.key, this.tabController});
 
   @override
   State<PersonalInformationCard> createState() =>
@@ -67,22 +70,98 @@ class _PersonalInformationCardState extends State<PersonalInformationCard> {
 
   @override
   Widget build(BuildContext context) {
+    var picController = context.watch<PicController>();
     var provider = context.read<ProfileController>();
     var login_controller =
         context.watch<LoginController>().studentDetailModel?.student;
     log("percent in profile1---${login_controller!.profileCompletionPercentage}");
+    var loginControllers = context.watch<LoginController>();
+    var student = loginControllers.studentDetailModel?.student;
     return Scaffold(
       backgroundColor: ColorConstants.primary_white,
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: Form(
             key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (widget.tabController == null)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Row(
+                        children: [
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(Icons.arrow_back_ios)),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * .23,
+                          ),
+                          Text(
+                            "Edit Profile",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * .08,
+                      ),
+                    ],
+                  ),
                 SizedBox(height: 20),
-                // Name Field
+
+                Center(
+                  child: Stack(
+                    children: [
+                      InkWell(
+                        hoverColor: Colors.transparent,
+                        onTap: student?.photo == null || student?.photo == ""
+                            ? null
+                            : () {
+                                FullScreenImage(imageUrl: student?.photo ?? "");
+                              },
+                        child: CircleAvatar(
+                          backgroundColor: Colors.grey.withValues(alpha: .2),
+                          backgroundImage: _getProfileImage(
+                            student?.photo,
+                            picController.profilePic,
+                          ),
+                          radius: 60,
+                          child: picController.isLoading
+                              ? CircularProgressIndicator(
+                                  color: ColorConstants.primary_white,
+                                )
+                              : const SizedBox(),
+                        ),
+                      ),
+                      if (login_controller.profileCompletionPercentage != "100")
+                        Positioned(
+                          right: 0,
+                          bottom: 1,
+                          child: InkWell(
+                            onTap: () {
+                              picController.showOptions2(context, true);
+                            },
+                            child: const CircleAvatar(
+                              radius: 14,
+                              child: Icon(
+                                Icons.camera_alt_outlined,
+                                size: 17,
+                                color: ColorConstants.primary_white,
+                              ),
+                              backgroundColor: ColorConstants.dark_red2,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
                 Text("Name",
                     style:
                         TextStyle(fontWeight: FontWeight.w500, fontSize: 17)),
@@ -162,13 +241,12 @@ class _PersonalInformationCardState extends State<PersonalInformationCard> {
                     style:
                         TextStyle(fontWeight: FontWeight.w500, fontSize: 17)),
                 CustomTextField(
-                  readOnly: true, // Prevent direct typing
-                  enabled: login_controller.profileCompletionPercentage !=
-                      "100", // Conditional enable/disable
-                  suffixIcon:
-                      Icon(Icons.calendar_month_rounded), // Date picker icon
-                  onTap: () => selectDate(context), // Show date picker on tap
-                  controller: dob_controller, // Controller for date value
+                  readOnly: true,
+                  enabled:
+                      login_controller.profileCompletionPercentage != "100",
+                  suffixIcon: Icon(Icons.calendar_month_rounded),
+                  onTap: () => selectDate(context),
+                  controller: dob_controller,
                   hintText: "Enter DOB",
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
@@ -231,22 +309,25 @@ class _PersonalInformationCardState extends State<PersonalInformationCard> {
                           int phoneNumber = int.parse(phone);
                           log("date of birth----${dob_controller.text}");
                           log("blood group ----${blood_controller.text}");
-                          await provider.addPersonalInformation(
-                              name_controller.text,
-                              email_controller.text,
-                              phoneNumber,
-                              dob_controller.text,
-                              blood_controller.text,
-                              address_controller.text,
-                              "40",
-                              widget.tabController,
-                              context);
+
+                          if (widget.tabController != null) {
+                            await provider.addPersonalInformation(
+                                name_controller.text,
+                                email_controller.text,
+                                phoneNumber,
+                                dob_controller.text,
+                                blood_controller.text,
+                                address_controller.text,
+                                "40",
+                                widget.tabController!,
+                                context);
+                          }
                           context
                               .read<LoginController>()
                               .getStudentDetail(context);
                         }
                       } else {
-                        widget.tabController.animateTo(1);
+                        widget.tabController?.animateTo(1);
                       }
                     },
                     child: provider.isLoading
@@ -299,5 +380,17 @@ class _PersonalInformationCardState extends State<PersonalInformationCard> {
         dob_controller.text = formattedDate;
       });
     }
+  }
+
+  ImageProvider _getProfileImage(String? photoUrl, dynamic localPic) {
+    if ((photoUrl == null || photoUrl.isEmpty) && localPic == null) {
+      return const NetworkImage(
+        "https://example.com/default-profile-pic.png",
+      );
+    }
+
+    return localPic != null
+        ? FileImage(localPic)
+        : CachedNetworkImageProvider(photoUrl ?? "");
   }
 }

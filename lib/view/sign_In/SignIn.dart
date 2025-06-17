@@ -7,6 +7,7 @@ import 'package:heavens_students/core/constants/constants.dart';
 import 'package:heavens_students/core/widgets/CustomButton.dart';
 import 'package:heavens_students/core/widgets/CustomTextformField.dart';
 import 'package:heavens_students/view/sign_In/forgot_password/ForgotPassword.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
 class Signin extends StatefulWidget {
@@ -152,8 +153,10 @@ class _SigninState extends State<Signin> {
                     text: "Sign In",
                     child: prov.isLoading
                         ? Center(
-                            child: CircularProgressIndicator(
-                            color: ColorConstants.primary_white,
+                            child:
+                                LoadingAnimationWidget.horizontalRotatingDots(
+                            color: Colors.white,
+                            size: 30,
                           ))
                         : Text(
                             "Sign In",
@@ -171,15 +174,6 @@ class _SigninState extends State<Signin> {
                             EmailController.text,
                             passwordController.text,
                             context);
-                        // context
-                        //     .read<LoginController>()
-                        //     .getStudentDetail(context);
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           BottomNavigation(initialIndex: 0),
-                        //     ));
                       }
                     },
                   ),

@@ -7,4 +7,5 @@ class ColorConstants {
   static const Color offwhite = Color(0xFFFFF6F7);
   static const Color orange = Color.fromARGB(255, 211, 78, 7);
   static const Color dark_red = Color.fromARGB(255, 152, 38, 74);
+  static const Color cream = Color(0xffF4E7E1);
 }

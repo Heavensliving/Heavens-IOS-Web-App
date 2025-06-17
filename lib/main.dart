@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:heavens_students/controller/cafe_controller/CafeController.dart';
@@ -15,16 +14,18 @@ import 'package:heavens_students/controller/other_functions/otherFunctions.dart'
 import 'package:heavens_students/controller/profile_controller/ProfileController.dart';
 import 'package:heavens_students/controller/profile_controller/profilePic_controller.dart';
 import 'package:heavens_students/firebase_options.dart';
+import 'package:heavens_students/view/get_started/get_started.dart';
 import 'package:heavens_students/view/homepage/homepage.dart';
 import 'package:heavens_students/view/homepage/payment_history/payment_history.dart';
 import 'package:heavens_students/view/homepage/raised_tickets/raised_tickets.dart';
 import 'package:heavens_students/view/no_internet_screen/noInternetScreen.dart';
 import 'package:heavens_students/view/profile/change_password/ChangePassword.dart';
 import 'package:heavens_students/view/profile/personal_information/PersonalInformation.dart';
+import 'package:heavens_students/view/profile/personal_information/widgets/PersonalInformationCard.dart';
 import 'package:heavens_students/view/profile/stay_details/StayDetails.dart';
+import 'package:heavens_students/view/profile/terms_and_conditions/terms_and_conditions.dart';
 import 'package:heavens_students/view/sign_In/SignIn.dart';
 import 'package:heavens_students/view/splash_screen/SplashScreen.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:provider/provider.dart';
 
@@ -75,9 +76,13 @@ class _HeavensStudentState extends State<HeavensStudent> {
           '/payment_history': (context) => const PaymentHistory(),
           '/signin': (context) => const Signin(),
           '/personal_information': (context) => const PersonalInformation(),
+          '/personal_information_card': (context) =>
+              const PersonalInformationCard(),
           '/change_password': (context) => const ChangePassword(),
           '/stay_detail': (context) => const StayDetails(),
           '/nointernet': (context) => NoInternetScreen(),
+          '/termsAndConditions': (context) => HostelTermsAndConditions(),
+          '/getstarted': (context) => GetStarted(),
         },
       ),
     );
