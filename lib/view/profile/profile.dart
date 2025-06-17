@@ -177,6 +177,8 @@ class _ProfilescreenState extends State<Profilescreen> {
       buildProfileCard(
         context,
         // "Personal Information",
+        // "Personal Information",
+
         "Edit Profile",
         // "General Information",
         Icons.info_outline,
